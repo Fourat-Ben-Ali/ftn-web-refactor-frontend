@@ -1,0 +1,56 @@
+
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  input {
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+  }
+  
+  input:focus {
+    border-color: black;
+  }
+  
+  input.ng-invalid.ng-touched {
+    border-color: #e74c3c; 
+  }
+  
+  input.ng-valid.ng-touched {
+    border-color: black; 
+  }
+  
+  .error {
+    margin-top: 5px;
+    color: #e74c3c;
+    font-size: 0.875rem;
+  }
+  
+  .error small {
+    font-size: 0.875rem;
+  }
+  
+  input::placeholder {
+    color: #aaa; 
+  }
+  
+  input:focus::placeholder {
+    color: #818080;
+  }
+  
+  .error small {
+    color: #e74c3c;
+    font-size: 0.875rem;
+  }
+  

@@ -1,0 +1,19 @@
+<div class="login">
+<div class="login-image">
+    <img src="assets\logos\login-image.jpg">
+</div>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+  <div *ngFor="let input of loginInputs">
+    <Form-Input [inputField]="input"> </Form-Input>
+  </div>
+  <app-button
+    label="Login"
+    icon="pi pi-sign-in"
+    severity="primary"
+    className="login-button"
+    [isLoading]="isLoading"
+    (clicked)="onSubmit()"
+  >
+  </app-button>
+</form>
+</div>

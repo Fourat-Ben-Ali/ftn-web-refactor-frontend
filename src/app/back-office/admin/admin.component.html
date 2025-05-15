@@ -1,0 +1,12 @@
+<div class="layout">
+    <app-sidebar [isExpanded]="isSideBarExpanded" [sidebarItems]="sideBarItems"></app-sidebar>
+  
+    <div class="right-panel">
+      <app-navbar (toggleSidebar)="toggleSideBar()"></app-navbar>
+      <div class="main-content">
+        <app-breadcrumb></app-breadcrumb>
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+  

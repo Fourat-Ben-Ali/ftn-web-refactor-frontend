@@ -1,0 +1,3 @@
+::ng-deep .p-datatable-wrapper {
+    overflow-x: hidden !important;
+  }

@@ -1,0 +1,34 @@
+<p-table
+  [value]="clubs"
+  [paginator]="true"
+  [rows]="5"
+  [globalFilterFields]="['clubName']"
+  sortField="clubName"
+  [tableStyle]="{ 'min-width': '30rem' }"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Nom du Club</th>
+      <th>Description</th>
+      <th>Actions</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-club>
+    <tr>
+      <td>{{ club.clubName }}</td>
+      <td>{{ club.description }}</td>
+      <td>
+        <app-button
+          label=""
+          icon="pi pi-eye"
+          severity="secondary"
+          p-tooltip="View"
+        >
+        </app-button>
+        <app-button label="" icon="pi pi-pencil"  p-tooltip="View"> </app-button>
+        <app-button label="" icon="pi pi-trash" severity="danger"  p-tooltip="View"> </app-button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

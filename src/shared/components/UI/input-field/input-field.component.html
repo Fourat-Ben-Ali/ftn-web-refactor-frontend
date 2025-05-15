@@ -1,0 +1,16 @@
+<div class="form-group" [ngClass]="inputField.className">
+    <label *ngIf="inputField.label">{{ inputField.label }}</label>
+    <input
+      pInputText
+      [type]="inputField.type"
+      [formControl]="inputField.control"
+      [placeholder]="inputField.placeholder"
+      [ngClass]="{ 'ng-invalid':inputField.control.invalid && inputField.control.touched }"
+
+    />
+  
+    <div class="error" *ngIf="inputField.control.invalid && inputField.control.touched">
+      <small *ngIf="inputField.control.errors?.['required']">Ce champ est requis.</small>
+    </div>
+  </div>
+  

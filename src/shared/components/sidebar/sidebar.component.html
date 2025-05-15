@@ -1,0 +1,19 @@
+<div class="sidebar" [class.expanded]="isExpanded" *ngIf="isExpanded">
+   <div class="sidebar-logo">
+      <img [src]="IMAGE_URL" alt="logo">
+   </div>
+    <ul class="nav flex-column">
+       <li class="nav-item" *ngFor="let item of sidebarItems">
+         <a class="nav-link" [routerLink]="item.path" routerLinkActive="active" #rla="routerLinkActive">
+            <div class="nav-content">
+            <i [class]="item.icon"></i>
+            <span *ngIf="isExpanded">{{item.item}}</span>
+            </div>
+         </a>
+       </li>
+    </ul>
+</div>
+
+
+
+

@@ -10,8 +10,8 @@ const routes: Routes = [
   component:AdminComponent,
   data: { breadcrumb: 'Admin', icon: 'pi pi-user' },
   children:[
-    {path:'home', component:HomeComponent ,  data: { breadcrumb: 'Accueil' , icon: 'pi pi-home'},},
-    {path:'clubs', component:ClubsComponent ,  data: { breadcrumb: 'Liste des clubs' , icon: 'pi pi-building'}}
+    {path:'home', component:HomeComponent ,  data: { breadcrumb: 'Dashboard' , icon: 'pi pi-chart-bar'},},
+    {path:'clubs', component:ClubsComponent ,  data: { breadcrumb: 'Clubs list' , icon: 'pi pi-building'}}
   ]  
 },
 ];

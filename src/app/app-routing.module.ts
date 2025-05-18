@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -13,6 +14,7 @@ const routes: Routes = [
       import('./back-office/back-office.module').then(
         (m) => m.BackOfficeModule
       ),
+      canActivate: [authGuard],
   },
   {
     path: 'front-office',

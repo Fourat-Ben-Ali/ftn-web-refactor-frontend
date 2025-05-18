@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { formInputs, InputType, LoginRequest } from 'models';
 import { AuthenticationService } from 'shared/services/authentication.service';
+import { ToastService } from 'shared/services/toast.service';
 import { TokenService } from 'shared/services/token.service';
 
 @Component({
@@ -14,7 +15,6 @@ import { TokenService } from 'shared/services/token.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
-
 export class LoginComponent {
   loginForm: FormGroup;
   isLoading: boolean = false;
@@ -49,7 +49,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private authenticationService: AuthenticationService,
-    private tokenService:TokenService
+    private tokenService: TokenService,
+    private toastService: ToastService
   ) {
     this.loginForm = this.fb.group({
       email: this.loginInputs[0].control,
@@ -64,24 +65,33 @@ export class LoginComponent {
       });
       return;
     }
-      const loginRequest: LoginRequest = {
-        email: this.loginForm.value.email,
-        password: this.loginForm.value.password
-      }
-      this.authenticate(loginRequest);
-
+    this.isLoading = true;
+    const loginRequest: LoginRequest = {
+      email: this.loginForm.value.email,
+      password: this.loginForm.value.password,
+    };
+    this.authenticate(loginRequest);
   }
 
-  authenticate(loginRequest:LoginRequest) {
-    this.authenticationService.authenticateAndStoreToken(loginRequest).subscribe({
-      next: (response) => {
-        this.isLoading = true;
-        this.redirectByUserRole();
-      },
-      error: (error) => {
-        console.error('Login failed:', error);
-      },
-    });
+  authenticate(loginRequest: LoginRequest) {
+    this.authenticationService
+      .authenticateAndStoreToken(loginRequest)
+      .subscribe({
+        next: () => {
+          this.toastService.showCustom(
+            'Login successful.',
+            'success',
+            'Welcome back!'
+          );
+
+          this.redirectByUserRole();
+        },
+        error: (error) => {
+          this.toastService.showError('Login failed. Please try again.');
+          console.error('Login failed:', error);
+          this.isLoading = false;
+        },
+      });
   }
 
   redirectByUserRole() {

@@ -20,6 +20,14 @@ export class TokenService {
     }
   }
 
+  public getRoles(): string[] {
+    const token: string | null = this.getToken();
+    if (!token) return [];
+
+    const payload = this.decodeToken(token);
+    return payload?.roles || [];
+  }
+
   private decodeToken(token: string): any | null {
     try {
       const payload = token.split('.')[1];
@@ -34,17 +42,15 @@ export class TokenService {
   public redirectByUserRole(): void {
     const token = this.getToken();
     if (!token) {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/auth']);
       return;
     }
-
-    const claims = this.decodeToken(token);
-    const roles: string[] = claims?.roles || [];
+    const roles: string[] = this.getRoles();
 
     if (roles.includes('ADMIN')) {
-      this.router.navigate(['/back-office']);
-    } else if (roles.includes('USER')) {
-      this.router.navigate(['/user/home']);
+      this.router.navigate(['/back-office/admin']);
+    } else if (roles.includes('CLUB_MANAGER')) {
+      this.router.navigate(['/back-office/manager']);
     } else {
       this.router.navigate(['/login']);
     }

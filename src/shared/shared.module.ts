@@ -4,7 +4,7 @@ import { ButtonComponent } from './components/UI/button/button.component';
 import { ButtonModule } from 'primeng/button';
 import { ClubsService } from './services/clubs.service';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { InputFieldComponent } from './components/UI/input-field/input-field.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { NgModule } from '@angular/core';
@@ -16,6 +16,10 @@ import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
 import { PaginatorModule } from 'primeng/paginator';
 import { AuthenticationService } from './services/authentication.service';
+import { AuthInterceptor } from 'app/core/interceptors/auth.interceptor';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { MessageService } from 'primeng/api';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -25,16 +29,18 @@ import { AuthenticationService } from './services/authentication.service';
     NavbarComponent,
     SidebarComponent,
     TableComponent,
+    NotFoundComponent,
   ],
   imports: [
     ButtonModule,
     CommonModule,
     HttpClientModule,
+    PaginatorModule,
     ReactiveFormsModule,
     RouterModule,
     TableModule,
     TooltipModule,
-    PaginatorModule,
+    SplitButtonModule,
   ],
   exports: [
     BreadcrumbComponent,
@@ -43,8 +49,19 @@ import { AuthenticationService } from './services/authentication.service';
     NavbarComponent,
     SidebarComponent,
     TableComponent,
+    NotFoundComponent,
   ],
-  providers: [BreadcrumbService, ClubsService, AuthenticationService],
+  providers: [
+    BreadcrumbService,
+    ClubsService,
+    AuthenticationService,
+    MessageService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
 })
 @NgModule()
 export class SharedModule {}

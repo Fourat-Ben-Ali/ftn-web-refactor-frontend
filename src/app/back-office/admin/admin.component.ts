@@ -7,10 +7,10 @@ import { sideBarItems } from 'models';
   styleUrl: './admin.component.css',
 })
 export class AdminComponent {
-  isSideBarExpanded = false;
+  isSideBarExpanded = true;
 
   sideBarItems: sideBarItems[] = [
-    { item: 'Accueil', path: 'home', icon: 'pi pi-home', role: 'admin' },
+    { item: 'Dashboard', path: 'home', icon: 'pi pi-chart-bar', role: 'admin' },
     { item: 'Clubs', path: 'clubs', icon: 'pi pi-building', role: 'admin' },
   ];
 

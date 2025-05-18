@@ -7,7 +7,5 @@ import { Component } from '@angular/core';
 })
 export class HomeComponent {
 
-  breadcrumbItems=[
-    {label:'Acceuil',icon:'pi pi-home',path:''},
-  ];
+
 }

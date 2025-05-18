@@ -1,29 +1,70 @@
-.navbar
-{
-    display: flex;
-    flex-direction: row;
-    background-color: #dfe7ec;
-    width: 100%;
-    height: 65px;
-    margin-bottom: 20px;
-    border-radius: 20px;
-
-
+.navbar {
+  display: flex;
+  flex-direction: row;
+  background-color: #dfe7ec;
+  justify-content: space-between;
+  width: 100%;
+  height: 65px;
+  margin-bottom: 20px;
+  border-radius: 20px;
 }
 
-
 .navbar_icon .pi:hover {
-    background-color: #adbec9;;
-    border-radius: 20px;
-    padding: 20px; 
+  background-color: #adbec9;
+  border-radius: 20px;
+  padding: 20px;
+}
 
-  }
-  
 .navbar_icon .pi.pi-align-justify {
-    color: black;
-    padding-top: 20px;
-    padding-left: 20px;
-    font-size: 1.5rem;
+  color: black;
+  padding-top: 20px;
+  padding-left: 20px;
+  font-size: 1.5rem;
+}
+.disconnet {
+  justify-self: flex-end;
+}
 
-  }
+.user_button button {
+  background: none;
+  border: none;
+  color: black;
+  cursor: pointer;
+}
+.disconnect {
+  height: 100%;
+}
 
+::ng-deep app-navbar .p-splitbutton {
+  height: 100%;
+}
+
+::ng-deep app-navbar .p-splitbutton .p-splitbutton-defaultbutton,
+::ng-deep app-navbar .p-splitbutton-menubutton {
+  height: 100%;
+  background-color: #dfe7ec;
+  color: black;
+  border: none;
+}
+
+::ng-deep app-navbar .p-splitbutton-menubutton:hover {
+  background-color: #adbec9;
+}
+
+::ng-deep app-navbar .p-splitbutton .p-button-label {
+  font-weight: 300 !important;
+}
+
+::ng-deep app-navbar .p-button:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+::ng-deep app-navbar .p-splitbutton .p-splitbutton-defaultbutton:hover {
+  cursor: auto;
+}
+
+::ng-deep .p-tieredmenu.p-tieredmenu-overlay .p-menuitem-content:hover {
+  background-color: #dfe7ec;
+  color: black;
+}

@@ -1,0 +1,217 @@
+<div class="card">
+  <div class="card-header">
+    <app-button
+      label="Add Licence"
+      icon="pi pi-plus"
+      (click)="showAddDialog()"
+      severity="primary"
+    >
+    </app-button>
+  </div>
+
+  <p-table
+    [value]="licences"
+    [paginator]="true"
+    [rows]="5"
+    [globalFilterFields]="['athleteId', 'clubId']"
+    [tableStyle]="{ 'min-width': '30rem' }"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Athlete</th>
+        <th>Club</th>
+        <th>Valid From</th>
+        <th>Valid Until</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-licence>
+      <tr>
+        <td>{{ getAthleteName(licence.athleteId) }}</td>
+        <td>{{ getClubName(licence.clubId) }}</td>
+        <td>{{ licence.valideDepuis | date }}</td>
+        <td>{{ licence.valideJusquA | date }}</td>
+        <td>
+          <app-button 
+            label="" 
+            icon="pi pi-pencil" 
+            p-tooltip="Edit"
+            (click)="showEditDialog(licence)"
+          > 
+          </app-button>
+          <app-button 
+            label="" 
+            icon="pi pi-trash" 
+            severity="danger" 
+            p-tooltip="Delete"
+            (click)="deleteLicence(licence.id)"
+          > 
+          </app-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- Add Licence Dialog -->
+<p-dialog
+  [(visible)]="displayAddDialog"
+  [style]="{ width: '500px' }"
+  header="Add Licence"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <ng-template pTemplate="content">
+    <form [formGroup]="licenceForm">
+      <div class="field">
+        <label for="athleteId">Athlete</label>
+        <p-dropdown
+          id="athleteId"
+          [options]="athletes"
+          formControlName="athleteId"
+          optionLabel="nom"
+          optionValue="id"
+          placeholder="Select Athlete"
+          [required]="true"
+        ></p-dropdown>
+      </div>
+      <div class="field">
+        <label for="clubId">Club</label>
+        <p-dropdown
+          id="clubId"
+          [options]="clubs"
+          formControlName="clubId"
+          optionLabel="clubName"
+          optionValue="id"
+          placeholder="Select Club"
+          [required]="true"
+        ></p-dropdown>
+      </div>
+      <div class="field">
+        <label for="valideDepuis">Valid From</label>
+        <p-calendar
+          id="valideDepuis"
+          formControlName="valideDepuis"
+          dateFormat="yy-mm-dd"
+          [showIcon]="true"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          [yearRange]="'2020:2030'"
+          [required]="true"
+        ></p-calendar>
+      </div>
+      <div class="field">
+        <label for="valideJusquA">Valid Until</label>
+        <p-calendar
+          id="valideJusquA"
+          formControlName="valideJusquA"
+          dateFormat="yy-mm-dd"
+          [showIcon]="true"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          [yearRange]="'2020:2030'"
+          [required]="true"
+        ></p-calendar>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <app-button
+      label="Cancel"
+      icon="pi pi-times"
+      (click)="hideDialog()"
+      severity="secondary"
+    >
+    </app-button>
+    <app-button
+      label="Save"
+      icon="pi pi-check"
+      (click)="saveLicence()"
+      [disabled]="!licenceForm.valid"
+    >
+    </app-button>
+  </ng-template>
+</p-dialog>
+
+<!-- Edit Licence Dialog -->
+<p-dialog
+  [(visible)]="displayEditDialog"
+  [style]="{ width: '500px' }"
+  header="Edit Licence"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <ng-template pTemplate="content">
+    <form [formGroup]="licenceForm">
+      <div class="field">
+        <label for="athleteId">Athlete</label>
+        <p-dropdown
+          id="athleteId"
+          [options]="athletes"
+          formControlName="athleteId"
+          optionLabel="nom"
+          optionValue="id"
+          placeholder="Select Athlete"
+          [required]="true"
+        ></p-dropdown>
+      </div>
+      <div class="field">
+        <label for="clubId">Club</label>
+        <p-dropdown
+          id="clubId"
+          [options]="clubs"
+          formControlName="clubId"
+          optionLabel="clubName"
+          optionValue="id"
+          placeholder="Select Club"
+          [required]="true"
+        ></p-dropdown>
+      </div>
+      <div class="field">
+        <label for="valideDepuis">Valid From</label>
+        <p-calendar
+          id="valideDepuis"
+          formControlName="valideDepuis"
+          dateFormat="yy-mm-dd"
+          [showIcon]="true"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          [yearRange]="'2020:2030'"
+          [required]="true"
+        ></p-calendar>
+      </div>
+      <div class="field">
+        <label for="valideJusquA">Valid Until</label>
+        <p-calendar
+          id="valideJusquA"
+          formControlName="valideJusquA"
+          dateFormat="yy-mm-dd"
+          [showIcon]="true"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          [yearRange]="'2020:2030'"
+          [required]="true"
+        ></p-calendar>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <app-button
+      label="Cancel"
+      icon="pi pi-times"
+      (click)="hideDialog()"
+      severity="secondary"
+    >
+    </app-button>
+    <app-button
+      label="Save"
+      icon="pi pi-check"
+      (click)="saveLicence()"
+      [disabled]="!licenceForm.valid"
+    >
+    </app-button>
+  </ng-template>
+</p-dialog> 

@@ -1,0 +1,168 @@
+<div class="card">
+  <div class="card-header">
+    <div class="flex justify-content-between align-items-center">
+      <app-button
+        label="Add Discipline"
+        icon="pi pi-plus"
+        (click)="showAddDialog()"
+        severity="primary"
+      >
+      </app-button>
+      <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input 
+          pInputText 
+          type="text" 
+          (input)="onSearch($event)" 
+          placeholder="Search disciplines..."
+        />
+      </span>
+    </div>
+  </div>
+
+  <p-table
+    [value]="disciplines"
+    [paginator]="true"
+    [rows]="5"
+    [globalFilterFields]="['nom', 'description']"
+    sortField="nom"
+    [tableStyle]="{ 'min-width': '30rem' }"
+    [(first)]="first"
+    [totalRecords]="totalRecords"
+    [loading]="loading"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-discipline>
+      <tr>
+        <td>{{ discipline.nom }}</td>
+        <td>{{ discipline.description }}</td>
+        <td>
+          <app-button 
+            label="" 
+            icon="pi pi-pencil" 
+            p-tooltip="Edit"
+            (click)="showEditDialog(discipline)"
+          > 
+          </app-button>
+          <app-button 
+            label="" 
+            icon="pi pi-trash" 
+            severity="danger" 
+            p-tooltip="Delete"
+            (click)="deleteDiscipline(discipline.id)"
+          > 
+          </app-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- Add Discipline Dialog -->
+<p-dialog
+  [(visible)]="displayAddDialog"
+  [style]="{ width: '450px' }"
+  header="Add Discipline"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <ng-template pTemplate="content">
+    <form [formGroup]="disciplineForm">
+      <div class="field">
+        <label for="nom">Name</label>
+        <input
+          type="text"
+          pInputText
+          id="nom"
+          formControlName="nom"
+          required
+        />
+      </div>
+      <div class="field">
+        <label for="description">Description</label>
+        <textarea
+          pInputTextarea
+          id="description"
+          formControlName="description"
+          rows="3"
+          required
+        ></textarea>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <app-button
+      label="Cancel"
+      icon="pi pi-times"
+      (click)="hideDialog()"
+      severity="secondary"
+    >
+    </app-button>
+    <app-button
+      label="Save"
+      icon="pi pi-check"
+      (click)="saveDiscipline()"
+      [disabled]="!disciplineForm.valid"
+    >
+    </app-button>
+  </ng-template>
+</p-dialog>
+
+<!-- Edit Discipline Dialog -->
+<p-dialog
+  [(visible)]="displayEditDialog"
+  [style]="{ width: '450px' }"
+  header="Edit Discipline"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <ng-template pTemplate="content">
+    <form [formGroup]="disciplineForm">
+      <div class="field">
+        <label for="nom">Name</label>
+        <input
+          type="text"
+          pInputText
+          id="nom"
+          formControlName="nom"
+          required
+        />
+      </div>
+      <div class="field">
+        <label for="description">Description</label>
+        <textarea
+          pInputTextarea
+          id="description"
+          formControlName="description"
+          rows="3"
+          required
+        ></textarea>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <app-button
+      label="Cancel"
+      icon="pi pi-times"
+      (click)="hideDialog()"
+      severity="secondary"
+    >
+    </app-button>
+    <app-button
+      label="Save"
+      icon="pi pi-check"
+      (click)="saveDiscipline()"
+      [disabled]="!disciplineForm.valid"
+    >
+    </app-button>
+  </ng-template>
+</p-dialog> 

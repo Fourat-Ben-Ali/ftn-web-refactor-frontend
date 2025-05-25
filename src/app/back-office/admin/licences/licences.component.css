@@ -1,0 +1,62 @@
+::ng-deep .p-datatable-wrapper {
+  overflow-x: hidden !important;
+}
+
+.card {
+  background: var(--surface-card);
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.card-header {
+  margin-bottom: 1rem;
+}
+
+.field {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+::ng-deep .p-dialog .p-dialog-content {
+  padding: 2rem;
+}
+
+/* Fix calendar display in modal */
+::ng-deep .p-calendar {
+  width: 100%;
+}
+
+::ng-deep .p-datepicker {
+  min-width: 280px;
+}
+
+::ng-deep .p-datepicker-header {
+  padding: 0.5rem;
+}
+
+::ng-deep .p-datepicker .p-datepicker-header .p-datepicker-title {
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+}
+
+::ng-deep .p-datepicker .p-datepicker-header .p-datepicker-title select {
+  margin: 0 0.5rem;
+}
+
+::ng-deep .p-dialog-content {
+  overflow-y: visible !important;
+}
+
+::ng-deep .p-dialog-mask {
+  z-index: 1000;
+}
+
+::ng-deep .p-datepicker-panel {
+  z-index: 1001 !important;
+} 

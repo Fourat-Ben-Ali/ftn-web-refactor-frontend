@@ -1,0 +1,239 @@
+<div class="card">
+  <div class="card-header">
+    <div class="flex justify-content-between align-items-center">
+      <app-button
+        label="Add Athlete"
+        icon="pi pi-plus"
+        (click)="showAddDialog()"
+        severity="primary"
+      >
+      </app-button>
+      <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input 
+          pInputText 
+          type="text" 
+          (input)="onSearch($event)" 
+          placeholder="Search athletes..."
+        />
+      </span>
+    </div>
+  </div>
+
+  <p-table
+    [value]="athletes"
+    [paginator]="true"
+    [rows]="5"
+    [globalFilterFields]="['nom', 'prenom', 'nationalite']"
+    [tableStyle]="{ 'min-width': '30rem' }"
+    [(first)]="first"
+    [totalRecords]="totalRecords"
+    [loading]="loading"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Gender</th>
+        <th>Birth Date</th>
+        <th>Nationality</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-athlete>
+      <tr>
+        <td>{{ athlete.prenom }}</td>
+        <td>{{ athlete.nom }}</td>
+        <td>{{ athlete.genre }}</td>
+        <td>{{ athlete.dateNaissance | date }}</td>
+        <td>{{ athlete.nationalite }}</td>
+        <td>
+          <app-button 
+            label="" 
+            icon="pi pi-pencil" 
+            p-tooltip="Edit"
+            (click)="showEditDialog(athlete)"
+          > 
+          </app-button>
+          <app-button 
+            label="" 
+            icon="pi pi-trash" 
+            severity="danger" 
+            p-tooltip="Delete"
+            (click)="deleteAthlete(athlete.id)"
+          > 
+          </app-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- Add Athlete Dialog -->
+<p-dialog
+  [(visible)]="displayAddDialog"
+  [style]="{ width: '500px' }"
+  header="Add Athlete"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <ng-template pTemplate="content">
+    <form [formGroup]="athleteForm">
+      <div class="field">
+        <label for="prenom">First Name</label>
+        <input
+          type="text"
+          pInputText
+          id="prenom"
+          formControlName="prenom"
+          required
+        />
+      </div>
+      <div class="field">
+        <label for="nom">Last Name</label>
+        <input
+          type="text"
+          pInputText
+          id="nom"
+          formControlName="nom"
+          required
+        />
+      </div>
+      <div class="field">
+        <label for="genre">Gender</label>
+        <p-dropdown
+          id="genre"
+          [options]="['Male', 'Female']"
+          formControlName="genre"
+          placeholder="Select Gender"
+          [required]="true"
+        ></p-dropdown>
+      </div>
+      <div class="field">
+        <label for="dateNaissance">Birth Date</label>
+        <p-calendar
+          id="dateNaissance"
+          formControlName="dateNaissance"
+          dateFormat="yy-mm-dd"
+          [showIcon]="true"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          [yearRange]="'1940:2030'"
+          [required]="true"
+        ></p-calendar>
+      </div>
+      <div class="field">
+        <label for="nationalite">Nationality</label>
+        <input
+          type="text"
+          pInputText
+          id="nationalite"
+          formControlName="nationalite"
+          required
+        />
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <app-button
+      label="Cancel"
+      icon="pi pi-times"
+      (click)="hideDialog()"
+      severity="secondary"
+    >
+    </app-button>
+    <app-button
+      label="Save"
+      icon="pi pi-check"
+      (click)="saveAthlete()"
+      [disabled]="!athleteForm.valid"
+    >
+    </app-button>
+  </ng-template>
+</p-dialog>
+
+<!-- Edit Athlete Dialog -->
+<p-dialog
+  [(visible)]="displayEditDialog"
+  [style]="{ width: '500px' }"
+  header="Edit Athlete"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <ng-template pTemplate="content">
+    <form [formGroup]="athleteForm">
+      <div class="field">
+        <label for="prenom">First Name</label>
+        <input
+          type="text"
+          pInputText
+          id="prenom"
+          formControlName="prenom"
+          required
+        />
+      </div>
+      <div class="field">
+        <label for="nom">Last Name</label>
+        <input
+          type="text"
+          pInputText
+          id="nom"
+          formControlName="nom"
+          required
+        />
+      </div>
+      <div class="field">
+        <label for="genre">Gender</label>
+        <p-dropdown
+          id="genre"
+          [options]="['Male', 'Female']"
+          formControlName="genre"
+          placeholder="Select Gender"
+          [required]="true"
+        ></p-dropdown>
+      </div>
+      <div class="field">
+        <label for="dateNaissance">Birth Date</label>
+        <p-calendar
+          id="dateNaissance"
+          formControlName="dateNaissance"
+          dateFormat="yy-mm-dd"
+          [showIcon]="true"
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          [yearRange]="'1940:2030'"
+          [required]="true"
+        ></p-calendar>
+      </div>
+      <div class="field">
+        <label for="nationalite">Nationality</label>
+        <input
+          type="text"
+          pInputText
+          id="nationalite"
+          formControlName="nationalite"
+          required
+        />
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <app-button
+      label="Cancel"
+      icon="pi pi-times"
+      (click)="hideDialog()"
+      severity="secondary"
+    >
+    </app-button>
+    <app-button
+      label="Save"
+      icon="pi pi-check"
+      (click)="saveAthlete()"
+      [disabled]="!athleteForm.valid"
+    >
+    </app-button>
+  </ng-template>
+</p-dialog> 

@@ -12,6 +12,10 @@ export class AdminComponent {
   sideBarItems: sideBarItems[] = [
     { item: 'Dashboard', path: 'home', icon: 'pi pi-chart-bar', role: 'admin' },
     { item: 'Clubs', path: 'clubs', icon: 'pi pi-building', role: 'admin' },
+    { item: 'Athletes', path: 'athletes', icon: 'pi pi-users', role: 'admin' },
+    { item: 'Disciplines', path: 'disciplines', icon: 'pi pi-list', role: 'admin' },
+    { item: 'Equipe Nationale', path: 'equipe-nationale', icon: 'pi pi-flag', role: 'admin' },
+    { item: 'Licences', path: 'licences', icon: 'pi pi-id-card', role: 'admin' },
   ];
 
   breadcrumbItems = [{ label: 'Admin', icon: 'pi pi-user', path: '' }];

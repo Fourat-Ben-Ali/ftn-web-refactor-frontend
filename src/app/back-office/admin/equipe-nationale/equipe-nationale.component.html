@@ -1,0 +1,166 @@
+<div class="card">
+  <div class="card-header">
+    <app-button
+      label="Add National Team"
+      icon="pi pi-plus"
+      (click)="showAddDialog()"
+      severity="primary"
+    >
+    </app-button>
+  </div>
+
+  <p-table
+    [value]="equipes"
+    [paginator]="true"
+    [rows]="5"
+    [globalFilterFields]="['nom']"
+    sortField="nom"
+    [tableStyle]="{ 'min-width': '30rem' }"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Name</th>
+        <th>Discipline</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-equipe>
+      <tr>
+        <td>{{ equipe.nom }}</td>
+        <td>{{ equipe.discipline?.nom }}</td>
+        <td>
+          <app-button 
+            label="" 
+            icon="pi pi-pencil" 
+            p-tooltip="Edit"
+            (click)="showEditDialog(equipe)"
+          > 
+          </app-button>
+          <app-button 
+            label="" 
+            icon="pi pi-trash" 
+            severity="danger" 
+            p-tooltip="Delete"
+            (click)="deleteEquipe(equipe.id)"
+          > 
+          </app-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- Add National Team Dialog -->
+<p-dialog
+  [(visible)]="displayAddDialog"
+  [style]="{ width: '500px' }"
+  header="Add National Team"
+  [modal]="true"
+  styleClass="p-fluid"
+  [baseZIndex]="1000"
+  [autoZIndex]="true"
+>
+  <ng-template pTemplate="content">
+    <form [formGroup]="equipeForm">
+      <div class="field">
+        <label for="nom">Name</label>
+        <input
+          type="text"
+          pInputText
+          id="nom"
+          formControlName="nom"
+          required
+        />
+      </div>
+      <div class="field">
+        <label for="discipline">Discipline</label>
+        <p-dropdown
+          id="discipline"
+          [options]="disciplines"
+          formControlName="disciplineId"
+          optionLabel="nom"
+          optionValue="id"
+          placeholder="Select Discipline"
+          [required]="true"
+          [appendTo]="'body'"
+          scrollHeight="200px"
+        ></p-dropdown>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <app-button
+      label="Cancel"
+      icon="pi pi-times"
+      (click)="hideDialog()"
+      severity="secondary"
+    >
+    </app-button>
+    <app-button
+      label="Save"
+      icon="pi pi-check"
+      (click)="saveEquipe()"
+      [disabled]="!equipeForm.valid"
+    >
+    </app-button>
+  </ng-template>
+</p-dialog>
+
+<!-- Edit National Team Dialog -->
+<p-dialog
+  [(visible)]="displayEditDialog"
+  [style]="{ width: '500px' }"
+  header="Edit National Team"
+  [modal]="true"
+  styleClass="p-fluid"
+  [baseZIndex]="1000"
+  [autoZIndex]="true"
+>
+  <ng-template pTemplate="content">
+    <form [formGroup]="equipeForm">
+      <div class="field">
+        <label for="nom">Name</label>
+        <input
+          type="text"
+          pInputText
+          id="nom"
+          formControlName="nom"
+          required
+        />
+      </div>
+      <div class="field">
+        <label for="discipline">Discipline</label>
+        <p-dropdown
+          id="discipline"
+          [options]="disciplines"
+          formControlName="disciplineId"
+          optionLabel="nom"
+          optionValue="id"
+          placeholder="Select Discipline"
+          [required]="true"
+          [appendTo]="'body'"
+          scrollHeight="200px"
+        ></p-dropdown>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <app-button
+      label="Cancel"
+      icon="pi pi-times"
+      (click)="hideDialog()"
+      severity="secondary"
+    >
+    </app-button>
+    <app-button
+      label="Save"
+      icon="pi pi-check"
+      (click)="saveEquipe()"
+      [disabled]="!equipeForm.valid"
+    >
+    </app-button>
+  </ng-template>
+</p-dialog> 

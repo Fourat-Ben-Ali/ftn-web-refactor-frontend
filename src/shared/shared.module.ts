@@ -3,6 +3,10 @@ import { BreadcrumbService } from './services/breadcrumb.service';
 import { ButtonComponent } from './components/UI/button/button.component';
 import { ButtonModule } from 'primeng/button';
 import { ClubsService } from './services/clubs.service';
+import { AthleteService } from './services/athlete.service';
+import { DisciplineService } from './services/discipline.service';
+import { EquipeNationaleService } from './services/equipe-nationale.service';
+import { LicenceService } from './services/licence.service';
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { InputFieldComponent } from './components/UI/input-field/input-field.component';
@@ -20,6 +24,11 @@ import { AuthInterceptor } from 'app/core/interceptors/auth.interceptor';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { MessageService } from 'primeng/api';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { DialogModule } from 'primeng/dialog';
+import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 @NgModule({
   declarations: [
@@ -33,8 +42,13 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
   ],
   imports: [
     ButtonModule,
+    CalendarModule,
     CommonModule,
+    DialogModule,
+    DropdownModule,
     HttpClientModule,
+    InputTextModule,
+    InputTextareaModule,
     PaginatorModule,
     ReactiveFormsModule,
     RouterModule,
@@ -44,9 +58,16 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
   ],
   exports: [
     BreadcrumbComponent,
+    ButtonModule,
     ButtonComponent,
+    CalendarModule,
+    DialogModule,
+    DropdownModule,
     InputFieldComponent,
+    InputTextModule,
+    InputTextareaModule,
     NavbarComponent,
+    ReactiveFormsModule,
     SidebarComponent,
     TableComponent,
     NotFoundComponent,
@@ -54,6 +75,10 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
   providers: [
     BreadcrumbService,
     ClubsService,
+    AthleteService,
+    DisciplineService,
+    EquipeNationaleService,
+    LicenceService,
     AuthenticationService,
     MessageService,
     {
@@ -63,5 +88,4 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     },
   ],
 })
-@NgModule()
 export class SharedModule {}

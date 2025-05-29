@@ -16,6 +16,7 @@ export class AdminComponent {
     { item: 'Disciplines', path: 'disciplines', icon: 'pi pi-list', role: 'admin' },
     { item: 'Equipe Nationale', path: 'equipe-nationale', icon: 'pi pi-flag', role: 'admin' },
     { item: 'Licences', path: 'licences', icon: 'pi pi-id-card', role: 'admin' },
+    { item: 'Événements', path: 'evenements', icon: 'pi pi-calendar', role: 'admin' },
   ];
 
   breadcrumbItems = [{ label: 'Admin', icon: 'pi pi-user', path: '' }];

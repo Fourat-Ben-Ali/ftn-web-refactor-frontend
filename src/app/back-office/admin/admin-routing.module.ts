@@ -7,6 +7,7 @@ import { AthletesComponent } from './athletes/athletes.component';
 import { DisciplinesComponent } from './disciplines/disciplines.component';
 import { EquipeNationaleComponent } from './equipe-nationale/equipe-nationale.component';
 import { LicencesComponent } from './licences/licences.component';
+import { EvenementsComponent } from './evenements/evenements.component';
 
 const routes: Routes = [
   {path:'', redirectTo:'home', pathMatch:'full'},
@@ -19,7 +20,8 @@ const routes: Routes = [
     {path:'athletes', component:AthletesComponent, data: { breadcrumb: 'Athletes list', icon: 'pi pi-users'}},
     {path:'disciplines', component:DisciplinesComponent, data: { breadcrumb: 'Disciplines list', icon: 'pi pi-list'}},
     {path:'equipe-nationale', component:EquipeNationaleComponent, data: { breadcrumb: 'National Teams', icon: 'pi pi-flag'}},
-    {path:'licences', component:LicencesComponent, data: { breadcrumb: 'Licences list', icon: 'pi pi-id-card'}}
+    {path:'licences', component:LicencesComponent, data: { breadcrumb: 'Licences list', icon: 'pi pi-id-card'}},
+    {path:'evenements', component:EvenementsComponent, data: { breadcrumb: 'Liste des événements', icon: 'pi pi-calendar'}}
   ]  
 },
 ];

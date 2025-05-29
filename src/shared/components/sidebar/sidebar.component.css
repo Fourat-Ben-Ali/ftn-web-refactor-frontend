@@ -70,7 +70,7 @@
     justify-content: start;
     margin-left: 20%;
     color: rgb(114, 112, 112);
-    gap: 5px;
+    gap: 8px;
   }
   
   .sidebar .nav .nav-item img {
@@ -80,9 +80,13 @@
   }
   
   .sidebar .nav .nav-item span {
-  
     margin-left: 10px;
     font-size: 16px;
+  }
+  
+  .sidebar .nav .nav-item i {
+    width: 20px;
+    text-align: center;
   }
   
   ul {

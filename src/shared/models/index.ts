@@ -11,6 +11,7 @@ import { InputType } from './Enumerations/InputType';
 import { PageEvent } from './Interfaces/pageEvent';
 import { LoginRequest } from './DTO/LoginRequest';
 import { LoginResponse } from './DTO/LoginResponse';
+import { Evenement, TypeEvenement } from './DTO/evenementDTO.model';
 
 export {
   Athlete,
@@ -18,6 +19,7 @@ export {
   clubs,
   Discipline,
   EquipeNationale,
+  Evenement,
   formInputs,
   InputType,
   Licence,
@@ -26,4 +28,5 @@ export {
   PageEvent,
   PaginationParams,
   sideBarItems,
+  TypeEvenement,
 };

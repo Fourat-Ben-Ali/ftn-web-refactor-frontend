@@ -1,0 +1,264 @@
+<div class="card">
+  <div class="card-header">
+    <div class="flex justify-content-between align-items-center">
+      <app-button
+        label="Add News"
+        icon="pi pi-plus"
+        (click)="showAddDialog()"
+        severity="primary"
+      >
+      </app-button>
+      <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input 
+          pInputText 
+          type="text" 
+          (input)="onSearch($event)" 
+          placeholder="Search news..."
+        />
+      </span>
+    </div>
+  </div>
+
+  <p-table
+    [value]="actualites"
+    [paginator]="true"
+    [rows]="10"
+    [rowsPerPageOptions]="[5,10,20,50]"
+    [scrollable]="true"
+    scrollHeight="400px"
+    [globalFilterFields]="['titre', 'contenu', 'statutPublication']"
+    [tableStyle]="{ 'min-width': '30rem' }"
+    [(first)]="first"
+    [totalRecords]="totalRecords"
+    [loading]="loading"
+    styleClass="p-datatable-gridlines"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="min-width: 200px">Title</th>
+        <th style="min-width: 300px">Content</th>
+        <th style="min-width: 150px">Publication Date</th>
+        <th style="min-width: 120px">Status</th>
+        <th style="min-width: 150px">Actions</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-actualite>
+      <tr>
+        <td style="min-width: 200px">{{ actualite.titre }}</td>
+        <td style="min-width: 300px">{{ actualite.contenu | slice:0:100 }}...</td>
+        <td style="min-width: 150px">{{ actualite.datePublication | date }}</td>
+        <td style="min-width: 120px">
+          <p-tag 
+            [severity]="actualite.statutPublication === 'PUBLIE' ? 'success' : 'warning'"
+            [value]="actualite.statutPublication"
+          ></p-tag>
+        </td>
+        <td style="min-width: 150px">
+          <app-button 
+            label="" 
+            icon="pi pi-pencil" 
+            p-tooltip="Edit"
+            (click)="showEditDialog(actualite)"
+          > 
+          </app-button>
+          <app-button 
+            label="" 
+            icon="pi pi-eye" 
+            severity="info" 
+            p-tooltip="Publish"
+            *ngIf="actualite.statutPublication !== 'PUBLIE'"
+            (click)="publishActualite(actualite.id)"
+          > 
+          </app-button>
+          <app-button 
+            label="" 
+            icon="pi pi-trash" 
+            severity="danger" 
+            p-tooltip="Delete"
+            (click)="deleteActualite(actualite.id)"
+          > 
+          </app-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- Add News Dialog -->
+<p-dialog
+  [(visible)]="displayAddDialog"
+  [style]="{ width: '700px' }"
+  header="Add News"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <ng-template pTemplate="content">
+    <form [formGroup]="actualiteForm" (ngSubmit)="saveActualite()">
+      <div class="field">
+        <label for="titre">Title *</label>
+        <input
+          type="text"
+          pInputText
+          id="titre"
+          formControlName="titre"
+          required
+          [ngClass]="{'ng-invalid ng-dirty': actualiteForm.get('titre')?.invalid && actualiteForm.get('titre')?.touched}"
+        />
+        <small class="p-error" *ngIf="actualiteForm.get('titre')?.invalid && actualiteForm.get('titre')?.touched">
+          <span *ngIf="actualiteForm.get('titre')?.errors?.['required']">Title is required</span>
+          <span *ngIf="actualiteForm.get('titre')?.errors?.['minlength']">Title must be at least 3 characters</span>
+        </small>
+      </div>
+      <div class="field">
+        <label for="contenu">Content *</label>
+        <textarea
+          pInputTextarea
+          id="contenu"
+          formControlName="contenu"
+          [rows]="5"
+          required
+          [ngClass]="{'ng-invalid ng-dirty': actualiteForm.get('contenu')?.invalid && actualiteForm.get('contenu')?.touched}"
+        ></textarea>
+        <small class="p-error" *ngIf="actualiteForm.get('contenu')?.invalid && actualiteForm.get('contenu')?.touched">
+          <span *ngIf="actualiteForm.get('contenu')?.errors?.['required']">Content is required</span>
+          <span *ngIf="actualiteForm.get('contenu')?.errors?.['minlength']">Content must be at least 10 characters</span>
+        </small>
+      </div>
+      <div class="field">
+        <label for="datePublication">Publication Date</label>
+        <p-calendar
+          id="datePublication"
+          formControlName="datePublication"
+          dateFormat="yy-mm-dd"
+          [showIcon]="true"
+          [required]="true"
+        ></p-calendar>
+        <small class="p-error" *ngIf="actualiteForm.get('datePublication')?.invalid && actualiteForm.get('datePublication')?.touched">
+          Publication date is required
+        </small>
+      </div>
+      <div class="field">
+        <label for="statutPublication">Status</label>
+        <p-dropdown
+          id="statutPublication"
+          [options]="publicationStatuses"
+          formControlName="statutPublication"
+          placeholder="Select Status"
+          [required]="true"
+          [style]="{'width':'100%'}"
+          appendTo="body"
+          [baseZIndex]="1100"
+        ></p-dropdown>
+        <small class="p-error" *ngIf="actualiteForm.get('statutPublication')?.invalid && actualiteForm.get('statutPublication')?.touched">
+          Status is required
+        </small>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <app-button
+      label="Cancel"
+      icon="pi pi-times"
+      (click)="hideDialog()"
+      severity="secondary"
+    >
+    </app-button>
+    <app-button
+      label="Save"
+      icon="pi pi-check"
+      type="submit"
+      (click)="saveActualite()"
+      [disabled]="actualiteForm.invalid || actualiteForm.pristine"
+    >
+    </app-button>
+  </ng-template>
+</p-dialog>
+
+<!-- Edit News Dialog -->
+<p-dialog
+  [(visible)]="displayEditDialog"
+  [style]="{ width: '700px' }"
+  header="Edit News"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <ng-template pTemplate="content">
+    <form [formGroup]="actualiteForm" (ngSubmit)="saveActualite()">
+      <div class="field">
+        <label for="titre">Title</label>
+        <input
+          type="text"
+          pInputText
+          id="titre"
+          formControlName="titre"
+          required
+        />
+        <small class="p-error" *ngIf="actualiteForm.get('titre')?.invalid && actualiteForm.get('titre')?.touched">
+          Title is required
+        </small>
+      </div>
+      <div class="field">
+        <label for="contenu">Content</label>
+        <textarea
+          pInputTextarea
+          id="contenu"
+          formControlName="contenu"
+          [rows]="5"
+          required
+        ></textarea>
+        <small class="p-error" *ngIf="actualiteForm.get('contenu')?.invalid && actualiteForm.get('contenu')?.touched">
+          Content is required
+        </small>
+      </div>
+      <div class="field">
+        <label for="datePublication">Publication Date</label>
+        <p-calendar
+          id="datePublication"
+          formControlName="datePublication"
+          dateFormat="yy-mm-dd"
+          [showIcon]="true"
+          [required]="true"
+        ></p-calendar>
+        <small class="p-error" *ngIf="actualiteForm.get('datePublication')?.invalid && actualiteForm.get('datePublication')?.touched">
+          Publication date is required
+        </small>
+      </div>
+      <div class="field">
+        <label for="statutPublication">Status</label>
+        <p-dropdown
+          id="statutPublication"
+          [options]="publicationStatuses"
+          formControlName="statutPublication"
+          placeholder="Select Status"
+          [required]="true"
+          [style]="{'width':'100%'}"
+          appendTo="body"
+          [baseZIndex]="1100"
+        ></p-dropdown>
+        <small class="p-error" *ngIf="actualiteForm.get('statutPublication')?.invalid && actualiteForm.get('statutPublication')?.touched">
+          Status is required
+        </small>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <app-button
+      label="Cancel"
+      icon="pi pi-times"
+      (click)="hideDialog()"
+      severity="secondary"
+    >
+    </app-button>
+    <app-button
+      label="Save"
+      icon="pi pi-check"
+      (click)="saveActualite()"
+      [disabled]="actualiteForm.invalid"
+    >
+    </app-button>
+  </ng-template>
+</p-dialog>

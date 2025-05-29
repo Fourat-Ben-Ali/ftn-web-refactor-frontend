@@ -1,0 +1,292 @@
+<div class="card">
+    <div class="card-header">
+        <div class="flex justify-content-between align-items-center">
+            <app-button
+                label="Add Training Program"
+                icon="pi pi-plus"
+                (click)="showAddDialog()"
+                severity="primary"
+            >
+            </app-button>
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input 
+                    pInputText 
+                    type="text" 
+                    (input)="onSearch($event)" 
+                    placeholder="Search programs..."
+                />
+            </span>
+        </div>
+    </div>
+
+    <p-table
+        [value]="programmes"
+        [paginator]="true"
+        [rows]="10"
+        [rowsPerPageOptions]="[5,10,20,50]"
+        [scrollable]="true"
+        scrollHeight="400px"
+        [globalFilterFields]="['titre', 'description', 'statutPublication']"
+        [tableStyle]="{ 'min-width': '30rem' }"
+        [(first)]="first"
+        [totalRecords]="totalRecords"
+        [loading]="loading"
+        styleClass="p-datatable-gridlines"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="min-width: 200px">Title</th>
+                <th style="min-width: 300px">Description</th>
+                <th style="min-width: 150px">Start Date</th>
+                <th style="min-width: 150px">End Date</th>
+                <th style="min-width: 120px">Status</th>
+                <th style="min-width: 150px">Actions</th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-programme>
+            <tr>
+                <td style="min-width: 200px">{{ programme.titre }}</td>
+                <td style="min-width: 300px">{{ programme.description | slice:0:100 }}...</td>
+                <td style="min-width: 150px">{{ programme.dateDebut | date }}</td>
+                <td style="min-width: 150px">{{ programme.dateFin | date }}</td>
+                <td style="min-width: 120px">
+                    <p-tag 
+                        [severity]="programme.statutPublication === 'PUBLIE' ? 'success' : 'warning'"
+                        [value]="programme.statutPublication"
+                    ></p-tag>
+                </td>
+                <td style="min-width: 150px">
+                    <app-button 
+                        label="" 
+                        icon="pi pi-pencil" 
+                        p-tooltip="Edit"
+                        (click)="showEditDialog(programme)"
+                    > 
+                    </app-button>
+                    <app-button 
+                        label="" 
+                        icon="pi pi-eye" 
+                        severity="info" 
+                        p-tooltip="Publish"
+                        *ngIf="programme.statutPublication !== 'PUBLIE'"
+                        (click)="publishProgramme(programme.id)"
+                    > 
+                    </app-button>
+                    <app-button 
+                        label="" 
+                        icon="pi pi-trash" 
+                        severity="danger" 
+                        p-tooltip="Delete"
+                        (click)="deleteProgramme(programme.id)"
+                    > 
+                    </app-button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<!-- Add Program Dialog -->
+<p-dialog
+    [(visible)]="displayAddDialog"
+    [style]="{ width: '700px' }"
+    header="Add Training Program"
+    [modal]="true"
+    styleClass="p-fluid"
+>
+    <ng-template pTemplate="content">
+        <form [formGroup]="programmeForm" (ngSubmit)="saveProgramme()">
+            <div class="field">
+                <label for="titre">Title *</label><br>
+                <input
+                    type="text"
+                    pInputText
+                    id="titre"
+                    formControlName="titre"
+                    required
+                    [ngClass]="{'ng-invalid ng-dirty': programmeForm.get('titre')?.invalid && programmeForm.get('titre')?.touched}"
+                /><br>
+                <small class="p-error" *ngIf="programmeForm.get('titre')?.invalid && programmeForm.get('titre')?.touched">
+                    <span *ngIf="programmeForm.get('titre')?.errors?.['required']">Title is required</span>
+                    <span *ngIf="programmeForm.get('titre')?.errors?.['minlength']">Title must be at least 3 characters</span>
+                </small><br>
+            </div>
+            <div class="field">
+                <label for="description">Description *</label><br>
+                <textarea
+                    pInputTextarea
+                    id="description"
+                    formControlName="description"
+                    [rows]="5"
+                    required
+                    [ngClass]="{'ng-invalid ng-dirty': programmeForm.get('description')?.invalid && programmeForm.get('description')?.touched}"
+                ></textarea><br>
+                <small class="p-error" *ngIf="programmeForm.get('description')?.invalid && programmeForm.get('description')?.touched">
+                    <span *ngIf="programmeForm.get('description')?.errors?.['required']">Description is required</span>
+                    <span *ngIf="programmeForm.get('description')?.errors?.['minlength']">Description must be at least 10 characters</span>
+                </small><br>
+            </div>
+            <div class="field">
+                <label for="dateDebut">Start Date</label><br>
+                <p-calendar
+                    id="dateDebut"
+                    formControlName="dateDebut"
+                    dateFormat="yy-mm-dd"
+                    [showIcon]="true"
+                    [required]="true"
+                ></p-calendar><br>
+                <small class="p-error" *ngIf="programmeForm.get('dateDebut')?.invalid && programmeForm.get('dateDebut')?.touched">
+                    Start date is required
+                </small>
+            </div><br>
+            <div class="field">
+                <label for="dateFin">End Date</label><br>
+                <p-calendar
+                    id="dateFin"
+                    formControlName="dateFin"
+                    dateFormat="yy-mm-dd"
+                    [showIcon]="true"
+                    [required]="true"
+                ></p-calendar><br>
+                <small class="p-error" *ngIf="programmeForm.get('dateFin')?.invalid && programmeForm.get('dateFin')?.touched">
+                    End date is required
+                </small>
+            </div><br>
+            <div class="field">
+                <label for="statutPublication">Status</label><br>
+                <p-dropdown
+                    id="statutPublication"
+                    [options]="publicationStatuses"
+                    formControlName="statutPublication"
+                    placeholder="Select Status"
+                    [required]="true"
+                    [style]="{'width':'100%'}"
+                    appendTo="body"
+                    [baseZIndex]="1100"
+                ></p-dropdown><br>
+                <small class="p-error" *ngIf="programmeForm.get('statutPublication')?.invalid && programmeForm.get('statutPublication')?.touched">
+                    Status is required
+                </small>
+            </div>
+        </form>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <app-button
+            label="Cancel"
+            icon="pi pi-times"
+            (click)="hideDialog()"
+            severity="secondary"
+        >
+        </app-button>
+        <app-button
+            label="Save"
+            icon="pi pi-check"
+            type="submit"
+            (click)="saveProgramme()"
+            [disabled]="programmeForm.invalid || programmeForm.pristine"
+        >
+        </app-button>
+    </ng-template>
+</p-dialog>
+
+<!-- Edit Program Dialog -->
+<p-dialog
+    [(visible)]="displayEditDialog"
+    [style]="{ width: '700px' }"
+    header="Edit Training Program"
+    [modal]="true"
+    styleClass="p-fluid"
+>
+    <ng-template pTemplate="content">
+        <form [formGroup]="programmeForm" (ngSubmit)="saveProgramme()">
+            <div class="field">
+                <label for="titre">Title</label>
+                <input
+                    type="text"
+                    pInputText
+                    id="titre"
+                    formControlName="titre"
+                    required
+                />
+                <small class="p-error" *ngIf="programmeForm.get('titre')?.invalid && programmeForm.get('titre')?.touched">
+                    Title is required
+                </small>
+            </div>
+            <div class="field">
+                <label for="description">Description</label>
+                <textarea
+                    pInputTextarea
+                    id="description"
+                    formControlName="description"
+                    [rows]="5"
+                    required
+                ></textarea>
+                <small class="p-error" *ngIf="programmeForm.get('description')?.invalid && programmeForm.get('description')?.touched">
+                    Description is required
+                </small>
+            </div>
+            <div class="field">
+                <label for="dateDebut">Start Date</label>
+                <p-calendar
+                    id="dateDebut"
+                    formControlName="dateDebut"
+                    dateFormat="yy-mm-dd"
+                    [showIcon]="true"
+                    [required]="true"
+                ></p-calendar>
+                <small class="p-error" *ngIf="programmeForm.get('dateDebut')?.invalid && programmeForm.get('dateDebut')?.touched">
+                    Start date is required
+                </small>
+            </div>
+            <div class="field">
+                <label for="dateFin">End Date</label>
+                <p-calendar
+                    id="dateFin"
+                    formControlName="dateFin"
+                    dateFormat="yy-mm-dd"
+                    [showIcon]="true"
+                    [required]="true"
+                ></p-calendar>
+                <small class="p-error" *ngIf="programmeForm.get('dateFin')?.invalid && programmeForm.get('dateFin')?.touched">
+                    End date is required
+                </small>
+            </div>
+            <div class="field">
+                <label for="statutPublication">Status</label>
+                <p-dropdown
+                    id="statutPublication"
+                    [options]="publicationStatuses"
+                    formControlName="statutPublication"
+                    placeholder="Select Status"
+                    [required]="true"
+                    [style]="{'width':'100%'}"
+                    appendTo="body"
+                    [baseZIndex]="1100"
+                ></p-dropdown>
+                <small class="p-error" *ngIf="programmeForm.get('statutPublication')?.invalid && programmeForm.get('statutPublication')?.touched">
+                    Status is required
+                </small>
+            </div>
+        </form>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <app-button
+            label="Cancel"
+            icon="pi pi-times"
+            (click)="hideDialog()"
+            severity="secondary"
+        >
+        </app-button>
+        <app-button
+            label="Save"
+            icon="pi pi-check"
+            (click)="saveProgramme()"
+            [disabled]="programmeForm.invalid"
+        >
+        </app-button>
+    </ng-template>
+</p-dialog>

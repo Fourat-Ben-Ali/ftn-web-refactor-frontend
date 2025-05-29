@@ -1,0 +1,36 @@
+:host ::ng-deep {
+    .p-button {
+        margin-right: 0.5rem;
+    }
+
+    .p-dialog .p-dialog-content {
+        padding: 2rem;
+    }
+
+    .p-field {
+        margin-bottom: 1.5rem;
+    }
+
+    .p-inputtext {
+        width: 100%;
+    }
+
+    .p-calendar {
+        width: 100%;
+    }
+
+    .p-dropdown {
+        width: 100%;
+    }
+
+    .p-tag {
+        min-width: 80px;
+        text-align: center;
+    }
+
+    .p-error {
+        color: #ef4444;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+} 

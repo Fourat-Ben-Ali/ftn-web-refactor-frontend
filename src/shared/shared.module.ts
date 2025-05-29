@@ -29,6 +29,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { ActualiteAcademieService } from 'app/services/actualite-academie.service';
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     EquipeNationaleService,
     LicenceService,
     AuthenticationService,
+    ActualiteAcademieService,
     MessageService,
     {
       provide: HTTP_INTERCEPTORS,

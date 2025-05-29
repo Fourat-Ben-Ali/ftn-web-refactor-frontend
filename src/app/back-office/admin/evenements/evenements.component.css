@@ -107,3 +107,42 @@ h5.m-0 {
 .add-button i {
     font-size: 16px;
 }
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.action-button {
+    border: none;
+    border-radius: 4px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.action-button i {
+    font-size: 14px;
+    color: white;
+}
+
+.edit-button {
+    background-color: #4096ff;
+}
+
+.edit-button:hover {
+    background-color: #1677ff;
+}
+
+.delete-button {
+    background-color: #ff4d4f;
+}
+
+.delete-button:hover {
+    background-color: #f5222d;
+}

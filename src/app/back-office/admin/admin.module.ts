@@ -22,6 +22,8 @@ import { ToastModule } from 'primeng/toast';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { HttpClientModule } from '@angular/common/http';
+import { TagModule } from 'primeng/tag';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,9 @@ import { MessageService } from 'primeng/api';
     ToastModule,
     BreadcrumbModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule,
+    TagModule
   ],
   providers: [MessageService]
 })

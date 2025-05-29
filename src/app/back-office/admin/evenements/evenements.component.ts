@@ -105,19 +105,20 @@ export class EvenementsComponent implements OnInit {
     this.selectedEvenement = null;
   }
 
-  saveEvenement(): void {
+  saveEvenement() {
     if (this.evenementForm.valid) {
-      const evenementData: Evenement = {
-        id: this.selectedEvenement?.id || 0,
-        titre: this.evenementForm.value.titre,
-        date: this.evenementForm.value.date instanceof Date ? this.evenementForm.value.date : new Date(this.evenementForm.value.date),
-        description: this.evenementForm.value.description,
-        typeEvenement: this.evenementForm.value.typeEvenement,
-        discipline: this.evenementForm.value.discipline
+      const formValue = this.evenementForm.value;
+      const evenementData = {
+        titre: formValue.titre,
+        date: formValue.date instanceof Date ? 
+          formValue.date.toISOString().split('T')[0] : formValue.date,
+        description: formValue.description,
+        typeEvenement: formValue.typeEvenement,
+        discipline: formValue.discipline
       };
-      
+
       if (this.displayAddDialog) {
-        this.evenementService.createEvenement(evenementData).subscribe({
+        this.evenementService.createEvenement(evenementData as Evenement).subscribe({
           next: () => {
             this.messageService.add({
               severity: 'success',
@@ -137,7 +138,12 @@ export class EvenementsComponent implements OnInit {
           }
         });
       } else if (this.displayEditDialog && this.selectedEvenement) {
-        this.evenementService.updateEvenement(this.selectedEvenement.id, evenementData).subscribe({
+        const updatedEvenement = {
+          ...evenementData,
+          id: this.selectedEvenement.id
+        };
+        
+        this.evenementService.updateEvenement(this.selectedEvenement.id!, updatedEvenement).subscribe({
           next: () => {
             this.messageService.add({
               severity: 'success',
@@ -157,6 +163,11 @@ export class EvenementsComponent implements OnInit {
           }
         });
       }
+    } else {
+      Object.keys(this.evenementForm.controls).forEach(key => {
+        const control = this.evenementForm.get(key);
+        control?.markAsTouched();
+      });
     }
   }
 

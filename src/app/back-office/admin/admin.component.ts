@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { AuthService } from '../../../shared/services/auth.service';
+import { AuthenticationService } from '../../../shared/services/authentication.service';
 
 @Component({
   selector: 'app-admin',
@@ -26,7 +26,7 @@ export class AdminComponent {
 
   breadcrumbItems = [{ label: 'Admin', icon: 'pi pi-user', path: '' }];
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthenticationService) {}
 
   toggleSideBar() {
     this.isSideBarExpanded = !this.isSideBarExpanded;

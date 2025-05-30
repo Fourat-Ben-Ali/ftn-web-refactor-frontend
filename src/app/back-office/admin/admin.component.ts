@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
+<<<<<<< Updated upstream
 import { MenuItem } from 'primeng/api';
 import { AuthenticationService } from '../../../shared/services/authentication.service';
+=======
+import { sideBarItems } from 'models';
+import { FormsModule } from '@angular/forms';
+>>>>>>> Stashed changes
 
 @Component({
   selector: 'app-admin',
@@ -19,9 +24,13 @@ export class AdminComponent {
     { item: 'Disciplines', path: 'disciplines', icon: 'pi pi-list', role: 'admin' },
     { item: 'Equipe Nationale', path: 'equipe-nationale', icon: 'pi pi-flag', role: 'admin' },
     { item: 'Licences', path: 'licences', icon: 'pi pi-id-card', role: 'admin' },
+<<<<<<< Updated upstream
     { item: 'Actualité Académie', path: 'actualite-academie', icon: 'pi pi-bell', role: 'admin' },
     { item: 'Programme Formation', path: 'programme-formation', icon: 'pi pi-calendar', role: 'admin' },
     { item: 'Événements', path: 'evenements', icon: 'pi pi-calendar', role: 'admin' }
+=======
+     { item: 'Presse', path: 'presse', icon: 'pi pi-id-card', role: 'admin' }
+>>>>>>> Stashed changes
   ];
 
   breadcrumbItems = [{ label: 'Admin', icon: 'pi pi-user', path: '' }];

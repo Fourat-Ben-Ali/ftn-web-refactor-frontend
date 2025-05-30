@@ -27,6 +27,10 @@ export {
   LoginResponse,
   PageEvent,
   PaginationParams,
+<<<<<<< Updated upstream
   sideBarItems,
   TypeEvenement,
+=======
+  sideBarItems
+>>>>>>> Stashed changes
 };

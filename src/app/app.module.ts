@@ -12,6 +12,7 @@ import {
   withFetch,
 } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,6 +22,7 @@ import { MessageService } from 'primeng/api';
     HttpClientModule,
     BrowserAnimationsModule,
     ToastModule,
+    FormsModule
   ],
 
   bootstrap: [AppComponent],

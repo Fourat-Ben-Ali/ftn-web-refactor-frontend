@@ -1,5 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+<<<<<<< Updated upstream
+=======
+import { FormsModule } from '@angular/forms';
+>>>>>>> Stashed changes
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminComponent } from './admin.component';
 import { HomeComponent } from './home/home.component';
@@ -12,6 +16,7 @@ import { ActualiteAcademieComponent } from './actualite-academie/actualite-acade
 import { ProgrammeFormationComponent } from './programme-formation/programme-formation.component';
 import { EvenementsComponent } from './evenements/evenements.component';
 import { SharedModule } from '../../../shared/shared.module';
+<<<<<<< Updated upstream
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
@@ -24,6 +29,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { HttpClientModule } from '@angular/common/http';
 import { TagModule } from 'primeng/tag';
+=======
+import { PresseComponent } from './presse/presse.component';
+>>>>>>> Stashed changes
 
 @NgModule({
   declarations: [
@@ -34,9 +42,13 @@ import { TagModule } from 'primeng/tag';
     DisciplinesComponent,
     EquipeNationaleComponent,
     LicencesComponent,
+<<<<<<< Updated upstream
     ActualiteAcademieComponent,
     ProgrammeFormationComponent,
     EvenementsComponent
+=======
+    PresseComponent
+>>>>>>> Stashed changes
   ],
   imports: [
     CommonModule,

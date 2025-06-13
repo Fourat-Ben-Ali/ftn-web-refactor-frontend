@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="search-container">
+    <span class="p-input-icon-left">
+      <i class="pi pi-search"></i>
+      <input pInputText type="text" (input)="onSearch($event)" placeholder="Search athletes..." />
+    </span>
+  </div>
+
+  <div class="athletes-grid">
+    <p-card *ngFor="let athlete of filteredAthletes" [style]="{'width': '300px', 'margin': '1rem'}">
+      <ng-template pTemplate="header">
+        <div class="athlete-header">
+          <h2 class="text-center">{{athlete.prenom}} {{athlete.nom}}</h2>
+        </div>
+      </ng-template>
+      <div class="athlete-details">
+        <p><strong>Gender:</strong> {{athlete.genre}}</p>
+        <p><strong>Birth Date:</strong> {{athlete.dateNaissance | date}}</p>
+        <p><strong>Nationality:</strong> {{athlete.nationalite}}</p>
+        <p *ngIf="athlete.club"><strong>Club:</strong> {{athlete.club.clubName}}</p>
+      </div>
+      <ng-template pTemplate="footer">
+        <button pButton label="View Details" icon="pi pi-info-circle" (click)="showDetails(athlete)" class="w-full"></button>
+      </ng-template>
+    </p-card>
+  </div>
+
+  <p-dialog [(visible)]="displayDialog" [style]="{width: '450px'}" header="Athlete Details" [modal]="true">
+    <div *ngIf="selectedAthlete" class="athlete-dialog-content">
+      <h3 class="text-center">{{selectedAthlete.prenom}} {{selectedAthlete.nom}}</h3>
+      <p><strong>Gender:</strong> {{selectedAthlete.genre}}</p>
+      <p><strong>Birth Date:</strong> {{selectedAthlete.dateNaissance | date}}</p>
+      <p><strong>Nationality:</strong> {{selectedAthlete.nationalite}}</p>
+      <p *ngIf="selectedAthlete.club"><strong>Club:</strong> {{selectedAthlete.club.clubName}}</p>
+      <p *ngIf="selectedAthlete.equipeNationale"><strong>National Team:</strong> {{selectedAthlete.equipeNationale.nom}}</p>
+    </div>
+  </p-dialog>
+</div> 

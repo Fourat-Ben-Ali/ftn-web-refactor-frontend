@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="search-container">
+    <span class="p-input-icon-left">
+      <i class="pi pi-search"></i>
+      <input pInputText type="text" (input)="onSearch($event)" placeholder="Search clubs..." />
+    </span>
+  </div>
+
+  <div class="clubs-grid">
+    <p-card *ngFor="let club of filteredClubs" [style]="{'width': '300px', 'margin': '1rem'}">
+      <ng-template pTemplate="header">
+        <div class="club-header">
+          <h2 class="text-center">{{club.clubName}}</h2>
+        </div>
+      </ng-template>
+      <div class="club-details">
+        <p><strong>Description:</strong> {{club.description}}</p>
+      </div>
+      <ng-template pTemplate="footer">
+        <button pButton label="View Details" icon="pi pi-info-circle" (click)="showDetails(club)" class="w-full"></button>
+      </ng-template>
+    </p-card>
+  </div>
+
+  <p-dialog [(visible)]="displayDialog" [style]="{width: '450px'}" header="Club Details" [modal]="true">
+    <div *ngIf="selectedClub" class="club-dialog-content">
+      <h3 class="text-center">{{selectedClub.clubName}}</h3>
+      <p><strong>Description:</strong> {{selectedClub.description}}</p>
+    </div>
+  </p-dialog>
+</div> 

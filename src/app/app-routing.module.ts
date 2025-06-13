@@ -4,9 +4,13 @@ import { authGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
   {
+    path: 'front-office',
+    loadChildren: () => import('./front-office/front-office.module').then(m => m.FrontOfficeModule)
+  },
+  {
     path: '',
-    redirectTo: 'auth',
-    pathMatch: 'full',
+    redirectTo: 'front-office',
+    pathMatch: 'full'
   },
   {
     path: 'back-office',
@@ -15,13 +19,6 @@ const routes: Routes = [
         (m) => m.BackOfficeModule
       ),
       canActivate: [authGuard],
-  },
-  {
-    path: 'front-office',
-    loadChildren: () =>
-      import('./front-office/front-office.module').then(
-        (m) => m.FrontOfficeModule
-      ),
   },
   {
     path: 'auth',

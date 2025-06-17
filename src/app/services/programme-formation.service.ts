@@ -44,18 +44,14 @@ export class ProgrammeFormationService {
   }
 
   updateProgrammeStatus(id: number, newStatus: StatutPublication): Observable<ProgrammeFormation> {
-    return this.http.put<ProgrammeFormation>(`${this.apiUrl}/${id}/statut`, '"PUBLIE"', // <- envoie exactement "PUBLIE", pas JSON.stringify(...)
-    {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      responseType: 'json'
-    }
-  
-    );
+    return this.http.put<ProgrammeFormation>(`${this.apiUrl}/${id}/statut`, { statutPublication: newStatus });
   }
 
   getAllStatuses(): Observable<StatutPublication[]> {
-    return this.http.get<StatutPublication[]>(`${this.apiUrl}/statut/${status}`);
+    return this.http.get<StatutPublication[]>(`${this.apiUrl}/statuts`, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
   }
 } 

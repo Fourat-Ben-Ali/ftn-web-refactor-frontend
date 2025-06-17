@@ -76,22 +76,35 @@ export class ProgrammeFormationComponent implements OnInit {
 loadStatuses() {
   this.programmeService.getAllStatuses().subscribe({
     next: (statuses) => {
-      this.publicationStatuses = statuses.map(status => ({
-        label: this.getStatusLabel(status),
-        value: status
-      }));
+      if (statuses && statuses.length > 0) {
+        this.publicationStatuses = statuses.map(status => ({
+          label: this.getStatusLabel(status),
+          value: status
+        }));
+      } else {
+        this.useDefaultStatuses();
+      }
     },
     error: (error) => {
       console.error('Error loading statuses:', error);
-      // fallback to default statuses
-      this.publicationStatuses = [
-        { label: 'Published', value: StatutPublication.PUBLIE },
-        { label: 'Draft', value: StatutPublication.EN_ATTENTE },
-        { label: 'Not Published', value: StatutPublication.NON_PUBLIE }
-      ];
+      this.useDefaultStatuses();
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Failed to load publication statuses'
+      });
     }
   });
 }
+
+private useDefaultStatuses() {
+  this.publicationStatuses = [
+    { label: 'Published', value: StatutPublication.PUBLIE },
+    { label: 'Draft', value: StatutPublication.EN_ATTENTE },
+    { label: 'Not Published', value: StatutPublication.NON_PUBLIE }
+  ];
+}
+
 getStatusLabel(status: StatutPublication): string {
   switch (status) {
     case StatutPublication.PUBLIE:

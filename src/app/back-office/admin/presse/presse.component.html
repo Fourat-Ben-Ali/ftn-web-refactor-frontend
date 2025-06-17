@@ -103,42 +103,44 @@
 <div class="container">
   <h2>Gestion des Contenus Presse</h2>
 
-  
-  <!-- Formulaire d'ajout (affiché pour l'exemple) -->
-  <form class="form-ajout">
-    <input type="text" placeholder="Titre" required />
-    <select required>
+  <!-- Formulaire d'ajout -->
+  <form class="form-ajout" (ngSubmit)="ajouterContenu()" *ngIf="!edition">
+    <input type="text" placeholder="Titre" [(ngModel)]="nouveauContenu.titre" name="titre" required />
+    <select [(ngModel)]="nouveauContenu.type" name="type" required>
       <option value="">-- Sélectionner un type --</option>
       <option value="ARTICLE">Article</option>
       <option value="COMMUNIQUE">Communiqué</option>
       <option value="INTERVIEW">Interview</option>
     </select>
-    <textarea placeholder="Contenu" required></textarea>
-    <input type="date" required />
+    <textarea placeholder="Contenu" [(ngModel)]="nouveauContenu.contenu" name="contenu" required></textarea>
+    <input type="date" [(ngModel)]="nouveauContenu.datePublication" name="datePublication" required />
     <button type="submit">Ajouter</button>
+  </form>
+
+  <!-- Formulaire d'édition -->
+  <form class="form-ajout" (ngSubmit)="validerEdition()" *ngIf="edition && contenuEnEdition">
+    <input type="text" placeholder="Titre" [(ngModel)]="contenuEnEdition.titre" name="editTitre" required />
+    <select [(ngModel)]="contenuEnEdition.type" name="editType" required>
+      <option value="ARTICLE">Article</option>
+      <option value="COMMUNIQUE">Communiqué</option>
+      <option value="INTERVIEW">Interview</option>
+    </select>
+    <textarea placeholder="Contenu" [(ngModel)]="contenuEnEdition.contenu" name="editContenu" required></textarea>
+    <input type="date" [(ngModel)]="contenuEnEdition.datePublication" name="editDatePublication" required />
+    <button type="submit">Valider</button>
+    <button type="button" (click)="annulerEdition()">Annuler</button>
   </form>
 
   <!-- Liste des contenus -->
   <div class="card-container">
-    <div class="card">
-      <h3>Titre de l'article 1</h3>
-      <p><strong>Type:</strong> ARTICLE</p>
-      <p><strong>Contenu:</strong> Ceci est un exemple de contenu de presse.</p>
-      <p><strong>Date de publication:</strong> 2024-05-01</p>
+    <div class="card" *ngFor="let contenu of contenus">
+      <h3>{{ contenu.titre }}</h3>
+      <p><strong>Type:</strong> {{ contenu.type }}</p>
+      <p><strong>Contenu:</strong> {{ contenu.contenu }}</p>
+      <p><strong>Date de publication:</strong> {{ contenu.datePublication }}</p>
       <div class="actions">
-        <button class="icon-button edit" title="Modifier" onclick="alert('Modifier cet article')">🖉</button>
-        <button class="icon-button delete" title="Supprimer" onclick="alert('Supprimer cet article')">🗑️</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3>Interview Exclusive</h3>
-      <p><strong>Type:</strong> INTERVIEW</p>
-      <p><strong>Contenu:</strong> Découvrez notre entretien avec le PDG de l'entreprise.</p>
-      <p><strong>Date de publication:</strong> 2024-05-20</p>
-      <div class="actions">
-        <button class="icon-button edit" title="Modifier" onclick="alert('Modifier cet article')">🖉</button>
-        <button class="icon-button delete" title="Supprimer" onclick="alert('Supprimer cet article')">🗑️</button>
+        <button class="icon-button edit" title="Modifier" (click)="preparerEdition(contenu)">🖉</button>
+        <button class="icon-button delete" title="Supprimer" (click)="supprimerContenu(contenu.id)">🗑️</button>
       </div>
     </div>
   </div>

@@ -10,6 +10,7 @@ import { LicencesComponent } from './licences/licences.component';
 import { ActualiteAcademieComponent } from './actualite-academie/actualite-academie.component';
 import { ProgrammeFormationComponent } from './programme-formation/programme-formation.component';
 import { EvenementsComponent } from './evenements/evenements.component';
+import { PresseComponent } from './presse/presse.component';
 import { authGuard } from 'app/core/guards/auth.guard';
 import { roleGuard } from 'app/core/guards/role.guard';
 
@@ -112,6 +113,16 @@ const routes: Routes = [
         data: { 
           breadcrumb: 'Liste des événements', 
           icon: 'pi pi-calendar',
+          roles: ['ADMIN']
+        }
+      },
+      {
+        path:'presse', 
+        component: PresseComponent, 
+        canActivate: [roleGuard],
+        data: { 
+          breadcrumb: 'Presse', 
+          icon: 'pi pi-id-card',
           roles: ['ADMIN']
         }
       }

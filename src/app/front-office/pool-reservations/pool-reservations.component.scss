@@ -1,0 +1,156 @@
+.pool-reservations-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+  
+  h2 {
+    color: #2196F3;
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+  }
+  
+  p {
+    color: #666;
+    font-size: 1.1rem;
+    margin: 0;
+  }
+}
+
+.filter-section {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border: 1px solid #e9ecef;
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.filter-item {
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #495057;
+  }
+}
+
+.filter-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  
+  .p-button {
+    min-width: 120px;
+  }
+}
+
+.content {
+  .p-table {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+}
+
+.empty-state {
+  padding: 3rem;
+  text-align: center;
+  
+  p {
+    margin-top: 1rem;
+    color: #666;
+    font-size: 1.1rem;
+  }
+}
+
+::ng-deep {
+  .p-datatable-striped {
+    .p-datatable-tbody > tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+    
+    .p-datatable-tbody > tr:hover {
+      background-color: #e3f2fd;
+    }
+  }
+  
+  .p-paginator {
+    border-top: 1px solid #dee2e6;
+  }
+  
+  .p-datatable .p-datatable-thead > tr > th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 600;
+    color: #495057;
+  }
+  
+  .p-datatable .p-datatable-tbody > tr > td {
+    padding: 1rem 0.75rem;
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  // Filter dropdowns and calendar styling
+  .p-dropdown, .p-calendar {
+    .p-dropdown-trigger, .p-calendar-trigger {
+      background: transparent;
+    }
+  }
+  
+  .p-dropdown-panel, .p-datepicker-panel {
+    z-index: 1000;
+  }
+  
+  .p-dropdown-items-wrapper {
+    max-height: 200px;
+  }
+  
+  .p-dropdown-item {
+    padding: 0.5rem 1rem;
+  }
+  
+  .p-dropdown-item:hover {
+    background-color: #e3f2fd;
+  }
+  
+  .p-dropdown-item.p-highlight {
+    background-color: #2196F3;
+    color: white;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .filter-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .filter-actions {
+    flex-direction: column;
+    align-items: center;
+    
+    .p-button {
+      width: 100%;
+      max-width: 200px;
+    }
+  }
+  
+  .pool-reservations-container {
+    padding: 1rem;
+  }
+} 

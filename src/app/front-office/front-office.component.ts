@@ -32,6 +32,11 @@ export class FrontOfficeComponent implements OnInit {
           routerLink: ['/front-office/clubs']
         },
         {
+          label: 'Pool Reservations',
+          icon: 'pi pi-calendar-plus',
+          routerLink: ['/front-office/pool-reservations']
+        },
+        {
           label: 'Account',
           icon: 'pi pi-user',
           items: [

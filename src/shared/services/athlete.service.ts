@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Athlete } from 'models';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AthleteService {
-  private readonly BASE_URL = 'http://localhost:8081/api/athletes';
+  private readonly BASE_URL = `${environment.apiUrl}/api/athletes`;
 
   constructor(private http: HttpClient) {}
 

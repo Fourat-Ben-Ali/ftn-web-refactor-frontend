@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';import { StatutPublication } from 'app/shared/models/statut-publication.enum';
+import { Observable } from 'rxjs';
+import { StatutPublication } from 'app/shared/models/statut-publication.enum';
+import { environment } from '../../environments/environment';
 
 export interface ProgrammeFormation {
   id?: number;
@@ -15,7 +17,7 @@ export interface ProgrammeFormation {
   providedIn: 'root'
 })
 export class ProgrammeFormationService {
-  private apiUrl = 'http://localhost:8081/api/programme-formations';
+  private apiUrl = `${environment.apiUrl}/api/programme-formations`;
 
   constructor(private http: HttpClient) {}
 

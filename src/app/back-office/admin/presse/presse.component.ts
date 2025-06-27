@@ -11,12 +11,18 @@ export class PresseComponent implements OnInit {
   contenus: ContenuPresse[] = [];
   nouveauContenu: ContenuPresse = {
     titre: '',
-    type: 'ARTICLE',
+    type: 'COMMUNIQUE',
     contenu: '',
     datePublication: ''
   };
   edition: boolean = false;
   contenuEnEdition?: ContenuPresse;
+
+  // Popup logic
+  popupVisible: boolean = false;
+  articleSelectionne?: ContenuPresse;
+
+  typesPresse: Array<'COMMUNIQUE' | 'DOCUMENT'> = ['COMMUNIQUE', 'DOCUMENT'];
 
   constructor(private presseService: PresseService) {}
 
@@ -32,7 +38,7 @@ export class PresseComponent implements OnInit {
     if (!this.nouveauContenu.titre || !this.nouveauContenu.type || !this.nouveauContenu.contenu || !this.nouveauContenu.datePublication) return;
     this.presseService.add(this.nouveauContenu).subscribe(() => {
       this.chargerContenus();
-      this.nouveauContenu = { titre: '', type: 'ARTICLE', contenu: '', datePublication: '' };
+      this.nouveauContenu = { titre: '', type: 'COMMUNIQUE', contenu: '', datePublication: '' };
     });
   }
 
@@ -57,5 +63,17 @@ export class PresseComponent implements OnInit {
       this.chargerContenus();
       this.annulerEdition();
     });
+  }
+
+  // Method to open popup with selected article
+  ouvrirPopup(contenu: ContenuPresse) {
+    this.articleSelectionne = contenu;
+    this.popupVisible = true;
+  }
+
+  // Method to close popup
+  fermerPopup() {
+    this.popupVisible = false;
+    this.articleSelectionne = undefined;
   }
 } 

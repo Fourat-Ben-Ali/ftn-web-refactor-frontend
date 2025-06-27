@@ -108,9 +108,7 @@
     <input type="text" placeholder="Titre" [(ngModel)]="nouveauContenu.titre" name="titre" required />
     <select [(ngModel)]="nouveauContenu.type" name="type" required>
       <option value="">-- Sélectionner un type --</option>
-      <option value="ARTICLE">Article</option>
-      <option value="COMMUNIQUE">Communiqué</option>
-      <option value="INTERVIEW">Interview</option>
+      <option *ngFor="let t of typesPresse" [value]="t">{{ t }}</option>
     </select>
     <textarea placeholder="Contenu" [(ngModel)]="nouveauContenu.contenu" name="contenu" required></textarea>
     <input type="date" [(ngModel)]="nouveauContenu.datePublication" name="datePublication" required />
@@ -121,9 +119,7 @@
   <form class="form-ajout" (ngSubmit)="validerEdition()" *ngIf="edition && contenuEnEdition">
     <input type="text" placeholder="Titre" [(ngModel)]="contenuEnEdition.titre" name="editTitre" required />
     <select [(ngModel)]="contenuEnEdition.type" name="editType" required>
-      <option value="ARTICLE">Article</option>
-      <option value="COMMUNIQUE">Communiqué</option>
-      <option value="INTERVIEW">Interview</option>
+      <option *ngFor="let t of typesPresse" [value]="t">{{ t }}</option>
     </select>
     <textarea placeholder="Contenu" [(ngModel)]="contenuEnEdition.contenu" name="editContenu" required></textarea>
     <input type="date" [(ngModel)]="contenuEnEdition.datePublication" name="editDatePublication" required />
@@ -132,16 +128,28 @@
   </form>
 
   <!-- Liste des contenus -->
-  <div class="card-container">
-    <div class="card" *ngFor="let contenu of contenus">
+  <div class="card-container large-cards">
+    <div class="card" *ngFor="let contenu of contenus" (click)="ouvrirPopup(contenu)">
       <h3>{{ contenu.titre }}</h3>
-      <p><strong>Type:</strong> {{ contenu.type }}</p>
-      <p><strong>Contenu:</strong> {{ contenu.contenu }}</p>
-      <p><strong>Date de publication:</strong> {{ contenu.datePublication }}</p>
+      <p class="type-label"><strong>Type:</strong> {{ contenu.type }}</p>
+      <p class="content-text">{{ contenu.contenu }}</p>
+      <p class="date-label"><strong>Date de publication:</strong> {{ contenu.datePublication }}</p>
       <div class="actions">
-        <button class="icon-button edit" title="Modifier" (click)="preparerEdition(contenu)">🖉</button>
-        <button class="icon-button delete" title="Supprimer" (click)="supprimerContenu(contenu.id)">🗑️</button>
+        <button class="icon-button edit" title="Modifier" (click)="preparerEdition(contenu); $event.stopPropagation();">🖉</button>
+        <button class="icon-button delete" title="Supprimer" (click)="supprimerContenu(contenu.id); $event.stopPropagation();">🗑️</button>
       </div>
+    </div>
+  </div>
+
+  <!-- Popup de détails -->
+  <div class="popup-overlay" *ngIf="popupVisible">
+    <div class="popup-content">
+      <button class="close-btn" (click)="fermerPopup()">&times;</button>
+      <h2>{{ articleSelectionne?.titre }}</h2>
+      <p><strong>Type :</strong> {{ articleSelectionne?.type }}</p>
+      <p><strong>Date :</strong> {{ articleSelectionne?.datePublication }}</p>
+      <p><strong>Contenu :</strong></p>
+      <div class="popup-texte">{{ articleSelectionne?.contenu }}</div>
     </div>
   </div>
 </div>

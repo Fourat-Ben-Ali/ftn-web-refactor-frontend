@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { StatutPublication } from '../shared/models/statut-publication.enum';
 
 export interface ActualiteAcademie {
+
    id?: number;
   titre: string;
   contenu: string;

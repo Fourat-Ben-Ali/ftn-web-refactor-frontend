@@ -6,6 +6,8 @@ import { ClubsListComponent } from './clubs-list/clubs-list.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from '../guards/auth.guard';
+import { ProgammeFormationListComponent } from './progamme-formation-list/progamme-formation-list.component';
+import { ActualiteAcademiqueListComponent } from './actualite-academique-list/actualite-academique-list.component';
 
 const routes: Routes = [
   {
@@ -16,6 +18,9 @@ const routes: Routes = [
       { path: 'clubs', component: ClubsListComponent, canActivate: [AuthGuard] },
       { path: 'register', component: RegisterComponent },
       { path: 'login', component: LoginComponent },
+      { path: 'programme-formation', component: ProgammeFormationListComponent, canActivate: [AuthGuard] },
+      { path: 'actualite-academique', component: ActualiteAcademiqueListComponent, canActivate: [AuthGuard] },
+     
       { path: '', redirectTo: 'login', pathMatch: 'full' }
     ]
   }

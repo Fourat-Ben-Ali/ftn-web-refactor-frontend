@@ -19,6 +19,8 @@ import { MenubarModule } from 'primeng/menubar';
 import { PasswordModule } from 'primeng/password';
 import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
+import { ActualiteAcademiqueListComponent } from './actualite-academique-list/actualite-academique-list.component';
+import { ProgammeFormationListComponent } from './progamme-formation-list/progamme-formation-list.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { TableModule } from 'primeng/table';
     AthletesListComponent,
     ClubsListComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    ActualiteAcademiqueListComponent,
+    ProgammeFormationListComponent
   ],
   imports: [
     CommonModule,

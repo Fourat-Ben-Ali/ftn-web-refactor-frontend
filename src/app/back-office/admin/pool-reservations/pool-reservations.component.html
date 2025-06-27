@@ -1,0 +1,63 @@
+<p-toast></p-toast>
+<div class="card">
+  <div class="card-header flex justify-content-between align-items-center">
+    <h2>Olympic Pool Reservations</h2>
+    <button pButton type="button" label="New Reservation" icon="pi pi-plus" (click)="showDialog()"></button>
+  </div>
+
+  <p-table [value]="reservations" [paginator]="true" [rows]="5" [responsiveLayout]="'scroll'">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Coach</th>
+        <th>Club</th>
+        <th>Pool</th>
+        <th>Date</th>
+        <th>Time Slot</th>
+        <th>Action</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-r>
+      <tr>
+        <td>{{ r.coach }}</td>
+        <td>{{ r.club.clubName }}</td>
+        <td>{{ r.pool.name }}</td>
+        <td>{{ r.date }}</td>
+        <td>{{ r.startTime }} - {{ r.endTime }}</td>
+        <td>
+          <button pButton icon="pi pi-trash" class="p-button-danger p-button-icon-only square-delete" (click)="deleteReservation(r.id!)" pTooltip="Delete Reservation" tooltipPosition="top"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog header="New Pool Reservation" [(visible)]="displayDialog" [modal]="true" [style]="{width: '600px', minHeight: '500px'}" [closable]="true" (onHide)="hideDialog()">
+  <form [formGroup]="reservationForm" (ngSubmit)="onSubmit()" class="p-fluid">
+    <div class="field">
+      <label for="coach">Coach</label>
+      <input pInputText id="coach" formControlName="coach" placeholder="Coach name" />
+    </div>
+    <div class="field">
+      <label for="club">Club</label>
+      <p-dropdown id="club" [options]="clubs" formControlName="club" optionLabel="clubName" placeholder="Select a club"></p-dropdown>
+    </div>
+    <div class="field">
+      <label for="pool">Pool</label>
+      <p-dropdown id="pool" [options]="pools" formControlName="pool" optionLabel="name" placeholder="Select a pool"></p-dropdown>
+    </div>
+    <div class="field calendar-row">
+      <label for="date">Date</label>
+      <div class="calendar-container">
+        <p-calendar id="date" formControlName="date" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="minDate"></p-calendar>
+      </div>
+    </div>
+    <div class="field">
+      <label for="timeSlot">Time Slot</label>
+      <p-dropdown id="timeSlot" [options]="availableTimeSlots" formControlName="timeSlot" optionLabel="label" optionValue="value" placeholder="Select a time slot"></p-dropdown>
+    </div>
+    <div class="flex justify-content-end mt-3">
+      <button pButton type="button" label="Cancel" class="p-button-text" (click)="hideDialog()"></button>
+      <button pButton type="submit" label="Reserve" [disabled]="reservationForm.invalid || loading"></button>
+    </div>
+  </form>
+</p-dialog> 

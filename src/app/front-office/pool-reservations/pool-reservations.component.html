@@ -1,0 +1,124 @@
+<p-toast></p-toast>
+<div class="pool-reservations-container">
+  <div class="header">
+    <h2>Olympic Pool Reservations</h2>
+    <p>View and filter all current pool reservations for training sessions</p>
+  </div>
+
+  <!-- Filter Section -->
+  <div class="filter-section">
+    <div class="filter-grid">
+      <div class="filter-item">
+        <label for="coach-filter">Coach</label>
+        <p-dropdown 
+          id="coach-filter"
+          [options]="coaches" 
+          [(ngModel)]="selectedCoach"
+          placeholder="Select Coach"
+          [showClear]="true"
+          [style]="{'width': '100%'}"
+        ></p-dropdown>
+      </div>
+
+      <div class="filter-item">
+        <label for="club-filter">Club</label>
+        <p-dropdown 
+          id="club-filter"
+          [options]="clubs" 
+          [(ngModel)]="selectedClub"
+          placeholder="Select Club"
+          [showClear]="true"
+          optionLabel="clubName"
+          [style]="{'width': '100%'}"
+        ></p-dropdown>
+      </div>
+
+      <div class="filter-item">
+        <label for="pool-filter">Pool</label>
+        <p-dropdown 
+          id="pool-filter"
+          [options]="pools" 
+          [(ngModel)]="selectedPool"
+          placeholder="Select Pool"
+          [showClear]="true"
+          optionLabel="name"
+          [style]="{'width': '100%'}"
+        ></p-dropdown>
+      </div>
+
+      <div class="filter-item">
+        <label for="date-filter">Date</label>
+        <p-calendar 
+          id="date-filter"
+          [(ngModel)]="selectedDate"
+          placeholder="Select Date"
+          [showIcon]="true"
+          dateFormat="yy-mm-dd"
+          [showClear]="true"
+          [style]="{'width': '100%'}"
+        ></p-calendar>
+      </div>
+    </div>
+
+    <div class="filter-actions">
+      <button 
+        pButton 
+        type="button" 
+        label="Apply Filters" 
+        icon="pi pi-filter" 
+        (click)="applyFilters()"
+        [loading]="loading"
+        class="p-button-primary"
+      ></button>
+      <button 
+        pButton 
+        type="button" 
+        label="Clear Filters" 
+        icon="pi pi-times" 
+        (click)="clearFilters()"
+        class="p-button-secondary"
+      ></button>
+    </div>
+  </div>
+
+  <div class="content">
+    <p-table 
+      [value]="filteredReservations" 
+      [paginator]="true" 
+      [rows]="10"
+      [responsiveLayout]="'scroll'"
+      [loading]="loading"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      styleClass="p-datatable-striped"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Coach</th>
+          <th>Club</th>
+          <th>Pool</th>
+          <th>Date</th>
+          <th>Time Slot</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-reservation>
+        <tr>
+          <td>{{ reservation.coach }}</td>
+          <td>{{ reservation.club.clubName }}</td>
+          <td>{{ reservation.pool.name }}</td>
+          <td>{{ reservation.date | date:'mediumDate' }}</td>
+          <td>{{ reservation.startTime }} - {{ reservation.endTime }}</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="5" class="text-center">
+            <div class="empty-state">
+              <i class="pi pi-calendar-times" style="font-size: 3rem; color: #ccc;"></i>
+              <p>No pool reservations found</p>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div> 

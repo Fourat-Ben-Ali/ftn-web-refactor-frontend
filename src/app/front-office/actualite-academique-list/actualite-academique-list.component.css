@@ -1,0 +1,65 @@
+.container {
+  padding: 1rem;
+}
+
+.search-container {
+  margin-bottom: 2rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.actualites-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  justify-items: center;
+  padding: 1rem;
+}
+
+.actualite-details {
+  padding: 1rem 0;
+  min-height: 150px;
+}
+
+.actualite-details p {
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.actualite-dialog-content {
+  padding: 1rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+:host ::ng-deep {
+  .p-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0 !important;
+  }
+
+  .p-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .p-card-content {
+    flex: 1;
+  }
+
+  .p-card-footer {
+    padding: 1rem;
+    border-top: 1px solid #dee2e6;
+  }
+
+  .p-dropdown {
+    width: 100%;
+  }
+}

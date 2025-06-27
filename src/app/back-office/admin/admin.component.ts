@@ -23,36 +23,37 @@ export class AdminComponent {
       role: 'admin',
     },
     {
-      item: 'Equipe Nationale',
+      item: 'National Teams',
       path: 'equipe-nationale',
       icon: 'pi pi-flag',
       role: 'admin',
     },
     {
-      item: 'Licences',
+      item: 'Licenses',
       path: 'licences',
       icon: 'pi pi-id-card',
       role: 'admin',
     },
     {
-      item: 'Actualité Académie',
+      item: 'Academy News',
       path: 'actualite-academie',
       icon: 'pi pi-bell',
       role: 'admin',
     },
     {
-      item: 'Programme Formation',
+      item: 'Training Programs',
       path: 'programme-formation',
       icon: 'pi pi-calendar',
       role: 'admin',
     },
     {
-      item: 'Événements',
+      item: 'Events',
       path: 'evenements',
       icon: 'pi pi-calendar',
       role: 'admin',
     },
-    { item: 'Presse', path: 'presse', icon: 'pi pi-id-card', role: 'admin' },
+    { item: 'Press', path: 'presse', icon: 'pi pi-id-card', role: 'admin' },
+    { item: 'Pool Reservations', path: 'pool-reservations', icon: 'pi pi-calendar-plus', role: 'admin' }
   ];
 
   breadcrumbItems = [{ label: 'Admin', icon: 'pi pi-user', path: '' }];

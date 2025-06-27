@@ -6,10 +6,14 @@ import { tap } from 'rxjs/operators';
 
 export interface Evenement {
   id: number;
-  nom: string;
+  titre?: string;
+  nom?: string;
   description?: string;
-  dateDebut: Date;
-  dateFin: Date;
+  date?: Date;
+  dateDebut?: Date;
+  dateFin?: Date;
+  typeEvenement?: string;
+  discipline?: any;
   lieu?: string;
   statut?: 'PLANIFIE' | 'EN_COURS' | 'TERMINE';
 }

@@ -8,6 +8,7 @@ import { ClubsListComponent } from './clubs-list/clubs-list.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { FrontOfficeRoutingModule } from './front-office-routing.module';
+import { EvenementsListComponent } from './evenements-list/evenements-list.component';
 
 // PrimeNG imports
 import { CardModule } from 'primeng/card';
@@ -26,7 +27,8 @@ import { TableModule } from 'primeng/table';
     AthletesListComponent,
     ClubsListComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    EvenementsListComponent
   ],
   imports: [
     CommonModule,

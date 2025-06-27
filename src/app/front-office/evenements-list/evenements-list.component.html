@@ -1,0 +1,39 @@
+<div class="container">
+  <div class="search-container">
+    <span class="p-input-icon-left">
+      <i class="pi pi-search"></i>
+      <input pInputText type="text" (input)="onSearch($event)" placeholder="Rechercher un événement..." />
+    </span>
+  </div>
+
+  <div class="evenements-grid">
+    <p-card *ngFor="let evenement of filteredEvenements; let i = index" [style]="{'width': '320px', 'margin': '1.5rem 1rem'}">
+      <ng-template pTemplate="header">
+        <div class="evenement-header">
+          <h2 class="text-center"><strong>{{i + 1}}/ {{evenement.titre || evenement.nom}}</strong></h2>
+        </div>
+      </ng-template>
+      <div class="evenement-details">
+        <p *ngIf="evenement.description"><strong>Description:</strong> {{evenement.description}}</p>
+      </div>
+      <ng-template pTemplate="footer">
+        <button pButton label="Voir détails" icon="pi pi-info-circle" (click)="showDetails(evenement)" class="w-full"></button>
+      </ng-template>
+    </p-card>
+  </div>
+
+  <p-dialog [(visible)]="displayDialog" [style]="{width: '450px'}" header="Détails de l'événement" [modal]="true">
+    <div *ngIf="selectedEvenement" class="evenement-dialog-content">
+      <h3 class="text-center">{{selectedEvenement.titre || selectedEvenement.nom}}</h3>
+      <p><strong>ID:</strong> {{selectedEvenement.id}}</p>
+      <p *ngIf="selectedEvenement.description"><strong>Description:</strong> {{selectedEvenement.description}}</p>
+      <p *ngIf="selectedEvenement.date"><strong>Date:</strong> {{selectedEvenement.date | date:'mediumDate'}}</p>
+      <p *ngIf="selectedEvenement.dateDebut"><strong>Date de début:</strong> {{selectedEvenement.dateDebut | date:'mediumDate'}}</p>
+      <p *ngIf="selectedEvenement.dateFin"><strong>Date de fin:</strong> {{selectedEvenement.dateFin | date:'mediumDate'}}</p>
+      <p *ngIf="selectedEvenement.typeEvenement"><strong>Type d'événement:</strong> {{selectedEvenement.typeEvenement}}</p>
+      <p *ngIf="selectedEvenement.discipline"><strong>Discipline:</strong> {{selectedEvenement.discipline.nom || selectedEvenement.discipline}}</p>
+      <p *ngIf="selectedEvenement.lieu"><strong>Lieu:</strong> {{selectedEvenement.lieu}}</p>
+      <p *ngIf="selectedEvenement.statut"><strong>Statut:</strong> {{selectedEvenement.statut}}</p>
+    </div>
+  </p-dialog>
+</div> 

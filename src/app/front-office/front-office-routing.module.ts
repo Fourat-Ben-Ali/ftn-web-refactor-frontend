@@ -6,6 +6,7 @@ import { ClubsListComponent } from './clubs-list/clubs-list.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from '../guards/auth.guard';
+import { EvenementsListComponent } from './evenements-list/evenements-list.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,7 @@ const routes: Routes = [
     children: [
       { path: 'athletes', component: AthletesListComponent, canActivate: [AuthGuard] },
       { path: 'clubs', component: ClubsListComponent, canActivate: [AuthGuard] },
+      { path: 'evenements', component: EvenementsListComponent, canActivate: [AuthGuard] },
       { path: 'register', component: RegisterComponent },
       { path: 'login', component: LoginComponent },
       { path: '', redirectTo: 'login', pathMatch: 'full' }

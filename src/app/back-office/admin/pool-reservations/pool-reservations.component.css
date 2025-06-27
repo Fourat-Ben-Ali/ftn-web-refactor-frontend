@@ -1,0 +1,141 @@
+.pool-reservations {
+  max-width: 700px;
+  margin: 0 auto;
+}
+.pool-reservations form {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  margin-bottom: 2em;
+}
+.pool-reservations label {
+  font-weight: bold;
+}
+.pool-reservations input, .pool-reservations select {
+  padding: 0.4em;
+  margin-top: 0.2em;
+}
+.pool-reservations table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.pool-reservations th, .pool-reservations td {
+  border: 1px solid #ccc;
+  padding: 0.5em;
+  text-align: left;
+}
+.pool-reservations th {
+  background: #f0f0f0;
+}
+.error {
+  color: red;
+  margin-top: 0.5em;
+}
+.card {
+  margin: 2rem auto;
+  max-width: 900px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-radius: 12px;
+  padding: 2rem;
+  background: #fff;
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+.field {
+  margin-bottom: 1.5rem;
+}
+.p-dialog .p-dialog-content {
+  padding: 2rem 1.5rem;
+}
+.p-dialog .p-dialog-header {
+  border-radius: 12px 12px 0 0;
+}
+.p-dialog .p-dialog-footer {
+  border-radius: 0 0 12px 12px;
+}
+.p-table {
+  margin-top: 1.5rem;
+}
+.p-button {
+  min-width: 100px;
+}
+.flex {
+  display: flex;
+}
+.justify-content-end {
+  justify-content: flex-end;
+}
+.mt-3 {
+  margin-top: 1.5rem;
+}
+.p-button-text {
+  margin-right: 1rem;
+}
+
+.square-delete {
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  border-radius: 6px !important;
+  background: #f44336 !important;
+  color: #fff !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+}
+.square-delete .pi {
+  font-size: 1.2rem;
+}
+
+.calendar-row {
+  display: flex;
+  flex-direction: column;
+}
+.calendar-container {
+  width: 100%;
+  min-width: 300px;
+  max-width: 100%;
+  z-index: 1000;
+}
+.p-calendar {
+  width: 100%;
+}
+
+/* Fix calendar display in modal */
+::ng-deep .p-calendar {
+  width: 100%;
+}
+
+::ng-deep .p-datepicker {
+  min-width: 280px;
+}
+
+::ng-deep .p-datepicker-header {
+  padding: 0.5rem;
+}
+
+::ng-deep .p-datepicker .p-datepicker-header .p-datepicker-title {
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+}
+
+::ng-deep .p-datepicker .p-datepicker-header .p-datepicker-title select {
+  margin: 0 0.5rem;
+}
+
+::ng-deep .p-dialog-content {
+  overflow-y: visible !important;
+}
+
+::ng-deep .p-dialog-mask {
+  z-index: 1000;
+}
+
+::ng-deep .p-datepicker-panel {
+  z-index: 1001 !important;
+} 

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';import { StatutPublication } from 'app/shared/models/statut-publication.enum';
+import { Observable } from 'rxjs';
+import { StatutPublication } from 'app/shared/models/statut-publication.enum';
+import { environment } from '../../environments/environment';
 
 export interface ProgrammeFormation {
   id?: number;
@@ -15,7 +17,7 @@ export interface ProgrammeFormation {
   providedIn: 'root'
 })
 export class ProgrammeFormationService {
-  private apiUrl = 'http://localhost:8081/api/programme-formations';
+  private apiUrl = `${environment.apiUrl}/api/programme-formations`;
 
   constructor(private http: HttpClient) {}
 
@@ -44,18 +46,14 @@ export class ProgrammeFormationService {
   }
 
   updateProgrammeStatus(id: number, newStatus: StatutPublication): Observable<ProgrammeFormation> {
-    return this.http.put<ProgrammeFormation>(`${this.apiUrl}/${id}/statut`, '"PUBLIE"', // <- envoie exactement "PUBLIE", pas JSON.stringify(...)
-    {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      responseType: 'json'
-    }
-  
-    );
+    return this.http.put<ProgrammeFormation>(`${this.apiUrl}/${id}/statut`, { statutPublication: newStatus });
   }
 
   getAllStatuses(): Observable<StatutPublication[]> {
-    return this.http.get<StatutPublication[]>(`${this.apiUrl}/statut/${status}`);
+    return this.http.get<StatutPublication[]>(`${this.apiUrl}/statuts`, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
   }
 } 

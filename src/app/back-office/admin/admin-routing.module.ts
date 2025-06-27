@@ -10,6 +10,8 @@ import { LicencesComponent } from './licences/licences.component';
 import { ActualiteAcademieComponent } from './actualite-academie/actualite-academie.component';
 import { ProgrammeFormationComponent } from './programme-formation/programme-formation.component';
 import { EvenementsComponent } from './evenements/evenements.component';
+import { PresseComponent } from './presse/presse.component';
+import { PoolReservationsComponent } from './pool-reservations/pool-reservations.component';
 import { authGuard } from 'app/core/guards/auth.guard';
 import { roleGuard } from 'app/core/guards/role.guard';
 
@@ -110,8 +112,28 @@ const routes: Routes = [
         component: EvenementsComponent, 
         canActivate: [roleGuard],
         data: { 
-          breadcrumb: 'Liste des événements', 
+          breadcrumb: 'Events', 
           icon: 'pi pi-calendar',
+          roles: ['ADMIN']
+        }
+      },
+      {
+        path:'presse', 
+        component: PresseComponent, 
+        canActivate: [roleGuard],
+        data: { 
+          breadcrumb: 'Press', 
+          icon: 'pi pi-id-card',
+          roles: ['ADMIN']
+        }
+      },
+      {
+        path: 'pool-reservations',
+        component: PoolReservationsComponent,
+        canActivate: [roleGuard],
+        data: {
+          breadcrumb: 'Pool Reservations',
+          icon: 'pi pi-calendar-plus',
           roles: ['ADMIN']
         }
       }

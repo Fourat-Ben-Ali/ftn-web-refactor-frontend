@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { StatutPublication } from '../shared/models/statut-publication.enum';
+import { environment } from '../../environments/environment';
 
 export interface ActualiteAcademie {
 
@@ -16,7 +17,7 @@ export interface ActualiteAcademie {
   providedIn: 'root'
 })
 export class ActualiteAcademieService {
-  private readonly BASE_URL = 'http://localhost:8081/api/actualite-academies';
+  private readonly BASE_URL = `${environment.apiUrl}/api/actualite-academies`;
 
   constructor(private http: HttpClient) { }
 

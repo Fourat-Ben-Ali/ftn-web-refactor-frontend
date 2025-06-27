@@ -21,6 +21,8 @@ import { PasswordModule } from 'primeng/password';
 import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { CalendarModule } from 'primeng/calendar';
+import { ActualiteAcademiqueListComponent } from './actualite-academique-list/actualite-academique-list.component';
+import { ProgammeFormationListComponent } from './progamme-formation-list/progamme-formation-list.component';
 
 @NgModule({
   declarations: [

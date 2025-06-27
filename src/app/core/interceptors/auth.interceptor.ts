@@ -15,8 +15,7 @@ export class AuthInterceptor implements HttpInterceptor {
   private publicUrls = [
     '/api/v1/auth/login',
     '/api/v1/auth/register',
-    '/api/athletes',
-    '/api/clubs'
+    '/api/v1/auth/authentication'
   ];
 
   constructor(
@@ -39,7 +38,7 @@ export class AuthInterceptor implements HttpInterceptor {
     let token: string | null = null;
 
     if (isPlatformBrowser(this.platformId)) {
-      const userString = localStorage.getItem('currentUser');
+      const userString = localStorage.getItem('user');
       
       if (userString) {
         try {
@@ -53,19 +52,28 @@ export class AuthInterceptor implements HttpInterceptor {
                 'Content-Type': 'application/json'
               },
             });
+          } else {
+            console.warn('No token found in user object');
           }
         } catch (e) {
           console.error('Error parsing user from localStorage:', e);
         }
+      } else {
+        console.warn('No user found in localStorage');
       }
     }
 
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.status === 401 && isPlatformBrowser(this.platformId)) {
-          this.router.navigate(['/front-office/login']);
+        if (error.status === 401) {
+          console.error('Unauthorized access:', error);
+          if (isPlatformBrowser(this.platformId)) {
+            localStorage.removeItem('user');
+            this.router.navigate(['/front-office/login']);
+          }
         } else if (error.status === 403) {
-          if (!isPublicUrl) {
+          console.error('Forbidden access:', error);
+          if (isPlatformBrowser(this.platformId)) {
             this.router.navigate(['/front-office/login']);
           }
         }

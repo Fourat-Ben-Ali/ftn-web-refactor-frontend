@@ -25,6 +25,7 @@ import { MessageService } from 'primeng/api';
 import { HttpClientModule } from '@angular/common/http';
 import { TagModule } from 'primeng/tag';
 import { PresseComponent } from './presse/presse.component';
+import { PoolReservationsModule } from './pool-reservations/pool-reservations.module';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { PresseComponent } from './presse/presse.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    TagModule
+    TagModule,
+    PoolReservationsModule
   ],
   providers: [MessageService]
 })

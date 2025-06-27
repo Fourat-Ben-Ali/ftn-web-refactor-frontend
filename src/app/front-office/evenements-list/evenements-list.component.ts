@@ -15,9 +15,6 @@ export class EvenementsListComponent implements OnInit {
   displayDialog: boolean = false;
   selectedEvenement: Evenement | null = null;
 
-  selectedFirstLetter: string = '';
-  availableFirstLetters: string[] = [];
-
   constructor(private evenementService: EvenementService) {}
 
   ngOnInit(): void {
@@ -29,23 +26,11 @@ export class EvenementsListComponent implements OnInit {
       next: (data) => {
         this.evenements = data;
         this.filteredEvenements = data;
-        this.availableFirstLetters = this.getAvailableFirstLetters(data);
       },
       error: (error) => {
         console.error('Erreur lors du chargement des événements :', error);
       }
     });
-  }
-
-  getAvailableFirstLetters(evenements: Evenement[]): string[] {
-    const letters = new Set<string>();
-    evenements.forEach(ev => {
-      const titre = ev.titre || ev.nom || '';
-      if (titre.length > 0) {
-        letters.add(titre.charAt(0).toUpperCase());
-      }
-    });
-    return Array.from(letters).sort();
   }
 
   onSearch(event: Event): void {
@@ -54,21 +39,12 @@ export class EvenementsListComponent implements OnInit {
     this.filterEvenements();
   }
 
-  onLetterFilterChange(): void {
-    this.filterEvenements();
-  }
-
   filterEvenements(): void {
     this.filteredEvenements = this.evenements.filter(evenement => {
       const titre = evenement.titre || evenement.nom || '';
-      const matchSearch =
-        this.searchText === '' ||
+      return this.searchText === '' ||
         (titre && titre.toLowerCase().includes(this.searchText.toLowerCase())) ||
         (evenement.description && evenement.description.toLowerCase().includes(this.searchText.toLowerCase()));
-      const matchLetter =
-        !this.selectedFirstLetter ||
-        (titre && titre.charAt(0).toUpperCase() === this.selectedFirstLetter);
-      return matchSearch && matchLetter;
     });
   }
 

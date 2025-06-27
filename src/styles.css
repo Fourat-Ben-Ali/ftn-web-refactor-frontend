@@ -6,7 +6,7 @@
 @import "primeicons/primeicons.css";
 
 /* PrimeFlex */
-@import "../node_modules/primeflex/primeflex.css";
+@import "primeflex/primeflex.css";
 
 /* Global Styles */
 body {

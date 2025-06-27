@@ -31,6 +31,21 @@ export class FrontOfficeComponent implements OnInit {
           icon: 'pi pi-building',
           routerLink: ['/front-office/clubs']
         },
+         {
+         label: 'Actualité Académique',
+         icon: 'pi pi-book',
+        routerLink: ['/front-office/actualite-academique']
+         },
+        {
+          label: 'Programme Formation',
+          icon: 'pi pi-calendar',
+          routerLink: ['/front-office/programme-formation']
+        },
+        {
+          label: 'Pool Reservations',
+          icon: 'pi pi-calendar-plus',
+          routerLink: ['/front-office/pool-reservations']
+        },
         {
           label: 'Événements',
           icon: 'pi pi-calendar',

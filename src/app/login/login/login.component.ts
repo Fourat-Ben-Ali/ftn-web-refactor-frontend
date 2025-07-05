@@ -58,6 +58,43 @@ export class LoginComponent {
     });
   }
 
+  getInputIcon(type: InputType): string {
+    switch (type) {
+      case InputType.EMAIL:
+        return 'pi pi-envelope';
+      case InputType.PASSWORD:
+        return 'pi pi-lock';
+      default:
+        return 'pi pi-user';
+    }
+  }
+
+  getInputType(type: InputType): string {
+    switch (type) {
+      case InputType.EMAIL:
+        return 'email';
+      case InputType.PASSWORD:
+        return 'password';
+      default:
+        return 'text';
+    }
+  }
+
+  getErrorMessages(input: formInputs): string[] {
+    const errors: string[] = [];
+    const control = input.control;
+    
+    if (control.errors) {
+      Object.keys(control.errors).forEach(key => {
+        if (input.errorMessages && input.errorMessages[key as keyof typeof input.errorMessages]) {
+          errors.push(input.errorMessages[key as keyof typeof input.errorMessages] as string);
+        }
+      });
+    }
+    
+    return errors;
+  }
+
   onSubmit() {
     if (this.loginForm.invalid) {
       Object.values(this.loginForm.controls).forEach((control) => {

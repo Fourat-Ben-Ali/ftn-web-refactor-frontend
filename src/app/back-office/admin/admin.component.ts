@@ -53,7 +53,8 @@ export class AdminComponent {
       role: 'admin',
     },
     { item: 'Press', path: 'presse', icon: 'pi pi-id-card', role: 'admin' },
-    { item: 'Pool Reservations', path: 'pool-reservations', icon: 'pi pi-calendar-plus', role: 'admin' }
+    { item: 'Pool Reservations', path: 'pool-reservations', icon: 'pi pi-calendar-plus', role: 'admin' },
+    { item: 'Users', path: 'users', icon: 'pi pi-users', role: 'admin' }
   ];
 
   breadcrumbItems = [{ label: 'Admin', icon: 'pi pi-user', path: '' }];

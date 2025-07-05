@@ -136,6 +136,16 @@ const routes: Routes = [
           icon: 'pi pi-calendar-plus',
           roles: ['ADMIN']
         }
+      },
+      {
+        path: 'users',
+        loadChildren: () => import('./users/users.module').then(m => m.UsersModule),
+        canActivate: [roleGuard],
+        data: {
+          breadcrumb: 'Users',
+          icon: 'pi pi-users',
+          roles: ['ADMIN']
+        }
       }
     ]
   }

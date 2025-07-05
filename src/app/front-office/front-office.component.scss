@@ -1,6 +1,11 @@
 .front-office-container {
   min-height: 100vh;
   background-color: #f5f5f5;
+  
+  &.auth-page {
+    background-color: transparent;
+    min-height: 100vh;
+  }
 }
 
 .logo-container {
@@ -19,6 +24,12 @@
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
+  
+  &.auth-content {
+    padding: 0;
+    max-width: none;
+    margin: 0;
+  }
 }
 
 :host ::ng-deep {

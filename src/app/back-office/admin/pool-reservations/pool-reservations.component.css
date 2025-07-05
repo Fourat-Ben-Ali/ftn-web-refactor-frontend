@@ -1,141 +1,785 @@
-.pool-reservations {
-  max-width: 700px;
-  margin: 0 auto;
-}
-.pool-reservations form {
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-  margin-bottom: 2em;
-}
-.pool-reservations label {
-  font-weight: bold;
-}
-.pool-reservations input, .pool-reservations select {
-  padding: 0.4em;
-  margin-top: 0.2em;
-}
-.pool-reservations table {
-  width: 100%;
-  border-collapse: collapse;
-}
-.pool-reservations th, .pool-reservations td {
-  border: 1px solid #ccc;
-  padding: 0.5em;
-  text-align: left;
-}
-.pool-reservations th {
-  background: #f0f0f0;
-}
-.error {
-  color: red;
-  margin-top: 0.5em;
-}
-.card {
-  margin: 2rem auto;
-  max-width: 900px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  border-radius: 12px;
+/* Main Dashboard Styles */
+.pool-dashboard {
   padding: 2rem;
-  background: #fff;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
 }
-.card-header {
+
+/* Header Section */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 1.5rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.header-content h1 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.header-content .subtitle {
+  margin: 0.5rem 0 0 0;
+  color: #7f8c8d;
+  font-size: 1rem;
+}
+
+.header-actions .p-button {
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: 12px;
+}
+
+/* Stats Section */
+.stats-section {
+  margin-bottom: 2rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.stat-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.stat-content h3 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.stat-content p {
+  margin: 0.25rem 0 0 0;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+/* Table Section */
+.table-section {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
 }
-.field {
-  margin-bottom: 1.5rem;
-}
-.p-dialog .p-dialog-content {
-  padding: 2rem 1.5rem;
-}
-.p-dialog .p-dialog-header {
-  border-radius: 12px 12px 0 0;
-}
-.p-dialog .p-dialog-footer {
-  border-radius: 0 0 12px 12px;
-}
-.p-table {
-  margin-top: 1.5rem;
-}
-.p-button {
-  min-width: 100px;
-}
-.flex {
-  display: flex;
-}
-.justify-content-end {
-  justify-content: flex-end;
-}
-.mt-3 {
-  margin-top: 1.5rem;
-}
-.p-button-text {
-  margin-right: 1rem;
+
+.section-header h2 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
-.square-delete {
-  width: 2.5rem !important;
-  height: 2.5rem !important;
-  border-radius: 6px !important;
-  background: #f44336 !important;
-  color: #fff !important;
+.table-actions .p-inputtext {
+  border-radius: 8px;
+  border: 1px solid #e1e8ed;
+  padding: 0.5rem 1rem 0.5rem 2.5rem;
+}
+
+/* Enhanced Table Styles */
+.coach-info, .club-info, .pool-info, .date-info, .time-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.coach-info i, .club-info i, .pool-info i, .date-info i, .time-info i {
+  color: #667eea;
+  font-size: 0.9rem;
+}
+
+.lane-badge {
+  display: inline-block;
+}
+
+.lane-number {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.action-buttons .p-button-sm {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 6px;
+}
+
+/* Enhanced Dialog Styles */
+.enhanced-dialog ::ng-deep .p-dialog {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.enhanced-dialog ::ng-deep .p-dialog-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1.5rem 2rem;
+}
+
+.enhanced-dialog ::ng-deep .p-dialog-content {
+  padding: 0;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.reservation-wizard {
+  padding: 2rem;
+}
+
+.wizard-step {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border-left: 4px solid #667eea;
+}
+
+.step-header {
+  margin-bottom: 1.5rem;
+}
+
+.step-header h3 {
+  margin: 0 0 0.5rem 0;
+  color: #2c3e50;
+  font-size: 1.25rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.step-header p {
+  margin: 0;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+/* Form Styles */
+.form-section {
+  margin-bottom: 1rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-field label {
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 0.9rem;
+}
+
+.p-inputgroup {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.p-inputgroup-addon {
+  background: #f8f9fa;
+  border: 1px solid #e1e8ed;
+  color: #667eea;
+  padding: 0.75rem;
+}
+
+.p-inputgroup .p-inputtext,
+.p-inputgroup .p-dropdown {
+  border: 1px solid #e1e8ed;
+  border-left: none;
+  padding: 0.75rem;
+}
+
+/* Fix dropdown display in input group */
+.p-inputgroup .p-dropdown {
+  flex: 1;
+  min-width: 0;
+}
+
+.p-inputgroup .p-dropdown .p-dropdown-label {
+  padding: 0;
+}
+
+/* Ensure dropdown panel displays properly */
+::ng-deep .p-dropdown-panel {
+  z-index: 1001 !important;
+}
+
+::ng-deep .p-dropdown-items-wrapper {
+  max-height: 200px;
+}
+
+/* Custom dropdown item styling */
+::ng-deep .p-dropdown-item {
+  padding: 0.75rem 1rem;
+}
+
+::ng-deep .p-dropdown-item:hover {
+  background: rgba(102, 126, 234, 0.1);
+}
+
+::ng-deep .p-dropdown-item.p-highlight {
+  background: rgba(102, 126, 234, 0.2);
+  color: #667eea;
+}
+
+/* Pool Selection Styles */
+.pools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.pool-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 2px solid #e1e8ed;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pool-card:hover {
+  border-color: #667eea;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+}
+
+.pool-card.selected {
+  border-color: #667eea;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+}
+
+.pool-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: none;
-}
-.square-delete .pi {
-  font-size: 1.2rem;
+  color: white;
+  font-size: 1.25rem;
 }
 
-.calendar-row {
+.pool-info h4 {
+  margin: 0 0 0.25rem 0;
+  color: #2c3e50;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.pool-info p {
+  margin: 0;
+  color: #7f8c8d;
+  font-size: 0.8rem;
+}
+
+.pool-status {
+  margin-left: auto;
+  color: #667eea;
+  font-size: 1.25rem;
+}
+
+/* Date and Time Selection */
+.datetime-selection {
   display: flex;
   flex-direction: column;
-}
-.calendar-container {
-  width: 100%;
-  min-width: 300px;
-  max-width: 100%;
-  z-index: 1000;
-}
-.p-calendar {
-  width: 100%;
+  gap: 1.5rem;
 }
 
-/* Fix calendar display in modal */
-::ng-deep .p-calendar {
-  width: 100%;
+.date-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-::ng-deep .p-datepicker {
-  min-width: 280px;
+.date-section label {
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 0.9rem;
 }
 
-::ng-deep .p-datepicker-header {
-  padding: 0.5rem;
+.timeslots-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-::ng-deep .p-datepicker .p-datepicker-header .p-datepicker-title {
+.timeslots-section label {
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 0.9rem;
+}
+
+.timeslots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.75rem;
+}
+
+.timeslot-card {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 2px solid #e1e8ed;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.timeslot-card:hover {
+  border-color: #667eea;
+  transform: translateY(-2px);
+}
+
+.timeslot-card.available {
+  border-color: #e1e8ed;
+}
+
+.timeslot-card.unavailable {
+  border-color: #e74c3c;
+  background: #fdf2f2;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.timeslot-card.selected {
+  border-color: #667eea;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+}
+
+.timeslot-time {
+  margin-bottom: 0.5rem;
+}
+
+.start-time, .end-time {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.separator {
+  margin: 0 0.25rem;
+  color: #7f8c8d;
+}
+
+.timeslot-status {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.status-badge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.status-badge.available {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-badge.unavailable {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.lanes-info {
+  font-size: 0.7rem;
+  color: #7f8c8d;
+}
+
+/* Pool Stats */
+.pool-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e1e8ed;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.8rem;
+  color: #7f8c8d;
+  margin-bottom: 0.25rem;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.stat-value.available {
+  color: #27ae60;
+}
+
+.stat-value.reserved {
+  color: #e74c3c;
+}
+
+/* Visual Pool */
+.visual-pool {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.pool-container {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.pool-water {
+  background: linear-gradient(180deg, #4fc3f7 0%, #29b6f6 50%, #0288d1 100%);
+  border-radius: 12px;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.pool-water::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="waves" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M0 10 Q5 5 10 10 T20 10" stroke="rgba(255,255,255,0.1)" fill="none" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23waves)"/></svg>');
+  opacity: 0.3;
+}
+
+.lanes-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.lane {
+  height: 60px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
   display: flex;
   align-items: center;
-  margin: 0 auto;
+  padding: 0 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  border: 2px solid transparent;
 }
 
-::ng-deep .p-datepicker .p-datepicker-header .p-datepicker-title select {
-  margin: 0 0.5rem;
+.lane:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-::ng-deep .p-dialog-content {
-  overflow-y: visible !important;
+.lane.selected {
+  border-color: #27ae60;
+  background: linear-gradient(135deg, rgba(39, 174, 96, 0.2) 0%, rgba(39, 174, 96, 0.1) 100%);
+  box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
 }
 
-::ng-deep .p-dialog-mask {
-  z-index: 1000;
+.lane.reserved {
+  border-color: #e74c3c;
+  background: linear-gradient(135deg, rgba(231, 76, 60, 0.2) 0%, rgba(231, 76, 60, 0.1) 100%);
+  cursor: not-allowed;
+  opacity: 0.8;
 }
 
-::ng-deep .p-datepicker-panel {
-  z-index: 1001 !important;
+.lane-number {
+  font-weight: 700;
+  color: #2c3e50;
+  font-size: 1.1rem;
+  min-width: 30px;
+}
+
+.lane-water {
+  flex: 1;
+  height: 20px;
+  background: linear-gradient(90deg, #4fc3f7 0%, #29b6f6 50%, #0288d1 100%);
+  border-radius: 10px;
+  margin: 0 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.lane-water::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: wave 2s infinite;
+}
+
+@keyframes wave {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+.lane-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.reservation-details small {
+  display: block;
+  color: #7f8c8d;
+  font-size: 0.7rem;
+}
+
+.lane-status {
+  color: #667eea;
+  font-size: 1.1rem;
+}
+
+.lane.selected .lane-status {
+  color: #27ae60;
+}
+
+.lane.reserved .lane-status {
+  color: #e74c3c;
+}
+
+/* Lane Legend */
+.lane-legend {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #2c3e50;
+}
+
+.legend-color {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 2px solid #e1e8ed;
+}
+
+.legend-color.available {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.legend-color.selected {
+  background: linear-gradient(135deg, rgba(39, 174, 96, 0.2) 0%, rgba(39, 174, 96, 0.1) 100%);
+  border-color: #27ae60;
+}
+
+.legend-color.reserved {
+  background: linear-gradient(135deg, rgba(231, 76, 60, 0.2) 0%, rgba(231, 76, 60, 0.1) 100%);
+  border-color: #e74c3c;
+}
+
+/* Dialog Footer */
+.dialog-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+  background: #f8f9fa;
+  border-top: 1px solid #e1e8ed;
+}
+
+.validation-summary {
+  padding: 0.75rem;
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.validation-summary small {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #856404;
+}
+
+.validation-list {
+  margin: 0;
+  padding-left: 1rem;
+  list-style: none;
+}
+
+.validation-list li {
+  color: #856404;
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+}
+
+.footer-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.dialog-footer .p-button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .pool-dashboard {
+    padding: 1rem;
+  }
+  
+  .dashboard-header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .pools-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .timeslots-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+  
+  .pool-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .lane-legend {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+  }
+}
+
+/* Loading States */
+.p-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.wizard-step {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Custom Scrollbar */
+.reservation-wizard::-webkit-scrollbar {
+  width: 8px;
+}
+
+.reservation-wizard::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.reservation-wizard::-webkit-scrollbar-thumb {
+  background: #667eea;
+  border-radius: 4px;
+}
+
+.reservation-wizard::-webkit-scrollbar-thumb:hover {
+  background: #5a6fd8;
 } 

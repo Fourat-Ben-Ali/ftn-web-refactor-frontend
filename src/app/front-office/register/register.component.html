@@ -1,66 +1,79 @@
-<div class="flex align-items-center justify-content-center min-h-screen bg-primary-50">
-    <div class="surface-card p-4 shadow-2 border-round w-full lg:w-6">
-        <div class="text-center mb-5">
-            <div class="text-900 text-3xl font-medium mb-3">Create Account</div>
-            <span class="text-600 font-medium line-height-3">Already have an account?</span>
-            <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer" routerLink="/login">Sign in</a>
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-image">
+      <img src="assets\\logos\\login-image.jpg" alt="Register Background">
+      <div class="image-overlay">
+        <div class="overlay-content">
+          <h2>Create Account</h2>
+          <p>Join the swimming portal</p>
         </div>
-
-        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-            <div class="grid">
-                <div class="col-12 md:col-6 mb-4">
-                    <label for="firstname" class="block text-900 font-medium mb-2">First Name</label>
-                    <input id="firstname" type="text" pInputText formControlName="firstname" class="w-full mb-3" 
-                           [ngClass]="{'ng-invalid ng-dirty': registerForm.get('firstname')?.invalid && registerForm.get('firstname')?.touched}">
-                    <small class="p-error block" *ngIf="registerForm.get('firstname')?.invalid && registerForm.get('firstname')?.touched">
-                        First name is required
-                    </small>
-                </div>
-
-                <div class="col-12 md:col-6 mb-4">
-                    <label for="lastname" class="block text-900 font-medium mb-2">Last Name</label>
-                    <input id="lastname" type="text" pInputText formControlName="lastname" class="w-full mb-3"
-                           [ngClass]="{'ng-invalid ng-dirty': registerForm.get('lastname')?.invalid && registerForm.get('lastname')?.touched}">
-                    <small class="p-error block" *ngIf="registerForm.get('lastname')?.invalid && registerForm.get('lastname')?.touched">
-                        Last name is required
-                    </small>
-                </div>
-
-                <div class="col-12 mb-4">
-                    <label for="email" class="block text-900 font-medium mb-2">Email</label>
-                    <input id="email" type="email" pInputText formControlName="email" class="w-full mb-3"
-                           [ngClass]="{'ng-invalid ng-dirty': registerForm.get('email')?.invalid && registerForm.get('email')?.touched}">
-                    <small class="p-error block" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
-                        Please enter a valid email address
-                    </small>
-                </div>
-
-                <div class="col-12 mb-4">
-                    <label for="password" class="block text-900 font-medium mb-2">Password</label>
-                    <p-password id="password" formControlName="password" [toggleMask]="true" styleClass="w-full mb-3"
-                               [ngClass]="{'ng-invalid ng-dirty': registerForm.get('password')?.invalid && registerForm.get('password')?.touched}">
-                    </p-password>
-                    <small class="p-error block" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
-                        Password must be at least 6 characters long
-                    </small>
-                </div>
-
-                <div class="col-12 mb-4">
-                    <label for="confirmPassword" class="block text-900 font-medium mb-2">Confirm Password</label>
-                    <p-password id="confirmPassword" formControlName="confirmPassword" [toggleMask]="true" styleClass="w-full mb-3"
-                               [ngClass]="{'ng-invalid ng-dirty': registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched}">
-                    </p-password>
-                    <small class="p-error block" *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched">
-                        Passwords do not match
-                    </small>
-                </div>
-
-                <div class="col-12">
-                    <p-button type="submit" label="Register" styleClass="w-full" [loading]="loading"></p-button>
-                </div>
-            </div>
-        </form>
+      </div>
     </div>
+    <div class="login-form-section">
+      <div class="form-header">
+        <div class="logo-section">
+          <i class="pi pi-user-plus" style="font-size: 2rem; color: #27ae60;"></i>
+        </div>
+        <h1>User Registration</h1>
+        <p>Fill in your details to create an account</p>
+      </div>
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="login-form">
+        <div class="form-group" *ngFor="let input of registerInputs; let i = index">
+          <div class="input-wrapper">
+            <label [for]="'input-' + i" class="input-label">
+              {{ input.label }}
+            </label>
+            <div class="input-container">
+              <i [class]="getInputIcon(input.type)" class="input-icon"></i>
+              <input
+                [id]="'input-' + i"
+                [type]="getInputType(input.type)"
+                [placeholder]="input.placeholder"
+                [formControl]="input.control"
+                [ngClass]="{'input-error': input.control.invalid && input.control.touched}"
+                class="form-input"
+              >
+            </div>
+            <div class="error-messages" *ngIf="input.control.invalid && input.control.touched || (input.label === 'Confirm Password' && registerForm.errors?.['passwordMismatch'] && input.control.touched)">
+              <small class="error-text" *ngFor="let error of getErrorMessages(input)">
+                {{ error }}
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button 
+            type="submit" 
+            class="login-button"
+            [disabled]="registerForm.invalid || isLoading"
+            [class.loading]="isLoading"
+          >
+            <span class="button-content" *ngIf="!isLoading">
+              <i class="pi pi-user-plus"></i>
+              Register
+            </span>
+            <span class="loading-content" *ngIf="isLoading">
+              <i class="pi pi-spin pi-spinner"></i>
+              Registering...
+            </span>
+          </button>
+        </div>
+        <div class="form-footer">
+          <p class="footer-text">
+            <i class="pi pi-lock"></i>
+            Secure registration
+          </p>
+          <div class="register-link">
+            <span class="register-text">Already have an account?</span>
+            <a routerLink="/front-office/login" class="register-button">
+              <i class="pi pi-sign-in"></i>
+              Sign In
+            </a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 
 <p-toast></p-toast> 

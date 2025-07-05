@@ -21,11 +21,16 @@ import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { ToastModule } from 'primeng/toast';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
-import { MessageService } from 'primeng/api';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { MessageService, ConfirmationService } from 'primeng/api';
 import { HttpClientModule } from '@angular/common/http';
 import { TagModule } from 'primeng/tag';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { PaginatorModule } from 'primeng/paginator';
+import { TooltipModule } from 'primeng/tooltip';
 import { PresseComponent } from './presse/presse.component';
 import { PoolReservationsModule } from './pool-reservations/pool-reservations.module';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -53,12 +58,17 @@ import { PoolReservationsModule } from './pool-reservations/pool-reservations.mo
     DropdownModule,
     ToastModule,
     BreadcrumbModule,
+    ProgressSpinnerModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     TagModule,
-    PoolReservationsModule
+    ConfirmDialogModule,
+    PaginatorModule,
+    TooltipModule,
+    PoolReservationsModule,
+    NgChartsModule
   ],
-  providers: [MessageService]
+  providers: [MessageService, ConfirmationService]
 })
 export class AdminModule { }

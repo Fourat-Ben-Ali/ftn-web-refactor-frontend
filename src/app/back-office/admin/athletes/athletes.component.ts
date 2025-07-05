@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AthleteService } from '../../../../shared/services/athlete.service';
-import { Athlete } from 'models';
-import { MessageService } from 'primeng/api';
+import { Athlete } from '../../../models/athlete.model';
+import { MessageService, ConfirmationService } from 'primeng/api';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
@@ -10,9 +10,11 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
   selector: 'app-athletes',
   templateUrl: './athletes.component.html',
   styleUrl: './athletes.component.css',
+  providers: [ConfirmationService]
 })
 export class AthletesComponent implements OnInit {
   athletes: Athlete[] = [];
+  filteredAthletes: Athlete[] = [];
   displayAddDialog: boolean = false;
   displayEditDialog: boolean = false;
   athleteForm: FormGroup;
@@ -20,12 +22,20 @@ export class AthletesComponent implements OnInit {
   loading: boolean = false;
   first: number = 0;
   totalRecords: number = 0;
+  itemsPerPage: number = 12;
+  currentFilter: string = 'all';
   private searchSubject = new Subject<string>();
+
+  genderOptions = [
+    { label: 'Male', value: 'Male' },
+    { label: 'Female', value: 'Female' }
+  ];
 
   constructor(
     private athleteService: AthleteService,
     private formBuilder: FormBuilder,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
   ) {
     this.athleteForm = this.formBuilder.group({
       prenom: ['', Validators.required],
@@ -53,6 +63,7 @@ export class AthletesComponent implements OnInit {
     this.athleteService.getAllAthletes().subscribe({
       next: (data) => {
         this.athletes = data;
+        this.filteredAthletes = data;
         this.totalRecords = data.length;
         this.loading = false;
       },
@@ -67,7 +78,7 @@ export class AthletesComponent implements OnInit {
     if (searchTerm.trim()) {
       this.searchSubject.next(searchTerm);
     } else {
-      this.getAthletes();
+      this.filterAthletes(this.currentFilter);
     }
   }
 
@@ -75,8 +86,8 @@ export class AthletesComponent implements OnInit {
     this.loading = true;
     this.athleteService.searchAthletes(query).subscribe({
       next: (data) => {
-        this.athletes = data;
-        this.totalRecords = data.length;
+        this.filteredAthletes = this.applyFilter(data, this.currentFilter);
+        this.totalRecords = this.filteredAthletes.length;
         this.loading = false;
       },
       error: () => {
@@ -86,6 +97,78 @@ export class AthletesComponent implements OnInit {
           summary: 'Error',
           detail: 'Error searching athletes'
         });
+      }
+    });
+  }
+
+  filterAthletes(filter: string) {
+    this.currentFilter = filter;
+    this.filteredAthletes = this.applyFilter(this.athletes, filter);
+    this.totalRecords = this.filteredAthletes.length;
+    this.first = 0; // Reset to first page
+  }
+
+  applyFilter(athletes: Athlete[], filter: string): Athlete[] {
+    switch (filter) {
+      case 'male':
+        return athletes.filter(athlete => athlete.genre === 'Male');
+      case 'female':
+        return athletes.filter(athlete => athlete.genre === 'Female');
+      case 'national':
+        return athletes.filter(athlete => athlete.equipeNationale);
+      default:
+        return athletes;
+    }
+  }
+
+  // Stats calculation methods
+  getMaleCount(): number {
+    return this.athletes.filter(athlete => athlete.genre === 'Male').length;
+  }
+
+  getFemaleCount(): number {
+    return this.athletes.filter(athlete => athlete.genre === 'Female').length;
+  }
+
+  getTotalMedals(): number {
+    return this.athletes.reduce((total, athlete) => {
+      const medals = athlete.medals;
+      if (medals) {
+        return total + (medals.gold || 0) + (medals.silver || 0) + (medals.bronze || 0);
+      }
+      return total;
+    }, 0);
+  }
+
+
+
+  onPageChange(event: any) {
+    this.first = event.first;
+    this.itemsPerPage = event.rows;
+    // Update total records for pagination
+    this.totalRecords = this.filteredAthletes.length;
+  }
+
+  trackByAthleteId(index: number, athlete: Athlete): number {
+    return athlete.id;
+  }
+
+  viewAthleteDetails(athlete: Athlete) {
+    // TODO: Implement detailed view dialog
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Athlete Details',
+      detail: `Viewing details for ${athlete.prenom} ${athlete.nom}`
+    });
+  }
+
+  confirmDelete(athlete: Athlete) {
+    this.confirmationService.confirm({
+      message: `Are you sure you want to delete ${athlete.prenom} ${athlete.nom}?`,
+      header: 'Confirm Deletion',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.deleteAthlete(athlete.id);
       }
     });
   }

@@ -21,12 +21,14 @@ export class PoolReservationsComponent implements OnInit {
   coaches: string[] = [];
   clubs: clubs[] = [];
   pools: Pool[] = [];
+  lanes: number[] = [];
   
   // Filter form values
   selectedCoach: string | null = null;
   selectedClub: clubs | null = null;
   selectedPool: Pool | null = null;
   selectedDate: Date | null = null;
+  selectedLane: number | null = null;
 
   constructor(
     private reservationService: PoolReservationService,
@@ -47,6 +49,7 @@ export class PoolReservationsComponent implements OnInit {
         this.reservations = data;
         this.filteredReservations = data;
         this.extractCoaches();
+        this.extractLanes();
         this.loading = false;
       },
       error: (error) => {
@@ -94,6 +97,17 @@ export class PoolReservationsComponent implements OnInit {
     this.coaches = Array.from(coachSet).sort();
   }
 
+  extractLanes() {
+    // Extract unique lane numbers from reservations
+    const laneSet = new Set<number>();
+    this.reservations.forEach(reservation => {
+      if (reservation.lane) {
+        laneSet.add(reservation.lane);
+      }
+    });
+    this.lanes = Array.from(laneSet).sort((a, b) => a - b);
+  }
+
   applyFilters() {
     this.loading = true;
     
@@ -116,8 +130,12 @@ export class PoolReservationsComponent implements OnInit {
       this.filter.date = this.formatDate(this.selectedDate);
     }
 
+    if (this.selectedLane) {
+      this.filter.lane = this.selectedLane;
+    }
+
     // Check if any filters are applied
-    const hasFilters = this.filter.coach || this.filter.clubId || this.filter.poolId || this.filter.date;
+    const hasFilters = this.filter.coach || this.filter.clubId || this.filter.poolId || this.filter.date || this.filter.lane;
     
     if (hasFilters) {
       // Apply server-side filtering
@@ -148,6 +166,7 @@ export class PoolReservationsComponent implements OnInit {
     this.selectedClub = null;
     this.selectedPool = null;
     this.selectedDate = null;
+    this.selectedLane = null;
     this.filter = {};
     this.filteredReservations = this.reservations;
   }

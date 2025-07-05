@@ -32,8 +32,21 @@ export class AthletesListComponent implements OnInit {
   loadAthletes(): void {
     this.athleteService.getAthletes().subscribe({
       next: (data) => {
-        this.athletes = data;
-        this.filteredAthletes = data;
+        // If clubs are already loaded, merge logoUrl into athlete.club
+        if (this.clubs.length > 0) {
+          this.athletes = data.map(athlete => {
+            if (athlete.club) {
+              const foundClub = this.clubs.find(c => c.id === athlete.club!.id);
+              if (foundClub && (foundClub as Club).logoUrl) {
+                (athlete.club as Club).logoUrl = (foundClub as Club).logoUrl;
+              }
+            }
+            return athlete;
+          });
+        } else {
+          this.athletes = data;
+        }
+        this.filteredAthletes = this.athletes;
       },
       error: (error) => {
         console.error('Error loading athletes:', error);
@@ -49,6 +62,19 @@ export class AthletesListComponent implements OnInit {
           label: club.clubName,
           value: club
         }));
+        // If athletes are already loaded, merge logoUrl into athlete.club
+        if (this.athletes.length > 0) {
+          this.athletes = this.athletes.map(athlete => {
+            if (athlete.club) {
+              const foundClub = this.clubs.find(c => c.id === athlete.club!.id);
+              if (foundClub && (foundClub as Club).logoUrl) {
+                (athlete.club as Club).logoUrl = (foundClub as Club).logoUrl;
+              }
+            }
+            return athlete;
+          });
+          this.filteredAthletes = this.athletes;
+        }
       },
       error: (error) => {
         console.error('Error loading clubs:', error);
@@ -82,5 +108,15 @@ export class AthletesListComponent implements OnInit {
   showDetails(athlete: Athlete): void {
     this.selectedAthlete = athlete;
     this.displayDialog = true;
+  }
+
+  getAthleteBackgroundImage(athlete: Athlete): string {
+    // Return the swimmer image URL
+    return 'https://hips.hearstapps.com/hmg-prod/images/gettyimages-82726781-1644942021.jpg?crop=0.6433534043538676xw:1xh;center,top&resize=640:*';
+  }
+
+  getAthleteBackgroundClass(athlete: Athlete): string {
+    // Use unified blue gradient for all cards
+    return 'gradient-unified-blue';
   }
 } 

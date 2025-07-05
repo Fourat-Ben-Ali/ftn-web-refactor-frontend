@@ -1,4 +1,212 @@
-<div class="admin-home-placeholder">
-  <h2>Welcome to the Admin Dashboard</h2>
-  <p>Select a section from the menu to get started.</p>
+<div class="dashboard-container">
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="loading-overlay">
+    <p-progressSpinner strokeWidth="4" animationDuration=".5s"></p-progressSpinner>
+    <p class="loading-text">Loading Dashboard Data...</p>
+  </div>
+
+  <!-- Dashboard Header -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <h1 class="dashboard-title">
+        <i class="pi pi-chart-line"></i>
+        Admin Dashboard
+      </h1>
+      <p class="dashboard-subtitle">Swimming Academy Management Overview</p>
+    </div>
+    <div class="header-actions">
+      <p-button label="Refresh Data" icon="pi pi-refresh" (onClick)="loadDashboardData()" 
+                [disabled]="isLoading" class="p-button-outlined"></p-button>
+    </div>
+  </div>
+
+  <!-- KPI Cards Section -->
+  <div class="kpi-section">
+    <div class="kpi-grid">
+      <!-- Total Athletes KPI -->
+      <div class="kpi-card athletes-kpi">
+        <div class="kpi-icon">
+          <i class="pi pi-users"></i>
+        </div>
+        <div class="kpi-content">
+          <h3 class="kpi-value">{{totalAthletes}}</h3>
+          <p class="kpi-label">Total Athletes</p>
+          <div class="kpi-trend">
+            <i class="pi pi-arrow-up"></i>
+            <span>+12% this month</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Clubs KPI -->
+      <div class="kpi-card clubs-kpi">
+        <div class="kpi-icon">
+          <i class="pi pi-building"></i>
+        </div>
+        <div class="kpi-content">
+          <h3 class="kpi-value">{{totalClubs}}</h3>
+          <p class="kpi-label">Active Clubs</p>
+          <div class="kpi-trend">
+            <i class="pi pi-arrow-up"></i>
+            <span>+3 new this quarter</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Published Content KPI -->
+      <div class="kpi-card content-kpi">
+        <div class="kpi-icon">
+          <i class="pi pi-file-edit"></i>
+        </div>
+        <div class="kpi-content">
+          <h3 class="kpi-value">{{publishedActualites}}</h3>
+          <p class="kpi-label">Published Articles</p>
+          <div class="kpi-trend">
+            <i class="pi pi-percentage"></i>
+            <span>{{getPublicationRate()}}% publication rate</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Programs KPI -->
+      <div class="kpi-card programs-kpi">
+        <div class="kpi-icon">
+          <i class="pi pi-calendar"></i>
+        </div>
+        <div class="kpi-content">
+          <h3 class="kpi-value">{{activeProgrammes}}</h3>
+          <p class="kpi-label">Active Programs</p>
+          <div class="kpi-trend">
+            <i class="pi pi-percentage"></i>
+            <span>{{getActiveProgrammeRate()}}% active rate</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="charts-section">
+    <div class="charts-grid">
+      <!-- Gender Distribution Chart -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3><i class="pi pi-pie-chart"></i> Gender Distribution</h3>
+          <p>Athletes by gender</p>
+        </div>
+        <div class="chart-container">
+          <canvas baseChart
+                  [data]="genderChartData"
+                  [type]="'doughnut'"
+                  [options]="chartOptions">
+          </canvas>
+        </div>
+      </div>
+
+      <!-- Top Clubs Chart -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3><i class="pi pi-bar-chart"></i> Top Clubs</h3>
+          <p>Athletes per club (Top 5)</p>
+        </div>
+        <div class="chart-container">
+          <canvas baseChart
+                  [data]="clubsAthletesChartData"
+                  [type]="'bar'"
+                  [options]="chartOptions">
+          </canvas>
+        </div>
+      </div>
+
+      <!-- Content Status Chart -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3><i class="pi pi-chart-pie"></i> Content Status</h3>
+          <p>Articles by publication status</p>
+        </div>
+        <div class="chart-container">
+          <canvas baseChart
+                  [data]="actualitesStatusChartData"
+                  [type]="'pie'"
+                  [options]="chartOptions">
+          </canvas>
+        </div>
+      </div>
+
+      <!-- Monthly Athletes Growth -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3><i class="pi pi-chart-line"></i> Athletes Growth</h3>
+          <p>New athletes per month</p>
+        </div>
+        <div class="chart-container">
+          <canvas baseChart
+                  [data]="monthlyAthletesData"
+                  [type]="'line'"
+                  [options]="chartOptions">
+          </canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Stats Section -->
+  <div class="quick-stats-section">
+    <div class="stats-grid">
+      <!-- Gender Stats -->
+      <div class="stat-card">
+        <div class="stat-header">
+          <h4>Gender Breakdown</h4>
+        </div>
+        <div class="stat-content">
+          <div class="stat-item">
+            <span class="stat-label">Male Athletes:</span>
+            <span class="stat-value">{{maleAthletes}}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Female Athletes:</span>
+            <span class="stat-value">{{femaleAthletes}}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content Stats -->
+      <div class="stat-card">
+        <div class="stat-header">
+          <h4>Content Overview</h4>
+        </div>
+        <div class="stat-content">
+          <div class="stat-item">
+            <span class="stat-label">Total Articles:</span>
+            <span class="stat-value">{{totalActualites}}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Total Programs:</span>
+            <span class="stat-value">{{totalProgrammes}}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="stat-card">
+        <div class="stat-header">
+          <h4>Recent Activity</h4>
+        </div>
+        <div class="stat-content">
+          <div class="activity-item">
+            <i class="pi pi-user-plus"></i>
+            <span>New athlete registered</span>
+          </div>
+          <div class="activity-item">
+            <i class="pi pi-file-edit"></i>
+            <span>Article published</span>
+          </div>
+          <div class="activity-item">
+            <i class="pi pi-calendar-plus"></i>
+            <span>New program created</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

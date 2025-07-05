@@ -10,6 +10,7 @@ import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
 import { InputTextModule } from 'primeng/inputtext';
+import { TagModule } from 'primeng/tag';
 import { SharedModule } from 'shared/shared.module';
 
 @NgModule({
@@ -26,6 +27,7 @@ import { SharedModule } from 'shared/shared.module';
     ToastModule,
     TooltipModule,
     InputTextModule,
+    TagModule,
     SharedModule
   ],
   exports: [PoolReservationsComponent]

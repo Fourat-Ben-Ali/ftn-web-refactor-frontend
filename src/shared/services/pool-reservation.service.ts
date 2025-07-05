@@ -11,6 +11,7 @@ export interface PoolReservation {
   date: string;
   startTime: string;
   endTime: string;
+  lane: number;
 }
 
 export interface PoolReservationFilter {
@@ -18,6 +19,7 @@ export interface PoolReservationFilter {
   clubId?: number;
   poolId?: number;
   date?: string;
+  lane?: number;
 }
 
 @Injectable({
@@ -46,6 +48,9 @@ export class PoolReservationService {
     }
     if (filter.date) {
       params.append('date', filter.date);
+    }
+    if (filter.lane) {
+      params.append('lane', filter.lane.toString());
     }
     
     const queryString = params.toString();

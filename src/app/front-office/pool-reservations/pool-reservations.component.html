@@ -58,6 +58,18 @@
           [style]="{'width': '100%'}"
         ></p-calendar>
       </div>
+
+      <div class="filter-item">
+        <label for="lane-filter">Lane</label>
+        <p-dropdown 
+          id="lane-filter"
+          [options]="lanes" 
+          [(ngModel)]="selectedLane"
+          placeholder="Select Lane"
+          [showClear]="true"
+          [style]="{'width': '100%'}"
+        ></p-dropdown>
+      </div>
     </div>
 
     <div class="filter-actions">
@@ -98,6 +110,7 @@
           <th>Pool</th>
           <th>Date</th>
           <th>Time Slot</th>
+          <th>Lane</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-reservation>
@@ -107,11 +120,12 @@
           <td>{{ reservation.pool.name }}</td>
           <td>{{ reservation.date | date:'mediumDate' }}</td>
           <td>{{ reservation.startTime }} - {{ reservation.endTime }}</td>
+          <td>{{ reservation.lane }}</td>
         </tr>
       </ng-template>
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="5" class="text-center">
+          <td colspan="6" class="text-center">
             <div class="empty-state">
               <i class="pi pi-calendar-times" style="font-size: 3rem; color: #ccc;"></i>
               <p>No pool reservations found</p>

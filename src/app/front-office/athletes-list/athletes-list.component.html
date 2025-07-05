@@ -7,32 +7,74 @@
   </div>
 
   <div class="athletes-grid">
-    <p-card *ngFor="let athlete of filteredAthletes" [style]="{'width': '300px', 'margin': '1rem'}">
-      <ng-template pTemplate="header">
-        <div class="athlete-header">
-          <h2 class="text-center">{{athlete.prenom}} {{athlete.nom}}</h2>
+    <div class="athlete-card-wrapper" *ngFor="let athlete of filteredAthletes">
+      <div class="athlete-card" [ngClass]="getAthleteBackgroundClass(athlete)">
+        <div class="athlete-background">
+          <img [src]="getAthleteBackgroundImage(athlete)" alt="Swimmer Background" class="background-image" />
+          <div class="background-overlay"></div>
         </div>
-      </ng-template>
-      <div class="athlete-details">
-        <p><strong>Gender:</strong> {{athlete.genre}}</p>
-        <p><strong>Birth Date:</strong> {{athlete.dateNaissance | date}}</p>
-        <p><strong>Nationality:</strong> {{athlete.nationalite}}</p>
-        <p *ngIf="athlete.club"><strong>Club:</strong> {{athlete.club.clubName}}</p>
+        
+        <div class="athlete-content">
+          <div class="athlete-header">
+            <div class="athlete-avatar-container">
+              <img [src]="athlete.photoUrl || 'assets/logos/main-logo.png'" alt="Profile" class="athlete-avatar" />
+              <span *ngIf="athlete.nationalite" class="p-badge p-component p-badge-info nationality-badge">{{athlete.nationalite}}</span>
+            </div>
+            <h2 class="text-center athlete-name">{{athlete.prenom}} {{athlete.nom}}</h2>
+          </div>
+          
+          <div class="athlete-details">
+            <div class="athlete-meta">
+              <span class="p-tag p-tag-rounded p-tag-success" *ngIf="athlete.genre === 'Male'">
+                <i class="pi pi-male"></i> Male
+              </span>
+              <span class="p-tag p-tag-rounded p-tag-warning" *ngIf="athlete.genre === 'Female'">
+                <i class="pi pi-female"></i> Female
+              </span>
+            </div>
+            <p><i class="pi pi-calendar"></i> <strong>Birth Date:</strong> {{athlete.dateNaissance | date}}</p>
+            <p *ngIf="athlete.club">
+              <i class="pi pi-users"></i> <strong>Club:</strong> {{athlete.club.clubName}}
+              <img *ngIf="athlete.club.logoUrl" [src]="athlete.club.logoUrl" alt="Club Logo" class="club-logo" />
+            </p>
+            <div class="athlete-stats" *ngIf="athlete.medals">
+              <span class="p-badge p-badge-gold medal-badge" *ngIf="athlete.medals.gold">🥇 {{athlete.medals.gold}}</span>
+              <span class="p-badge p-badge-silver medal-badge" *ngIf="athlete.medals.silver">🥈 {{athlete.medals.silver}}</span>
+              <span class="p-badge p-badge-bronze medal-badge" *ngIf="athlete.medals.bronze">🥉 {{athlete.medals.bronze}}</span>
+            </div>
+          </div>
+          
+          <div class="athlete-footer">
+            <button pButton label="View Details" icon="pi pi-info-circle" (click)="showDetails(athlete)" class="w-full p-button-rounded p-button-info"></button>
+          </div>
+        </div>
       </div>
-      <ng-template pTemplate="footer">
-        <button pButton label="View Details" icon="pi pi-info-circle" (click)="showDetails(athlete)" class="w-full"></button>
-      </ng-template>
-    </p-card>
+    </div>
   </div>
 
-  <p-dialog [(visible)]="displayDialog" [style]="{width: '450px'}" header="Athlete Details" [modal]="true">
+  <p-dialog [(visible)]="displayDialog" [style]="{width: '500px'}" header="Athlete Details" [modal]="true" [contentStyle]="{'padding':'2rem'}">
     <div *ngIf="selectedAthlete" class="athlete-dialog-content">
-      <h3 class="text-center">{{selectedAthlete.prenom}} {{selectedAthlete.nom}}</h3>
-      <p><strong>Gender:</strong> {{selectedAthlete.genre}}</p>
-      <p><strong>Birth Date:</strong> {{selectedAthlete.dateNaissance | date}}</p>
-      <p><strong>Nationality:</strong> {{selectedAthlete.nationalite}}</p>
-      <p *ngIf="selectedAthlete.club"><strong>Club:</strong> {{selectedAthlete.club.clubName}}</p>
-      <p *ngIf="selectedAthlete.equipeNationale"><strong>National Team:</strong> {{selectedAthlete.equipeNationale.nom}}</p>
+      <div class="dialog-header">
+        <img [src]="selectedAthlete.photoUrl || 'assets/logos/main-logo.png'" alt="Profile" class="athlete-avatar-large" />
+        <h3 class="text-center">{{selectedAthlete.prenom}} {{selectedAthlete.nom}}</h3>
+      </div>
+      <div class="dialog-details">
+        <p><i class="pi pi-user"></i> <strong>Gender:</strong> {{selectedAthlete.genre}}</p>
+        <p><i class="pi pi-calendar"></i> <strong>Birth Date:</strong> {{selectedAthlete.dateNaissance | date}}</p>
+        <p><i class="pi pi-flag"></i> <strong>Nationality:</strong> {{selectedAthlete.nationalite}}</p>
+        <p *ngIf="selectedAthlete.club">
+          <i class="pi pi-users"></i> <strong>Club:</strong> {{selectedAthlete.club.clubName}}
+          <img *ngIf="selectedAthlete.club.logoUrl" [src]="selectedAthlete.club.logoUrl" alt="Club Logo" class="club-logo" />
+        </p>
+        <p *ngIf="selectedAthlete.equipeNationale">
+          <i class="pi pi-star"></i> <strong>National Team:</strong> {{selectedAthlete.equipeNationale.nom}}
+        </p>
+        <div class="athlete-stats" *ngIf="selectedAthlete.medals">
+          <span class="p-badge p-badge-gold medal-badge" *ngIf="selectedAthlete.medals.gold">🥇 {{selectedAthlete.medals.gold}}</span>
+          <span class="p-badge p-badge-silver medal-badge" *ngIf="selectedAthlete.medals.silver">🥈 {{selectedAthlete.medals.silver}}</span>
+          <span class="p-badge p-badge-bronze medal-badge" *ngIf="selectedAthlete.medals.bronze">🥉 {{selectedAthlete.medals.bronze}}</span>
+        </div>
+      </div>
     </div>
   </p-dialog>
 </div> 

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { MenuItem } from 'primeng/api';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-front-office',
@@ -11,6 +12,7 @@ import { MenuItem } from 'primeng/api';
 export class FrontOfficeComponent implements OnInit {
   menuItems: MenuItem[] = [];
   isLoggedIn = false;
+  isAuthPage = false;
 
   constructor(
     private authService: AuthService,
@@ -19,6 +21,17 @@ export class FrontOfficeComponent implements OnInit {
 
   ngOnInit() {
     this.isLoggedIn = this.authService.isAuthenticated();
+    
+    // Listen to route changes to detect auth pages
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => {
+      this.isAuthPage = event.url.includes('/login') || event.url.includes('/register');
+    });
+    
+    // Check initial route
+    this.isAuthPage = this.router.url.includes('/login') || this.router.url.includes('/register');
+    
     if (this.isLoggedIn) {
       this.menuItems = [
         {

@@ -1,239 +1,475 @@
-<div class="card">
-  <div class="card-header">
-    <div class="flex justify-content-between align-items-center">
+<div class="athletes-container">
+  <!-- Header Section -->
+  <div class="header-section">
+    <div class="header-content">
+      <div class="header-left">
+        <h1 class="page-title">
+          <i class="pi pi-users"></i>
+          Athletes Management
+        </h1>
+        <p class="page-subtitle">Manage your swimming athletes and their achievements</p>
+      </div>
+      <div class="header-right">
+        <app-button
+          label="Add Athlete"
+          icon="pi pi-plus"
+          (click)="showAddDialog()"
+          severity="primary"
+          class="add-button"
+        >
+        </app-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="pi pi-users"></i>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-number">{{ athletes.length }}</h3>
+          <p class="stat-label">Total Athletes</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon male">
+          <i class="pi pi-mars"></i>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-number">{{ getMaleCount() }}</h3>
+          <p class="stat-label">Male Athletes</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon female">
+          <i class="pi pi-venus"></i>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-number">{{ getFemaleCount() }}</h3>
+          <p class="stat-label">Female Athletes</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon medals">
+          <i class="pi pi-star"></i>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-number">{{ getTotalMedals() }}</h3>
+          <p class="stat-label">Total Medals</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search and Filters -->
+  <div class="search-section">
+    <div class="search-container">
+      <div class="search-box">
+        <i class="pi pi-search search-icon"></i>
+        <input 
+          type="text" 
+          class="search-input"
+          (input)="onSearch($event)" 
+          placeholder="Search athletes by name, nationality, or club..."
+        />
+      </div>
+      <div class="filter-buttons">
+        <button 
+          class="filter-btn" 
+          [class.active]="currentFilter === 'all'"
+          (click)="filterAthletes('all')"
+        >
+          All
+        </button>
+        <button 
+          class="filter-btn" 
+          [class.active]="currentFilter === 'male'"
+          (click)="filterAthletes('male')"
+        >
+          <i class="pi pi-mars"></i> Male
+        </button>
+        <button 
+          class="filter-btn" 
+          [class.active]="currentFilter === 'female'"
+          (click)="filterAthletes('female')"
+        >
+          <i class="pi pi-venus"></i> Female
+        </button>
+        <button 
+          class="filter-btn" 
+          [class.active]="currentFilter === 'national'"
+          (click)="filterAthletes('national')"
+        >
+          <i class="pi pi-flag"></i> National Team
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="loading">
+    <div class="loading-spinner">
+      <i class="pi pi-spinner pi-spin"></i>
+      <p>Loading athletes...</p>
+    </div>
+  </div>
+
+  <!-- Athletes Grid -->
+  <div class="athletes-grid" *ngIf="!loading">
+    <div 
+      class="athlete-card" 
+      *ngFor="let athlete of filteredAthletes; trackBy: trackByAthleteId"
+    >
+      <!-- Card Header with Background -->
+      <div class="card-header" [class.male-bg]="athlete.genre === 'Male'" [class.female-bg]="athlete.genre === 'Female'">
+        <div class="athlete-photo">
+          <div class="photo-placeholder" [class.male-avatar]="athlete.genre === 'Male'" [class.female-avatar]="athlete.genre === 'Female'">
+            <i class="pi pi-user"></i>
+          </div>
+          <div class="national-team-badge" *ngIf="athlete.equipeNationale">
+            <i class="pi pi-flag"></i>
+          </div>
+        </div>
+        <div class="athlete-info">
+          <h3 class="athlete-name">{{ athlete.prenom }} {{ athlete.nom }}</h3>
+          <p class="athlete-nationality">
+            <i class="pi pi-globe"></i>
+            {{ athlete.nationalite }}
+          </p>
+          <div class="athlete-club" *ngIf="athlete.club">
+            <i class="pi pi-building"></i>
+            {{ athlete.club.clubName }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Card Body -->
+      <div class="card-body">
+        <div class="athlete-details">
+          <div class="detail-item">
+            <i class="pi pi-calendar"></i>
+            <span>{{ athlete.dateNaissance | date:'mediumDate' }}</span>
+          </div>
+          <div class="detail-item">
+            <i [class]="athlete.genre === 'Male' ? 'pi pi-mars' : 'pi pi-venus'"></i>
+            <span>{{ athlete.genre }}</span>
+          </div>
+          <div class="detail-item" *ngIf="athlete.equipeNationale">
+            <i class="pi pi-star"></i>
+            <span>{{ athlete.equipeNationale.nom }}</span>
+          </div>
+        </div>
+
+        <!-- Medals Section -->
+        <div class="medals-section" *ngIf="athlete.medals">
+          <h4 class="medals-title">Achievements</h4>
+          <div class="medals-grid">
+            <div class="medal-item gold" *ngIf="athlete.medals.gold">
+              <i class="pi pi-circle-fill"></i>
+              <span>{{ athlete.medals.gold }} Gold</span>
+            </div>
+            <div class="medal-item silver" *ngIf="athlete.medals.silver">
+              <i class="pi pi-circle-fill"></i>
+              <span>{{ athlete.medals.silver }} Silver</span>
+            </div>
+            <div class="medal-item bronze" *ngIf="athlete.medals.bronze">
+              <i class="pi pi-circle-fill"></i>
+              <span>{{ athlete.medals.bronze }} Bronze</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="card-actions">
+          <button 
+            class="action-btn edit-btn"
+            p-tooltip="Edit Athlete"
+            (click)="showEditDialog(athlete)"
+          >
+            <i class="pi pi-pencil"></i>
+          </button>
+          <button 
+            class="action-btn delete-btn"
+            p-tooltip="Delete Athlete"
+            (click)="confirmDelete(athlete)"
+          >
+            <i class="pi pi-trash"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="!loading && filteredAthletes.length === 0">
+    <div class="empty-content">
+      <i class="pi pi-users empty-icon"></i>
+      <h3>No Athletes Found</h3>
+      <p>No athletes match your current search criteria.</p>
       <app-button
-        label="Add Athlete"
+        label="Add First Athlete"
         icon="pi pi-plus"
         (click)="showAddDialog()"
         severity="primary"
       >
       </app-button>
-      <span class="p-input-icon-left">
-        <i class="pi pi-search"></i>
-        <input 
-          pInputText 
-          type="text" 
-          (input)="onSearch($event)" 
-          placeholder="Search athletes..."
-        />
-      </span>
     </div>
   </div>
 
-  <p-table
-    [value]="athletes"
-    [paginator]="true"
-    [rows]="5"
-    [globalFilterFields]="['nom', 'prenom', 'nationalite']"
-    [tableStyle]="{ 'min-width': '30rem' }"
-    [(first)]="first"
-    [totalRecords]="totalRecords"
-    [loading]="loading"
-  >
-    <ng-template pTemplate="header">
-      <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Gender</th>
-        <th>Birth Date</th>
-        <th>Nationality</th>
-        <th>Actions</th>
-      </tr>
-    </ng-template>
-
-    <ng-template pTemplate="body" let-athlete>
-      <tr>
-        <td>{{ athlete.prenom }}</td>
-        <td>{{ athlete.nom }}</td>
-        <td>{{ athlete.genre }}</td>
-        <td>{{ athlete.dateNaissance | date }}</td>
-        <td>{{ athlete.nationalite }}</td>
-        <td>
-          <app-button 
-            label="" 
-            icon="pi pi-pencil" 
-            p-tooltip="Edit"
-            (click)="showEditDialog(athlete)"
-          > 
-          </app-button>
-          <app-button 
-            label="" 
-            icon="pi pi-trash" 
-            severity="danger" 
-            p-tooltip="Delete"
-            (click)="deleteAthlete(athlete.id)"
-          > 
-          </app-button>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
+  <!-- Pagination -->
+  <div class="pagination-section" *ngIf="filteredAthletes.length > 0">
+    <p-paginator
+      [rows]="itemsPerPage"
+      [totalRecords]="totalRecords"
+      [first]="first"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} athletes"
+      [rowsPerPageOptions]="[6, 12, 24]"
+      (onPageChange)="onPageChange($event)"
+    ></p-paginator>
+  </div>
 </div>
 
-<!-- Add Athlete Dialog -->
+<!-- Enhanced Add Athlete Dialog -->
 <p-dialog
   [(visible)]="displayAddDialog"
-  [style]="{ width: '500px' }"
-  header="Add Athlete"
+  [style]="{ width: '600px' }"
+  header="Add New Athlete"
   [modal]="true"
-  styleClass="p-fluid"
+  styleClass="modern-dialog"
+  [draggable]="false"
+  [resizable]="false"
 >
   <ng-template pTemplate="content">
-    <form [formGroup]="athleteForm">
-      <div class="field">
-        <label for="prenom">First Name</label>
-        <input
-          type="text"
-          pInputText
-          id="prenom"
-          formControlName="prenom"
-          required
-        />
-      </div>
-      <div class="field">
-        <label for="nom">Last Name</label>
-        <input
-          type="text"
-          pInputText
-          id="nom"
-          formControlName="nom"
-          required
-        />
-      </div>
-      <div class="field">
-        <label for="genre">Gender</label>
-        <p-dropdown
-          id="genre"
-          [options]="['Male', 'Female']"
-          formControlName="genre"
-          placeholder="Select Gender"
-          [required]="true"
-        ></p-dropdown>
-      </div>
-      <div class="field">
-        <label for="dateNaissance">Birth Date</label>
-        <p-calendar
-          id="dateNaissance"
-          formControlName="dateNaissance"
-          dateFormat="yy-mm-dd"
-          [showIcon]="true"
-          [monthNavigator]="true"
-          [yearNavigator]="true"
-          [yearRange]="'1940:2030'"
-          [required]="true"
-        ></p-calendar>
-      </div>
-      <div class="field">
-        <label for="nationalite">Nationality</label>
-        <input
-          type="text"
-          pInputText
-          id="nationalite"
-          formControlName="nationalite"
-          required
-        />
-      </div>
-    </form>
+    <div class="dialog-content">
+      <form [formGroup]="athleteForm" class="athlete-form">
+        <div class="form-row">
+          <div class="form-field">
+            <label for="prenom">
+              <i class="pi pi-user"></i>
+              First Name
+            </label>
+            <input
+              type="text"
+              pInputText
+              id="prenom"
+              formControlName="prenom"
+              placeholder="Enter first name"
+              class="modern-input"
+            />
+          </div>
+          <div class="form-field">
+            <label for="nom">
+              <i class="pi pi-user"></i>
+              Last Name
+            </label>
+            <input
+              type="text"
+              pInputText
+              id="nom"
+              formControlName="nom"
+              placeholder="Enter last name"
+              class="modern-input"
+            />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="genre">
+              <i class="pi pi-venus-mars"></i>
+              Gender
+            </label>
+            <p-dropdown
+              id="genre"
+              [options]="genderOptions"
+              formControlName="genre"
+              placeholder="Select gender"
+              optionLabel="label"
+              optionValue="value"
+              class="modern-dropdown"
+            ></p-dropdown>
+          </div>
+          <div class="form-field">
+            <label for="nationalite">
+              <i class="pi pi-globe"></i>
+              Nationality
+            </label>
+            <input
+              type="text"
+              pInputText
+              id="nationalite"
+              formControlName="nationalite"
+              placeholder="Enter nationality"
+              class="modern-input"
+            />
+          </div>
+        </div>
+
+        <div class="form-field full-width">
+          <label for="dateNaissance">
+            <i class="pi pi-calendar"></i>
+            Birth Date
+          </label>
+          <p-calendar
+            id="dateNaissance"
+            formControlName="dateNaissance"
+            dateFormat="yy-mm-dd"
+            [showIcon]="true"
+            [monthNavigator]="true"
+            [yearNavigator]="true"
+            [yearRange]="'1940:2030'"
+            placeholder="Select birth date"
+            class="modern-calendar"
+          ></p-calendar>
+        </div>
+      </form>
+    </div>
   </ng-template>
 
   <ng-template pTemplate="footer">
-    <app-button
-      label="Cancel"
-      icon="pi pi-times"
-      (click)="hideDialog()"
-      severity="secondary"
-    >
-    </app-button>
-    <app-button
-      label="Save"
-      icon="pi pi-check"
-      (click)="saveAthlete()"
-      [disabled]="!athleteForm.valid"
-    >
-    </app-button>
+    <div class="dialog-footer">
+      <app-button
+        label="Cancel"
+        icon="pi pi-times"
+        (click)="hideDialog()"
+        severity="secondary"
+        class="cancel-btn"
+      >
+      </app-button>
+      <app-button
+        label="Save Athlete"
+        icon="pi pi-check"
+        (click)="saveAthlete()"
+        [disabled]="!athleteForm.valid"
+        class="save-btn"
+      >
+      </app-button>
+    </div>
   </ng-template>
 </p-dialog>
 
-<!-- Edit Athlete Dialog -->
+<!-- Enhanced Edit Athlete Dialog -->
 <p-dialog
   [(visible)]="displayEditDialog"
-  [style]="{ width: '500px' }"
+  [style]="{ width: '600px' }"
   header="Edit Athlete"
   [modal]="true"
-  styleClass="p-fluid"
+  styleClass="modern-dialog"
+  [draggable]="false"
+  [resizable]="false"
 >
   <ng-template pTemplate="content">
-    <form [formGroup]="athleteForm">
-      <div class="field">
-        <label for="prenom">First Name</label>
-        <input
-          type="text"
-          pInputText
-          id="prenom"
-          formControlName="prenom"
-          required
-        />
-      </div>
-      <div class="field">
-        <label for="nom">Last Name</label>
-        <input
-          type="text"
-          pInputText
-          id="nom"
-          formControlName="nom"
-          required
-        />
-      </div>
-      <div class="field">
-        <label for="genre">Gender</label>
-        <p-dropdown
-          id="genre"
-          [options]="['Male', 'Female']"
-          formControlName="genre"
-          placeholder="Select Gender"
-          [required]="true"
-        ></p-dropdown>
-      </div>
-      <div class="field">
-        <label for="dateNaissance">Birth Date</label>
-        <p-calendar
-          id="dateNaissance"
-          formControlName="dateNaissance"
-          dateFormat="yy-mm-dd"
-          [showIcon]="true"
-          [monthNavigator]="true"
-          [yearNavigator]="true"
-          [yearRange]="'1940:2030'"
-          [required]="true"
-        ></p-calendar>
-      </div>
-      <div class="field">
-        <label for="nationalite">Nationality</label>
-        <input
-          type="text"
-          pInputText
-          id="nationalite"
-          formControlName="nationalite"
-          required
-        />
-      </div>
-    </form>
+    <div class="dialog-content">
+      <form [formGroup]="athleteForm" class="athlete-form">
+        <div class="form-row">
+          <div class="form-field">
+            <label for="prenom">
+              <i class="pi pi-user"></i>
+              First Name
+            </label>
+            <input
+              type="text"
+              pInputText
+              id="prenom"
+              formControlName="prenom"
+              placeholder="Enter first name"
+              class="modern-input"
+            />
+          </div>
+          <div class="form-field">
+            <label for="nom">
+              <i class="pi pi-user"></i>
+              Last Name
+            </label>
+            <input
+              type="text"
+              pInputText
+              id="nom"
+              formControlName="nom"
+              placeholder="Enter last name"
+              class="modern-input"
+            />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="genre">
+              <i class="pi pi-venus-mars"></i>
+              Gender
+            </label>
+            <p-dropdown
+              id="genre"
+              [options]="genderOptions"
+              formControlName="genre"
+              placeholder="Select gender"
+              optionLabel="label"
+              optionValue="value"
+              class="modern-dropdown"
+            ></p-dropdown>
+          </div>
+          <div class="form-field">
+            <label for="nationalite">
+              <i class="pi pi-globe"></i>
+              Nationality
+            </label>
+            <input
+              type="text"
+              pInputText
+              id="nationalite"
+              formControlName="nationalite"
+              placeholder="Enter nationality"
+              class="modern-input"
+            />
+          </div>
+        </div>
+
+        <div class="form-field full-width">
+          <label for="dateNaissance">
+            <i class="pi pi-calendar"></i>
+            Birth Date
+          </label>
+          <p-calendar
+            id="dateNaissance"
+            formControlName="dateNaissance"
+            dateFormat="yy-mm-dd"
+            [showIcon]="true"
+            [monthNavigator]="true"
+            [yearNavigator]="true"
+            [yearRange]="'1940:2030'"
+            placeholder="Select birth date"
+            class="modern-calendar"
+          ></p-calendar>
+        </div>
+      </form>
+    </div>
   </ng-template>
 
   <ng-template pTemplate="footer">
-    <app-button
-      label="Cancel"
-      icon="pi pi-times"
-      (click)="hideDialog()"
-      severity="secondary"
-    >
-    </app-button>
-    <app-button
-      label="Save"
-      icon="pi pi-check"
-      (click)="saveAthlete()"
-      [disabled]="!athleteForm.valid"
-    >
-    </app-button>
+    <div class="dialog-footer">
+      <app-button
+        label="Cancel"
+        icon="pi pi-times"
+        (click)="hideDialog()"
+        severity="secondary"
+        class="cancel-btn"
+      >
+      </app-button>
+      <app-button
+        label="Update Athlete"
+        icon="pi pi-check"
+        (click)="saveAthlete()"
+        [disabled]="!athleteForm.valid"
+        class="save-btn"
+      >
+      </app-button>
+    </div>
   </ng-template>
-</p-dialog> 
+</p-dialog>
+
+<!-- Confirmation Dialog -->
+<p-confirmDialog></p-confirmDialog> 

@@ -1,4 +1,4 @@
-.pool-reservations-container {
+.users-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
@@ -24,39 +24,9 @@
   }
 }
 
-.filter-section {
-  background: #f8f9fa;
-  border-radius: 8px;
-  padding: 1.5rem;
+.actions {
   margin-bottom: 2rem;
-  border: 1px solid #e9ecef;
-}
-
-.filter-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.filter-item {
-  label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    color: #495057;
-  }
-}
-
-.filter-actions {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  
-  .p-button {
-    min-width: 120px;
-  }
+  text-align: right;
 }
 
 .content {
@@ -65,6 +35,30 @@
     overflow: hidden;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   }
+}
+
+.role-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  
+  &.role-admin {
+    background-color: #ff9800;
+    color: white;
+  }
+  
+  &.role-user {
+    background-color: #4caf50;
+    color: white;
+  }
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
 }
 
 .empty-state {
@@ -105,14 +99,30 @@
     border-bottom: 1px solid #dee2e6;
   }
   
-  // Filter dropdowns and calendar styling
-  .p-dropdown, .p-calendar {
-    .p-dropdown-trigger, .p-calendar-trigger {
-      background: transparent;
+  // Dialog styling
+  .p-dialog {
+    .p-dialog-header {
+      background-color: #f8f9fa;
+      border-bottom: 1px solid #dee2e6;
+    }
+    
+    .p-dialog-content {
+      padding: 1.5rem;
+    }
+    
+    .p-dialog-footer {
+      background-color: #f8f9fa;
+      border-top: 1px solid #dee2e6;
+      padding: 1rem 1.5rem;
     }
   }
   
-  .p-dropdown-panel, .p-datepicker-panel {
+  // Form styling
+  .p-inputtext, .p-password, .p-dropdown {
+    width: 100%;
+  }
+  
+  .p-dropdown-panel {
     z-index: 1000;
   }
   
@@ -132,25 +142,48 @@
     background-color: #2196F3;
     color: white;
   }
+  
+  // Button styling
+  .p-button-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  .p-button-text {
+    background: transparent;
+    border: none;
+    
+    &:hover {
+      background-color: rgba(0,0,0,0.04);
+    }
+  }
+  
+  .p-button-danger {
+    color: #dc3545;
+    
+    &:hover {
+      background-color: #dc3545;
+      color: white;
+    }
+  }
 }
 
 // Responsive design
 @media (max-width: 768px) {
-  .filter-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .filter-actions {
-    flex-direction: column;
-    align-items: center;
-    
-    .p-button {
-      width: 100%;
-      max-width: 200px;
-    }
-  }
-  
-  .pool-reservations-container {
+  .users-container {
     padding: 1rem;
+  }
+  
+  .actions {
+    text-align: center;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .p-datatable {
+    font-size: 0.875rem;
   }
 } 

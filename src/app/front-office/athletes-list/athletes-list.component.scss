@@ -11,31 +11,233 @@
 
 .athletes-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 2rem;
   justify-items: center;
   padding: 1rem;
 }
 
+.athlete-card-wrapper {
+  width: 340px;
+  height: 480px;
+  perspective: 1000px;
+}
+
+.athlete-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: white;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.athlete-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+}
+
+.athlete-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.background-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.athlete-card:hover .background-image {
+  transform: scale(1.05);
+}
+
+.background-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, rgba(33, 150, 243, 0.8) 0%, rgba(156, 39, 176, 0.8) 100%);
+}
+
+// Unified blue gradient class
+.gradient-unified-blue {
+  // This class is used for consistent styling across all cards
+}
+
+.athlete-card:hover .background-overlay {
+  background: linear-gradient(135deg, rgba(33, 150, 243, 0.7) 0%, rgba(156, 39, 176, 0.7) 100%);
+}
+
+.athlete-content {
+  position: relative;
+  z-index: 3;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  color: white;
+}
+
 .athlete-header {
-  padding: 1rem;
-  background-color: #f8f9fa;
-  border-bottom: 1px solid #dee2e6;
+  text-align: center;
+  margin-bottom: 1rem;
+  padding-top: 1rem;
+}
+
+.athlete-avatar-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.athlete-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  background: white;
+}
+
+.nationality-badge {
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.85rem;
+  background: #647acb;
+  color: #fff;
+  padding: 0.2rem 0.6rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(80, 112, 255, 0.3);
+  font-weight: 600;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+}
+
+.athlete-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  color: white;
 }
 
 .athlete-details {
-  padding: 1rem 0;
-  min-height: 150px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .athlete-details p {
-  margin: 0.5rem 0;
+  margin: 0;
+  padding: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.1);
   padding: 0.5rem;
-  border-bottom: 1px solid #f0f0f0;
+  border-radius: 0.5rem;
+  backdrop-filter: blur(10px);
+}
+
+.athlete-meta {
+  margin-bottom: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.club-logo {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  margin-left: 0.5rem;
+  border-radius: 0.3rem;
+  background: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.athlete-stats {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.medal-badge {
+  font-size: 1rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-weight: 600;
+}
+
+.p-badge-gold {
+  background: #ffd700 !important;
+  color: #333 !important;
+}
+
+.p-badge-silver {
+  background: #c0c0c0 !important;
+  color: #333 !important;
+}
+
+.p-badge-bronze {
+  background: #cd7f32 !important;
+  color: white !important;
+}
+
+.athlete-footer {
+  margin-top: auto;
+  padding-top: 1rem;
 }
 
 .athlete-dialog-content {
   padding: 1rem;
+}
+
+.dialog-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.athlete-avatar-large {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #647acb;
+  margin-bottom: 0.5rem;
+  background: #fff;
+}
+
+.dialog-details p {
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
 }
 
 .text-center {
@@ -43,28 +245,6 @@
 }
 
 :host ::ng-deep {
-  .p-card {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    margin: 0 !important;
-  }
-
-  .p-card-body {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .p-card-content {
-    flex: 1;
-  }
-
-  .p-card-footer {
-    padding: 1rem;
-    border-top: 1px solid #dee2e6;
-  }
-
   .p-dropdown {
     width: 100%;
   }

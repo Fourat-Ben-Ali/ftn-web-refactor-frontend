@@ -1,63 +1,351 @@
 <p-toast></p-toast>
-<div class="card">
-  <div class="card-header flex justify-content-between align-items-center">
-    <h2>Olympic Pool Reservations</h2>
-    <button pButton type="button" label="New Reservation" icon="pi pi-plus" (click)="showDialog()"></button>
+
+<!-- Main Dashboard -->
+<div class="pool-dashboard">
+  <!-- Header Section -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <h1><i class="pi pi-swimming-pool"></i> Olympic Pool Reservations</h1>
+      <p class="subtitle">Manage and visualize pool lane reservations with interactive interface</p>
+    </div>
+    <div class="header-actions">
+      <button pButton type="button" label="New Reservation" icon="pi pi-plus" 
+              (click)="showDialog()" class="p-button-primary"></button>
+    </div>
   </div>
 
-  <p-table [value]="reservations" [paginator]="true" [rows]="5" [responsiveLayout]="'scroll'">
-    <ng-template pTemplate="header">
-      <tr>
-        <th>Coach</th>
-        <th>Club</th>
-        <th>Pool</th>
-        <th>Date</th>
-        <th>Time Slot</th>
-        <th>Action</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-r>
-      <tr>
-        <td>{{ r.coach }}</td>
-        <td>{{ r.club.clubName }}</td>
-        <td>{{ r.pool.name }}</td>
-        <td>{{ r.date }}</td>
-        <td>{{ r.startTime }} - {{ r.endTime }}</td>
-        <td>
-          <button pButton icon="pi pi-trash" class="p-button-danger p-button-icon-only square-delete" (click)="deleteReservation(r.id!)" pTooltip="Delete Reservation" tooltipPosition="top"></button>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
-</div>
-
-<p-dialog header="New Pool Reservation" [(visible)]="displayDialog" [modal]="true" [style]="{width: '600px', minHeight: '500px'}" [closable]="true" (onHide)="hideDialog()">
-  <form [formGroup]="reservationForm" (ngSubmit)="onSubmit()" class="p-fluid">
-    <div class="field">
-      <label for="coach">Coach</label>
-      <input pInputText id="coach" formControlName="coach" placeholder="Coach name" />
-    </div>
-    <div class="field">
-      <label for="club">Club</label>
-      <p-dropdown id="club" [options]="clubs" formControlName="club" optionLabel="clubName" placeholder="Select a club"></p-dropdown>
-    </div>
-    <div class="field">
-      <label for="pool">Pool</label>
-      <p-dropdown id="pool" [options]="pools" formControlName="pool" optionLabel="name" placeholder="Select a pool"></p-dropdown>
-    </div>
-    <div class="field calendar-row">
-      <label for="date">Date</label>
-      <div class="calendar-container">
-        <p-calendar id="date" formControlName="date" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="minDate"></p-calendar>
+  <!-- Quick Stats Cards -->
+  <div class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="pi pi-calendar"></i>
+        </div>
+        <div class="stat-content">
+          <h3>{{reservations.length}}</h3>
+          <p>Total Reservations</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="pi pi-users"></i>
+        </div>
+        <div class="stat-content">
+          <h3>{{pools.length}}</h3>
+          <p>Available Pools</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="pi pi-building"></i>
+        </div>
+        <div class="stat-content">
+          <h3>{{clubs.length}}</h3>
+          <p>Active Clubs</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="pi pi-clock"></i>
+        </div>
+        <div class="stat-content">
+          <h3>{{timeSlots.length}}</h3>
+          <p>Time Slots</p>
+        </div>
       </div>
     </div>
-    <div class="field">
-      <label for="timeSlot">Time Slot</label>
-      <p-dropdown id="timeSlot" [options]="availableTimeSlots" formControlName="timeSlot" optionLabel="label" optionValue="value" placeholder="Select a time slot"></p-dropdown>
+  </div>
+
+  <!-- Reservations Table -->
+  <div class="table-section">
+    <div class="section-header">
+      <h2>Current Reservations</h2>
+      <div class="table-actions">
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" placeholder="Search reservations..." />
+        </span>
+      </div>
     </div>
-    <div class="flex justify-content-end mt-3">
-      <button pButton type="button" label="Cancel" class="p-button-text" (click)="hideDialog()"></button>
-      <button pButton type="submit" label="Reserve" [disabled]="reservationForm.invalid || loading"></button>
+    
+    <p-table [value]="reservations" [paginator]="true" [rows]="8" [responsiveLayout]="'scroll'"
+             [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} reservations"
+             [rowsPerPageOptions]="[5,8,15,25]">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Coach</th>
+          <th>Club</th>
+          <th>Pool</th>
+          <th>Date</th>
+          <th>Time Slot</th>
+          <th>Lane</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-r>
+        <tr>
+          <td>
+            <div class="coach-info">
+              <i class="pi pi-user"></i>
+              <span>{{ r.coach }}</span>
+            </div>
+          </td>
+          <td>
+            <div class="club-info">
+              <i class="pi pi-building"></i>
+              <span>{{ r.club.clubName }}</span>
+            </div>
+          </td>
+          <td>
+            <div class="pool-info">
+              <i class="pi pi-swimming-pool"></i>
+              <span>{{ r.pool.name }}</span>
+            </div>
+          </td>
+          <td>
+            <div class="date-info">
+              <i class="pi pi-calendar"></i>
+              <span>{{ r.date | date:'mediumDate' }}</span>
+            </div>
+          </td>
+          <td>
+            <div class="time-info">
+              <i class="pi pi-clock"></i>
+              <span>{{ r.startTime }} - {{ r.endTime }}</span>
+            </div>
+          </td>
+          <td>
+            <div class="lane-badge">
+              <span class="lane-number">{{ r.lane }}</span>
+            </div>
+          </td>
+          <td>
+            <p-tag value="Active" severity="success"></p-tag>
+          </td>
+          <td>
+            <div class="action-buttons">
+              <button pButton icon="pi pi-eye" class="p-button-info p-button-icon-only p-button-sm" 
+                      pTooltip="View Details" tooltipPosition="top"></button>
+              <button pButton icon="pi pi-trash" class="p-button-danger p-button-icon-only p-button-sm" 
+                      (click)="deleteReservation(r.id!)" pTooltip="Delete Reservation" tooltipPosition="top"></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<!-- Enhanced Reservation Dialog -->
+<p-dialog header="New Pool Reservation" [(visible)]="displayDialog" [modal]="true" 
+          [style]="{width: '90vw', maxWidth: '1200px', height: '90vh'}" 
+          [closable]="true" (onHide)="hideDialog()" class="enhanced-dialog">
+  
+  <div class="reservation-wizard">
+    <!-- Step 1: Basic Information -->
+    <div class="wizard-step">
+      <div class="step-header">
+        <h3><i class="pi pi-info-circle"></i> Basic Information</h3>
+        <p>Enter coach and club details</p>
+      </div>
+      
+      <div class="form-section">
+        <div class="form-row">
+          <div class="form-field">
+            <label for="coach">Coach Name</label>
+            <div class="p-inputgroup">
+              <span class="p-inputgroup-addon">
+                <i class="pi pi-user"></i>
+              </span>
+              <input type="text" id="coach" formControlName="coach" placeholder="Enter coach name" class="p-inputtext" (keyup)="onCoachInput($event)" />
+            </div>
+          </div>
+          
+          <div class="form-field">
+            <label for="club">Club</label>
+            <p-dropdown
+              id="club"
+              [options]="clubs"
+              formControlName="club"
+              optionLabel="clubName"
+              optionValue="id"
+              placeholder="Select a club"
+              [showClear]="true"
+              [filter]="true"
+              filterPlaceholder="Search clubs..."
+              [loading]="loadingClubs"
+              [disabled]="loadingClubs"
+              [required]="true"
+              (onChange)="onClubChange($event)"
+            ></p-dropdown>
+            <small class="text-gray-500" *ngIf="loadingClubs">Loading clubs...</small>
+          </div>
+        </div>
+      </div>
     </div>
-  </form>
+
+    <!-- Step 2: Pool Selection -->
+    <div class="wizard-step">
+      <div class="step-header">
+        <h3><i class="pi pi-swimming-pool"></i> Pool Selection</h3>
+        <p>Choose the pool for your reservation</p>
+      </div>
+      
+      <div class="pool-selection">
+        <div class="pools-grid">
+          <div *ngFor="let pool of pools" 
+               class="pool-card" 
+               [class.selected]="selectedPool?.id === pool.id"
+               (click)="onPoolSelect(pool)">
+            <div class="pool-icon">
+              <i class="pi pi-swimming-pool"></i>
+            </div>
+            <div class="pool-info">
+              <h4>{{pool.name}}</h4>
+              <p>{{pool.location || 'Olympic swimming pool'}}</p>
+            </div>
+            <div class="pool-status">
+              <i class="pi pi-check-circle" *ngIf="selectedPool?.id === pool.id"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: Date and Time Selection -->
+    <div class="wizard-step">
+      <div class="step-header">
+        <h3><i class="pi pi-calendar"></i> Date & Time Selection</h3>
+        <p>Select your preferred date and time slot</p>
+      </div>
+      
+      <div class="datetime-selection">
+        <div class="date-section">
+          <label for="date">Date</label>
+          <p-calendar id="date" formControlName="date" dateFormat="yy-mm-dd" 
+                     [showIcon]="true" [minDate]="minDate"
+                     (onSelect)="onDateSelect($event)"
+                     placeholder="Select date"></p-calendar>
+        </div>
+        
+        <div class="timeslots-section" *ngIf="selectedDate">
+          <label>Available Time Slots</label>
+          <div class="timeslots-grid">
+            <div *ngFor="let slot of enhancedTimeSlots" 
+                 class="timeslot-card"
+                 [class.available]="slot.isAvailable"
+                 [class.unavailable]="!slot.isAvailable"
+                 [class.selected]="selectedTimeSlot?.start === slot.start"
+                 (click)="slot.isAvailable && onTimeSlotSelect(slot)">
+              <div class="timeslot-time">
+                <span class="start-time">{{slot.start}}</span>
+                <span class="separator">-</span>
+                <span class="end-time">{{slot.end}}</span>
+              </div>
+              <div class="timeslot-status">
+                <span class="status-badge" 
+                      [class.available]="slot.isAvailable"
+                      [class.unavailable]="!slot.isAvailable">
+                  {{slot.isAvailable ? 'Available' : 'Full'}}
+                </span>
+                <span class="lanes-info" *ngIf="slot.isAvailable">
+                  {{10 - slot.reservedLanes.length}} lanes free
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4: Lane Selection -->
+    <div class="wizard-step" *ngIf="selectedTimeSlot">
+      <div class="step-header">
+        <h3><i class="pi pi-list"></i> Lane Selection</h3>
+        <p>Click on available lanes to select your preferred lane</p>
+      </div>
+      
+      <!-- Pool Stats -->
+      <div class="pool-stats">
+        <div class="stat-item">
+          <span class="stat-label">Total Lanes:</span>
+          <span class="stat-value">{{poolStats.totalLanes}}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Available:</span>
+          <span class="stat-value available">{{poolStats.availableLanes}}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Reserved:</span>
+          <span class="stat-value reserved">{{poolStats.reservedLanes}}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Utilization:</span>
+          <span class="stat-value">{{poolStats.utilizationRate}}%</span>
+        </div>
+      </div>
+
+      <!-- Visual Pool -->
+      <div class="visual-pool">
+        <div class="pool-container">
+          <div class="pool-water">
+            <div class="lanes-container">
+              <div *ngFor="let lane of lanes; let i = index" 
+                   class="lane"
+                   [class.selected]="lane.isSelected"
+                   [class.reserved]="lane.isReserved"
+                   (click)="onLaneClick(lane)">
+                <div class="lane-number">{{lane.id}}</div>
+                <div class="lane-water"></div>
+                <div class="lane-info" *ngIf="lane.reservationInfo">
+                  <div class="reservation-details">
+                    <small>{{lane.reservationInfo.coach}}</small>
+                    <small>{{lane.reservationInfo.club}}</small>
+                  </div>
+                </div>
+                <div class="lane-status">
+                  <i class="pi pi-check" *ngIf="lane.isSelected"></i>
+                  <i class="pi pi-times" *ngIf="lane.isReserved"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Lane Legend -->
+        <div class="lane-legend">
+          <div class="legend-item">
+            <div class="legend-color available"></div>
+            <span>Available</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color selected"></div>
+            <span>Selected</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color reserved"></div>
+            <span>Reserved</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dialog Footer -->
+  <ng-template pTemplate="footer">
+    <div class="dialog-footer">
+
+      
+      <div class="footer-actions">
+        <button pButton type="button" label="Cancel" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton type="submit" label="Create Reservation" 
+                [disabled]="!isFormComplete() || loading"
+                (click)="onSubmit()" class="p-button-primary">
+          <i class="pi pi-check" *ngIf="!loading"></i>
+          <i class="pi pi-spinner pi-spin" *ngIf="loading"></i>
+        </button>
+      </div>
+    </div>
+  </ng-template>
 </p-dialog> 

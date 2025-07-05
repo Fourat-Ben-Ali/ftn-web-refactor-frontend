@@ -1,3 +1,5 @@
+import { Club } from './club.model';
+
 export interface Athlete {
   id: number;
   prenom: string;
@@ -5,13 +7,15 @@ export interface Athlete {
   genre: string;
   dateNaissance: string;
   nationalite: string;
-  club?: {
-    id: number;
-    clubName: string;
-    description: string;
-  };
+  club?: Club;
   equipeNationale?: {
     id: number;
     nom: string;
+  };
+  photoUrl?: string;
+  medals?: {
+    gold?: number;
+    silver?: number;
+    bronze?: number;
   };
 } 

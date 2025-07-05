@@ -7,25 +7,54 @@
   </div>
 
   <div class="clubs-grid">
-    <p-card *ngFor="let club of filteredClubs" [style]="{'width': '300px', 'margin': '1rem'}">
-      <ng-template pTemplate="header">
-        <div class="club-header">
-          <h2 class="text-center">{{club.clubName}}</h2>
+    <div class="club-card-wrapper" *ngFor="let club of filteredClubs">
+      <div class="club-card" [ngClass]="getClubBackgroundClass(club)">
+        <div class="club-background">
+          <img [src]="getClubBackgroundImage(club)" alt="Club Background" class="background-image" />
+          <div class="background-overlay"></div>
         </div>
-      </ng-template>
-      <div class="club-details">
-        <p><strong>Description:</strong> {{club.description}}</p>
+        
+        <div class="club-content">
+          <div class="club-header">
+            <div class="club-logo-container">
+              <img [src]="club.logoUrl || 'assets/logos/main-logo.png'" alt="Club Logo" class="club-logo" />
+              <span class="p-badge p-component p-badge-danger club-type-badge">Club</span>
+            </div>
+            <h2 class="text-center club-name">{{club.clubName}}</h2>
+          </div>
+          
+          <div class="club-details">
+            <div class="club-description">
+              <p><i class="pi pi-info-circle"></i> <strong>Description:</strong></p>
+              <p class="description-text">{{club.description}}</p>
+            </div>
+            <div class="club-stats" *ngIf="club.athleteCount">
+              <span class="p-badge p-badge-info stats-badge">
+                <i class="pi pi-users"></i> {{club.athleteCount}} Athletes
+              </span>
+            </div>
+          </div>
+          
+          <div class="club-footer">
+            <button pButton label="View Details" icon="pi pi-info-circle" (click)="showDetails(club)" class="w-full p-button-rounded p-button-danger"></button>
+          </div>
+        </div>
       </div>
-      <ng-template pTemplate="footer">
-        <button pButton label="View Details" icon="pi pi-info-circle" (click)="showDetails(club)" class="w-full"></button>
-      </ng-template>
-    </p-card>
+    </div>
   </div>
 
-  <p-dialog [(visible)]="displayDialog" [style]="{width: '450px'}" header="Club Details" [modal]="true">
+  <p-dialog [(visible)]="displayDialog" [style]="{width: '500px'}" header="Club Details" [modal]="true" [contentStyle]="{'padding':'2rem'}">
     <div *ngIf="selectedClub" class="club-dialog-content">
-      <h3 class="text-center">{{selectedClub.clubName}}</h3>
-      <p><strong>Description:</strong> {{selectedClub.description}}</p>
+      <div class="dialog-header">
+        <img [src]="selectedClub.logoUrl || 'assets/logos/main-logo.png'" alt="Club Logo" class="club-logo-large" />
+        <h3 class="text-center">{{selectedClub.clubName}}</h3>
+      </div>
+      <div class="dialog-details">
+        <p><i class="pi pi-info-circle"></i> <strong>Description:</strong> {{selectedClub.description}}</p>
+        <p *ngIf="selectedClub.athleteCount">
+          <i class="pi pi-users"></i> <strong>Athletes:</strong> {{selectedClub.athleteCount}}
+        </p>
+      </div>
     </div>
   </p-dialog>
 </div> 

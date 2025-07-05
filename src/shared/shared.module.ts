@@ -30,6 +30,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ActualiteAcademieService } from 'app/services/actualite-academie.service';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { ActualiteAcademieService } from 'app/services/actualite-academie.servic
     HttpClientModule,
     InputTextModule,
     InputTextareaModule,
+    NgChartsModule,
     PaginatorModule,
     ReactiveFormsModule,
     RouterModule,
@@ -68,6 +70,7 @@ import { ActualiteAcademieService } from 'app/services/actualite-academie.servic
     InputTextModule,
     InputTextareaModule,
     NavbarComponent,
+    NgChartsModule,
     ReactiveFormsModule,
     SidebarComponent,
     TableComponent,

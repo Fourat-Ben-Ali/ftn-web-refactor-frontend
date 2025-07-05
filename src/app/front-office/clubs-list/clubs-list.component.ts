@@ -50,4 +50,14 @@ export class ClubsListComponent implements OnInit {
     this.selectedClub = club;
     this.displayDialog = true;
   }
+
+  getClubBackgroundImage(club: Club): string {
+    // Return the Tunisia national football team image
+    return 'https://mrwallpaper.com/images/hd/tunisia-national-football-team-logo-on-red-banner-cvwaa4c2nlhyf57b.jpg';
+  }
+
+  getClubBackgroundClass(club: Club): string {
+    // Use unified red gradient for all club cards
+    return 'gradient-unified-red';
+  }
 } 

@@ -13,6 +13,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 })
 export class DisciplinesComponent implements OnInit {
   disciplines: Discipline[] = [];
+  filteredDisciplines: Discipline[] = [];
   displayAddDialog: boolean = false;
   displayEditDialog: boolean = false;
   disciplineForm: FormGroup;
@@ -20,6 +21,7 @@ export class DisciplinesComponent implements OnInit {
   loading: boolean = false;
   first: number = 0;
   totalRecords: number = 0;
+  searchTerm: string = '';
   private searchSubject = new Subject<string>();
 
   constructor(
@@ -50,6 +52,7 @@ export class DisciplinesComponent implements OnInit {
     this.disciplineService.getAllDisciplines().subscribe({
       next: (data) => {
         this.disciplines = data;
+        this.filteredDisciplines = data;
         this.totalRecords = data.length;
         this.loading = false;
       },
@@ -60,12 +63,12 @@ export class DisciplinesComponent implements OnInit {
   }
 
   onSearch(event: any) {
-    const searchTerm = event.target.value;
-    if (searchTerm.trim()) {
-      this.searchSubject.next(searchTerm);
-    } else {
-      this.getDisciplines();
-    }
+    const value = event.target.value.toLowerCase();
+    this.searchTerm = value;
+    this.filteredDisciplines = this.disciplines.filter(d =>
+      d.nom.toLowerCase().includes(value) ||
+      (d.description && d.description.toLowerCase().includes(value))
+    );
   }
 
   searchDisciplines(query: string) {
@@ -175,5 +178,9 @@ export class DisciplinesComponent implements OnInit {
         console.error('Error deleting discipline:', error);
       }
     });
+  }
+
+  getTotalDisciplines(): number {
+    return this.disciplines.length;
   }
 } 

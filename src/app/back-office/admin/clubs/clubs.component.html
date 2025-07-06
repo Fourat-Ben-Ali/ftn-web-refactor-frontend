@@ -1,34 +1,130 @@
-<p-table
-  [value]="clubs"
-  [paginator]="true"
-  [rows]="5"
-  [globalFilterFields]="['clubName']"
-  sortField="clubName"
-  [tableStyle]="{ 'min-width': '30rem' }"
->
-  <ng-template pTemplate="header">
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Actions</th>
-    </tr>
-  </ng-template>
+<div class="clubs-container">
+  <!-- Header Section -->
+  <div class="header-section">
+    <div class="header-content">
+      <div class="header-left">
+        <h1 class="page-title">
+          <i class="pi pi-building"></i>
+          Clubs Management
+        </h1>
+        <p class="page-subtitle">Manage and explore all swimming clubs</p>
+      </div>
+      <div class="header-right">
+        <app-button label="Add Club" icon="pi pi-plus" (click)="showAddDialog()" severity="primary" class="add-button"></app-button>
+      </div>
+    </div>
+  </div>
 
-  <ng-template pTemplate="body" let-club>
-    <tr>
-      <td>{{ club.clubName }}</td>
-      <td>{{ club.description }}</td>
-      <td>
-        <app-button
-          label=""
-          icon="pi pi-eye"
-          severity="secondary"
-          p-tooltip="View"
+  <!-- Stats Cards -->
+  <div class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="pi pi-building"></i>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-number">{{ getTotalClubs() }}</h3>
+          <p class="stat-label">Total Clubs</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search Section -->
+  <div class="search-section">
+    <div class="search-container">
+      <div class="search-box">
+        <i class="pi pi-search search-icon"></i>
+        <input 
+          type="text" 
+          class="search-input"
+          (input)="onSearch($event)" 
+          placeholder="Search clubs by name or description..."
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="loading">
+    <div class="loading-spinner">
+      <i class="pi pi-spinner pi-spin"></i>
+      <p>Loading clubs...</p>
+    </div>
+  </div>
+
+  <!-- Clubs Grid -->
+  <div class="clubs-grid" *ngIf="!loading">
+    <div 
+      class="club-card" 
+      *ngFor="let club of filteredClubs"
+    >
+      <div class="card-header">
+        <div class="club-avatar">
+          <i class="pi pi-building"></i>
+        </div>
+        <div class="club-info">
+          <h3 class="club-name">{{ club.clubName }}</h3>
+          <p class="club-description">{{ club.description }}</p>
+        </div>
+      </div>
+      <div class="card-actions">
+        <button 
+          class="action-btn edit-btn"
+          p-tooltip="Edit Club"
+          (click)="showEditDialog(club)"
         >
-        </app-button>
-        <app-button label="" icon="pi pi-pencil"  p-tooltip="View"> </app-button>
-        <app-button label="" icon="pi pi-trash" severity="danger"  p-tooltip="View"> </app-button>
-      </td>
-    </tr>
+          <i class="pi pi-pencil"></i>
+        </button>
+        <button 
+          class="action-btn delete-btn"
+          p-tooltip="Delete Club"
+          (click)="confirmDelete(club)"
+        >
+          <i class="pi pi-trash"></i>
+        </button>
+      </div>
+    </div>
+    <div class="empty-state" *ngIf="filteredClubs.length === 0 && !loading">
+      <div class="empty-content">
+        <i class="pi pi-building empty-icon"></i>
+        <h3>No clubs found</h3>
+        <p>Try adjusting your search or add a new club.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add/Edit Club Dialog -->
+<p-dialog header="{{ editMode ? 'Edit Club' : 'Add Club' }}" [(visible)]="displayDialog" [modal]="true" [closable]="true" (onHide)="hideDialog()" [style]="{ width: '500px' }" styleClass="modern-dialog" [draggable]="false" [resizable]="false">
+  <ng-template pTemplate="content">
+    <div class="dialog-content">
+      <form [formGroup]="clubForm" class="club-form">
+        <div class="form-row">
+          <div class="form-field full-width">
+            <label for="clubName">
+              <i class="pi pi-building"></i>
+              Club Name
+            </label>
+            <input id="clubName" type="text" formControlName="clubName" class="modern-input" placeholder="Enter club name" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field full-width">
+            <label for="description">
+              <i class="pi pi-align-left"></i>
+              Description
+            </label>
+            <input id="description" type="text" formControlName="description" class="modern-input" placeholder="Enter description" />
+          </div>
+        </div>
+      </form>
+    </div>
   </ng-template>
-</p-table>
+  <ng-template pTemplate="footer">
+    <div class="dialog-footer">
+      <app-button label="Cancel" icon="pi pi-times" (click)="hideDialog()" severity="secondary" class="cancel-btn"></app-button>
+      <app-button label="Save Club" icon="pi pi-check" (click)="saveClub()" [disabled]="clubForm.invalid" class="save-btn"></app-button>
+    </div>
+  </ng-template>
+</p-dialog>
+<p-confirmDialog></p-confirmDialog>

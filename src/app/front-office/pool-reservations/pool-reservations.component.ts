@@ -29,6 +29,7 @@ export class PoolReservationsComponent implements OnInit {
   selectedPool: Pool | null = null;
   selectedDate: Date | null = null;
   selectedLane: number | null = null;
+  public searchTerm: string = '';
 
   constructor(
     private reservationService: PoolReservationService,

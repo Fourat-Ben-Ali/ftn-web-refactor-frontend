@@ -13,12 +13,15 @@ import { MessageService } from 'primeng/api';
 })
 export class LicencesComponent implements OnInit {
   licences: Licence[] = [];
+  filteredLicences: Licence[] = [];
   athletes: Athlete[] = [];
   clubs: clubs[] = [];
   displayAddDialog: boolean = false;
   displayEditDialog: boolean = false;
   licenceForm: FormGroup;
   selectedLicence: Licence | null = null;
+  searchTerm: string = '';
+  loading: boolean = false;
 
   constructor(
     private licenceService: LicenceService,
@@ -42,9 +45,25 @@ export class LicencesComponent implements OnInit {
   }
 
   getLicences() {
+    this.loading = true;
     this.licenceService.getAllLicences().subscribe((data) => {
       this.licences = data;
+      this.filteredLicences = data;
+      this.loading = false;
     });
+  }
+
+  onSearch(event: any) {
+    const value = event.target.value.toLowerCase();
+    this.searchTerm = value;
+    this.filteredLicences = this.licences.filter(licence =>
+      this.getAthleteName(licence.athleteId).toLowerCase().includes(value) ||
+      this.getClubName(licence.clubId).toLowerCase().includes(value)
+    );
+  }
+
+  getTotalLicences(): number {
+    return this.licences.length;
   }
 
   getAthletes() {

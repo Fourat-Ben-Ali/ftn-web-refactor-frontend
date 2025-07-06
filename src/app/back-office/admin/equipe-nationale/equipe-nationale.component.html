@@ -1,57 +1,101 @@
-<div class="card">
-  <div class="card-header">
-    <app-button
-      label="Add National Team"
-      icon="pi pi-plus"
-      (click)="showAddDialog()"
-      severity="primary"
-    >
-    </app-button>
+<div class="equipes-container">
+  <!-- Header Section -->
+  <div class="header-section">
+    <div class="header-content">
+      <div class="header-left">
+        <h1 class="page-title">
+          <i class="pi pi-flag"></i>
+          National Teams Management
+        </h1>
+        <p class="page-subtitle">Manage and explore all national teams</p>
+      </div>
+      <div class="header-right">
+        <app-button label="Add National Team" icon="pi pi-plus" (click)="showAddDialog()" severity="primary" class="add-button"></app-button>
+      </div>
+    </div>
   </div>
 
-  <p-table
-    [value]="equipes"
-    [paginator]="true"
-    [rows]="5"
-    [globalFilterFields]="['nom']"
-    sortField="nom"
-    [tableStyle]="{ 'min-width': '30rem' }"
-  >
-    <ng-template pTemplate="header">
-      <tr>
-        <th>Name</th>
-        <th>Discipline</th>
-        <th>Actions</th>
-      </tr>
-    </ng-template>
+  <!-- Stats Cards -->
+  <div class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="pi pi-flag"></i>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-number">{{ getTotalEquipes() }}</h3>
+          <p class="stat-label">Total National Teams</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <ng-template pTemplate="body" let-equipe>
-      <tr>
-        <td>{{ equipe.nom }}</td>
-        <td>{{ equipe.discipline?.nom }}</td>
-        <td>
-          <app-button 
-            label="" 
-            icon="pi pi-pencil" 
-            p-tooltip="Edit"
-            (click)="showEditDialog(equipe)"
-          > 
-          </app-button>
-          <app-button 
-            label="" 
-            icon="pi pi-trash" 
-            severity="danger" 
-            p-tooltip="Delete"
-            (click)="deleteEquipe(equipe.id)"
-          > 
-          </app-button>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
-</div>
+  <!-- Search Section -->
+  <div class="search-section">
+    <div class="search-container">
+      <div class="search-box">
+        <i class="pi pi-search search-icon"></i>
+        <input 
+          type="text" 
+          class="search-input"
+          (input)="onSearch($event)" 
+          placeholder="Search national teams by name or discipline..."
+        />
+      </div>
+    </div>
+  </div>
 
-<!-- Add National Team Dialog -->
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="loading">
+    <div class="loading-spinner">
+      <i class="pi pi-spinner pi-spin"></i>
+      <p>Loading national teams...</p>
+    </div>
+  </div>
+
+  <!-- National Teams Grid -->
+  <div class="equipes-grid" *ngIf="!loading">
+    <div 
+      class="equipe-card" 
+      *ngFor="let equipe of filteredEquipes"
+    >
+      <div class="card-header">
+        <div class="equipe-avatar">
+          <i class="pi pi-flag"></i>
+        </div>
+        <div class="equipe-info">
+          <h3 class="equipe-name">{{ equipe.nom }}</h3>
+          <p class="equipe-discipline">{{ equipe.discipline?.nom }}</p>
+        </div>
+      </div>
+      <div class="card-actions">
+        <button 
+          class="action-btn edit-btn"
+          p-tooltip="Edit National Team"
+          (click)="showEditDialog(equipe)"
+        >
+          <i class="pi pi-pencil"></i>
+        </button>
+        <button 
+          class="action-btn delete-btn"
+          p-tooltip="Delete National Team"
+          *ngIf="equipe.id !== undefined"
+          (click)="deleteEquipe(equipe.id!)"
+        >
+          <i class="pi pi-trash"></i>
+        </button>
+      </div>
+    </div>
+    <div class="empty-state" *ngIf="filteredEquipes.length === 0 && !loading">
+      <div class="empty-content">
+        <i class="pi pi-flag empty-icon"></i>
+        <h3>No national teams found</h3>
+        <p>Try adjusting your search or add a new national team.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add/Edit National Team Dialog (unchanged) -->
 <p-dialog
   [(visible)]="displayAddDialog"
   [style]="{ width: '500px' }"

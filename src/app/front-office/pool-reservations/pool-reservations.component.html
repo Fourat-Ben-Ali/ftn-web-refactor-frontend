@@ -94,45 +94,116 @@
   </div>
 
   <div class="content">
-    <p-table 
-      [value]="filteredReservations" 
-      [paginator]="true" 
-      [rows]="10"
-      [responsiveLayout]="'scroll'"
-      [loading]="loading"
-      [tableStyle]="{ 'min-width': '50rem' }"
-      styleClass="p-datatable-striped"
-    >
-      <ng-template pTemplate="header">
-        <tr>
-          <th>Coach</th>
-          <th>Club</th>
-          <th>Pool</th>
-          <th>Date</th>
-          <th>Time Slot</th>
-          <th>Lane</th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-reservation>
-        <tr>
-          <td>{{ reservation.coach }}</td>
-          <td>{{ reservation.club.clubName }}</td>
-          <td>{{ reservation.pool.name }}</td>
-          <td>{{ reservation.date | date:'mediumDate' }}</td>
-          <td>{{ reservation.startTime }} - {{ reservation.endTime }}</td>
-          <td>{{ reservation.lane }}</td>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="emptymessage">
-        <tr>
-          <td colspan="6" class="text-center">
-            <div class="empty-state">
-              <i class="pi pi-calendar-times" style="font-size: 3rem; color: #ccc;"></i>
-              <p>No pool reservations found</p>
+    <!-- Modern Dashboard Section (copied and adapted from backoffice) -->
+    <div class="pool-dashboard">
+      <!-- Quick Stats Cards -->
+      <div class="stats-section">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="pi pi-calendar"></i>
             </div>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
+            <div class="stat-content">
+              <h3>{{filteredReservations.length}}</h3>
+              <p>Total Reservations</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="pi pi-users"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{pools.length}}</h3>
+              <p>Available Pools</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="pi pi-building"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{clubs.length}}</h3>
+              <p>Active Clubs</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Reservations Table -->
+      <div class="table-section">
+        <div class="section-header">
+          <h2>Current Reservations</h2>
+          <div class="table-actions">
+            <span class="p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input pInputText type="text" placeholder="Search reservations..." [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()" />
+            </span>
+          </div>
+        </div>
+        <p-table [value]="filteredReservations" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'"
+                 [loading]="loading"
+                 [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} reservations"
+                 [rowsPerPageOptions]="[5,10,15,25]">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Coach</th>
+              <th>Club</th>
+              <th>Pool</th>
+              <th>Date</th>
+              <th>Time Slot</th>
+              <th>Lane</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-reservation>
+            <tr>
+              <td>
+                <div class="coach-info">
+                  <i class="pi pi-user"></i>
+                  <span>{{ reservation.coach }}</span>
+                </div>
+              </td>
+              <td>
+                <div class="club-info">
+                  <i class="pi pi-building"></i>
+                  <span>{{ reservation.club.clubName }}</span>
+                </div>
+              </td>
+              <td>
+                <div class="pool-info">
+                  <i class="pi pi-swimming-pool"></i>
+                  <span>{{ reservation.pool.name }}</span>
+                </div>
+              </td>
+              <td>
+                <div class="date-info">
+                  <i class="pi pi-calendar"></i>
+                  <span>{{ reservation.date | date:'mediumDate' }}</span>
+                </div>
+              </td>
+              <td>
+                <div class="time-info">
+                  <i class="pi pi-clock"></i>
+                  <span>{{ reservation.startTime }} - {{ reservation.endTime }}</span>
+                </div>
+              </td>
+              <td>
+                <div class="lane-badge">
+                  <span class="lane-number">{{ reservation.lane }}</span>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="6" class="text-center">
+                <div class="empty-state">
+                  <i class="pi pi-calendar-times" style="font-size: 3rem; color: #ccc;"></i>
+                  <p>No pool reservations found</p>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
   </div>
 </div> 

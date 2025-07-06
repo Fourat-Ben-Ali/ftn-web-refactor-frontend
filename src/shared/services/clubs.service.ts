@@ -18,4 +18,13 @@ export class ClubsService {
     params.set('pageSize', paginationParams.pageSize.toString());
     return this.http.get<clubs[]>(`${this.BASE_URL}api/clubs/all`, { params });
   }
+  public createClub(club: clubs) {
+    return this.http.post<clubs>(`${this.BASE_URL}api/clubs`, club);
+  }
+  public updateClub(club: clubs) {
+    return this.http.put<clubs>(`${this.BASE_URL}api/clubs/${club.id}`, club);
+  }
+  public deleteClub(id: number) {
+    return this.http.delete(`${this.BASE_URL}api/clubs/${id}`);
+  }
 }

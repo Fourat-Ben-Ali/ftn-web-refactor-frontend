@@ -37,6 +37,18 @@
           </div>
         </div>
       </div>
+      <!-- New KPIs -->
+      <div class="kpi-card new-athletes-kpi">
+        <div class="kpi-icon new-athlete">
+          <i class="pi pi-user-plus"></i>
+        </div>
+        <div class="kpi-content">
+          <h3 class="kpi-value">{{newAthletesThisMonth}}</h3>
+          <p class="kpi-label">New Athletes This Month</p>
+        </div>
+      </div>
+      <!-- Real-data KPIs -->
+      <!-- Remove Reservations This Month KPI card -->
 
       <!-- Total Clubs KPI -->
       <div class="kpi-card clubs-kpi">
@@ -102,22 +114,6 @@
           </canvas>
         </div>
       </div>
-
-      <!-- Top Clubs Chart -->
-      <div class="chart-card">
-        <div class="chart-header">
-          <h3><i class="pi pi-bar-chart"></i> Top Clubs</h3>
-          <p>Athletes per club (Top 5)</p>
-        </div>
-        <div class="chart-container">
-          <canvas baseChart
-                  [data]="clubsAthletesChartData"
-                  [type]="'bar'"
-                  [options]="chartOptions">
-          </canvas>
-        </div>
-      </div>
-
       <!-- Content Status Chart -->
       <div class="chart-card">
         <div class="chart-header">
@@ -132,16 +128,29 @@
           </canvas>
         </div>
       </div>
-
-      <!-- Monthly Athletes Growth -->
+      <!-- Reservation Trends Chart (NEW) -->
       <div class="chart-card">
         <div class="chart-header">
-          <h3><i class="pi pi-chart-line"></i> Athletes Growth</h3>
+          <h3><i class="pi pi-calendar"></i> Reservation Trends</h3>
+          <p>Pool reservations per week/month</p>
+        </div>
+        <div class="chart-container">
+          <canvas baseChart
+                  [data]="reservationTrendsChartData"
+                  [type]="'line'"
+                  [options]="chartOptions">
+          </canvas>
+        </div>
+      </div>
+      <!-- New Athlete Registrations Chart -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3><i class="pi pi-user-plus"></i> New Athlete Registrations</h3>
           <p>New athletes per month</p>
         </div>
         <div class="chart-container">
           <canvas baseChart
-                  [data]="monthlyAthletesData"
+                  [data]="newRegistrationsChartData"
                   [type]="'line'"
                   [options]="chartOptions">
           </canvas>

@@ -12,11 +12,14 @@ import { MessageService } from 'primeng/api';
 })
 export class EquipeNationaleComponent implements OnInit {
   equipes: EquipeNationale[] = [];
+  filteredEquipes: EquipeNationale[] = [];
   disciplines: Discipline[] = [];
   displayAddDialog: boolean = false;
   displayEditDialog: boolean = false;
   equipeForm: FormGroup;
   selectedEquipe: EquipeNationale | null = null;
+  searchTerm: string = '';
+  loading: boolean = false;
 
   constructor(
     private equipeService: EquipeNationaleService,
@@ -36,8 +39,11 @@ export class EquipeNationaleComponent implements OnInit {
   }
 
   getEquipes() {
+    this.loading = true;
     this.equipeService.getAllEquipesNationales().subscribe((data) => {
       this.equipes = data;
+      this.filteredEquipes = data;
+      this.loading = false;
     });
   }
 
@@ -148,5 +154,18 @@ export class EquipeNationaleComponent implements OnInit {
         console.error('Error deleting National Team:', error);
       }
     });
+  }
+
+  onSearch(event: any) {
+    const value = event.target.value.toLowerCase();
+    this.searchTerm = value;
+    this.filteredEquipes = this.equipes.filter(equipe =>
+      equipe.nom.toLowerCase().includes(value) ||
+      (equipe.discipline && equipe.discipline.nom.toLowerCase().includes(value))
+    );
+  }
+
+  getTotalEquipes(): number {
+    return this.equipes.length;
   }
 } 

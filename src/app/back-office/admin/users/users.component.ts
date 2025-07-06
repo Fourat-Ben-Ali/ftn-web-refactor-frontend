@@ -12,11 +12,18 @@ import { ConfirmationService } from 'primeng/api';
 })
 export class UsersComponent implements OnInit {
   users: User[] = [];
+  filteredUsers: User[] = [];
   loading = false;
   displayDialog = false;
   displayEditDialog = false;
   isEditMode = false;
   selectedUser: User | null = null;
+  searchTerm: string = '';
+
+  // Stats
+  totalUsers: number = 0;
+  totalAdmins: number = 0;
+  totalRegularUsers: number = 0;
   
   userForm: FormGroup;
   editUserForm: FormGroup;
@@ -61,6 +68,8 @@ export class UsersComponent implements OnInit {
     this.userService.getAllUsers().subscribe({
       next: (data) => {
         this.users = data;
+        this.filteredUsers = data;
+        this.calculateStats();
         this.loading = false;
       },
       error: (error) => {
@@ -73,6 +82,23 @@ export class UsersComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  onSearch(event: any) {
+    const value = event.target.value.toLowerCase();
+    this.searchTerm = value;
+    this.filteredUsers = this.users.filter(user =>
+      `${user.firstName} ${user.lastName}`.toLowerCase().includes(value) ||
+      user.email.toLowerCase().includes(value) ||
+      (user.phoneNumber || '').toLowerCase().includes(value) ||
+      (user.role || '').toLowerCase().includes(value)
+    );
+  }
+
+  calculateStats() {
+    this.totalUsers = this.users.length;
+    this.totalAdmins = this.users.filter(u => u.role === 'ADMIN').length;
+    this.totalRegularUsers = this.users.filter(u => u.role === 'USER').length;
   }
 
   showCreateDialog() {

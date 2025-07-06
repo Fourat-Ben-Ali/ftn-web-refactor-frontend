@@ -32,12 +32,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   maleAthletes: number = 0;
   femaleAthletes: number = 0;
 
+  // --- New KPIs ---
+  newAthletesThisMonth: number = 0;
+  mostUtilizedLane: string = '';
+
   // Chart data
   genderChartData: ChartConfiguration<'doughnut'>['data'] = { labels: [], datasets: [] };
-  clubsAthletesChartData: ChartConfiguration<'bar'>['data'] = { labels: [], datasets: [] };
   actualitesStatusChartData: ChartConfiguration<'pie'>['data'] = { labels: [], datasets: [] };
   programmesTimelineData: ChartConfiguration<'line'>['data'] = { labels: [], datasets: [] };
-  monthlyAthletesData: ChartConfiguration<'line'>['data'] = { labels: [], datasets: [] };
+  reservationTrendsChartData: ChartConfiguration<'line'>['data'] = { labels: [], datasets: [] };
+
+  // --- New Chart Data ---
+  newRegistrationsChartData: ChartConfiguration<'line'>['data'] = { labels: [], datasets: [] };
 
   // Loading states
   isLoading: boolean = true;
@@ -153,14 +159,18 @@ export class HomeComponent implements OnInit, OnDestroy {
       const endDate = new Date(p.dateFin);
       return now >= startDate && now <= endDate;
     }).length;
+
+    // --- New KPIs (placeholder logic, but can be implemented with real data) ---
+    this.newAthletesThisMonth = 5; // TODO: Calculate real value
+    this.mostUtilizedLane = 'Lane 3'; // TODO: Calculate real value
   }
 
   private prepareChartData() {
     this.prepareGenderChart();
-    this.prepareClubsAthletesChart();
     this.prepareActualitesStatusChart();
+    this.prepareReservationTrendsChart();
     this.prepareProgrammesTimelineChart();
-    this.prepareMonthlyAthletesChart();
+    this.prepareNewRegistrationsChart();
   }
 
   private prepareGenderChart() {
@@ -171,28 +181,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         backgroundColor: ['#3B82F6', '#EC4899'],
         borderColor: ['#2563EB', '#DB2777'],
         borderWidth: 2
-      }]
-    };
-  }
-
-  private prepareClubsAthletesChart() {
-    const clubData = this.clubs.map(club => {
-      const athleteCount = this.athletes.filter(a => a.club?.id === club.id).length;
-      return {
-        name: club.clubName,
-        count: athleteCount
-      };
-    }).sort((a, b) => b.count - a.count).slice(0, 5); // Top 5 clubs
-
-    this.clubsAthletesChartData = {
-      labels: clubData.map(c => c.name),
-      datasets: [{
-        label: 'Athletes per Club',
-        data: clubData.map(c => c.count),
-        backgroundColor: 'rgba(59, 130, 246, 0.8)',
-        borderColor: '#3B82F6',
-        borderWidth: 2,
-        borderRadius: 8
       }]
     };
   }
@@ -211,6 +199,21 @@ export class HomeComponent implements OnInit, OnDestroy {
         backgroundColor: ['#10B981', '#F59E0B', '#6B7280'],
         borderColor: ['#059669', '#D97706', '#4B5563'],
         borderWidth: 2
+      }]
+    };
+  }
+
+  private prepareReservationTrendsChart() {
+    // TODO: Implement logic to aggregate reservations per week/month
+    this.reservationTrendsChartData = {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      datasets: [{
+        label: 'Reservations',
+        data: [20, 35, 40, 28, 50, 60],
+        fill: false,
+        borderColor: '#3B82F6',
+        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+        tension: 0.4
       }]
     };
   }
@@ -242,19 +245,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     };
   }
 
-  private prepareMonthlyAthletesChart() {
-    // Simulate monthly athlete registration data
-    const monthlyData = [12, 19, 15, 25, 22, 30, 28, 35, 32, 40, 38, 45];
-    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
-                       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-    this.monthlyAthletesData = {
-      labels: monthNames,
+  private prepareNewRegistrationsChart() {
+    // TODO: Implement real aggregation
+    this.newRegistrationsChartData = {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
       datasets: [{
         label: 'New Athletes',
-        data: monthlyData,
-        borderColor: '#EF4444',
-        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+        data: [2, 3, 5, 4, 6, 5],
+        borderColor: '#EC4899',
+        backgroundColor: 'rgba(236, 72, 153, 0.1)',
         tension: 0.4,
         fill: true
       }]

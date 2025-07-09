@@ -1,19 +1,19 @@
 <div class="evenements-reservations-container">
   <div class="header">
-    <h2>Événements</h2>
-    <p>Consultez et filtrez tous les événements à venir ou passés</p>
+    <h2>Events</h2>
+    <p>View and filter all upcoming or past events</p>
   </div>
 
-  <!-- Section Filtres -->
+  <!-- Filter Section -->
   <div class="filter-section">
     <div class="filter-grid">
       <div class="filter-item">
-        <label for="titre-filter">Titre</label>
-        <input pInputText id="titre-filter" [(ngModel)]="searchTitle" placeholder="Titre de l'événement" [style]="{'width': '100%'}" />
+        <label for="titre-filter">Title</label>
+        <input pInputText id="titre-filter" [(ngModel)]="searchTitle" placeholder="Event title" [style]="{'width': '100%'}" />
       </div>
       <div class="filter-item">
-        <label for="type-filter">Type d'événement</label>
-        <p-dropdown id="type-filter" [options]="typesEvenement" [(ngModel)]="selectedType" placeholder="Type d'événement" [showClear]="true" [style]="{'width': '100%'}"></p-dropdown>
+        <label for="type-filter">Event type</label>
+        <p-dropdown id="type-filter" [options]="typesEvenement" [(ngModel)]="selectedType" placeholder="Event type" [showClear]="true" [style]="{'width': '100%'}"></p-dropdown>
       </div>
       <div class="filter-item">
         <label for="discipline-filter">Discipline</label>
@@ -25,32 +25,32 @@
       </div>
     </div>
     <div class="filter-actions">
-      <button pButton type="button" label="Appliquer les filtres" icon="pi pi-filter" (click)="applyFilters()" class="p-button-primary"></button>
-      <button pButton type="button" label="Réinitialiser" icon="pi pi-times" (click)="clearFilters()" class="p-button-secondary"></button>
+      <button pButton type="button" label="Apply filters" icon="pi pi-filter" (click)="applyFilters()" class="p-button-primary"></button>
+      <button pButton type="button" label="Reset" icon="pi pi-times" (click)="clearFilters()" class="p-button-secondary"></button>
     </div>
   </div>
 
   <div class="content">
     <div class="table-section">
       <div class="section-header">
-        <h2>Liste des événements</h2>
+        <h2>Events list</h2>
         <span class="p-input-icon-left">
           <i class="pi pi-search"></i>
-          <input pInputText type="text" placeholder="Recherche rapide..." [(ngModel)]="searchTitle" (ngModelChange)="applyFilters()" />
+          <input pInputText type="text" placeholder="Quick search..." [(ngModel)]="searchTitle" (ngModelChange)="applyFilters()" />
         </span>
       </div>
       <p-table [value]="filteredEvenements" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'"
                [loading]="loading"
-               [showCurrentPageReport]="true" currentPageReportTemplate="Affichage {first} à {last} sur {totalRecords} événements"
+               [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} events"
                [rowsPerPageOptions]="[5,10,15,25]">
         <ng-template pTemplate="header">
           <tr>
-            <th>Titre</th>
+            <th>Title</th>
             <th>Type</th>
             <th>Discipline</th>
             <th>Date</th>
             <th>Description</th>
-            <th>Détails</th>
+            <th>Details</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-evenement>
@@ -70,7 +70,7 @@
             <td colspan="6" class="text-center">
               <div class="empty-state">
                 <i class="pi pi-calendar-times" style="font-size: 3rem; color: #ccc;"></i>
-                <p>Aucun événement trouvé</p>
+                <p>No events found</p>
               </div>
             </td>
           </tr>
@@ -79,13 +79,13 @@
     </div>
   </div>
 
-  <p-dialog [(visible)]="displayDialog" [style]="{width: '450px'}" header="Détails de l'événement" [modal]="true">
+  <p-dialog [(visible)]="displayDialog" [style]="{width: '450px'}" header="Event details" [modal]="true">
     <div *ngIf="selectedEvenement" class="evenement-dialog-content">
       <h3 class="text-center">{{selectedEvenement.titre}}</h3>
       <p><strong>ID:</strong> {{selectedEvenement.id}}</p>
       <p *ngIf="selectedEvenement.description"><strong>Description:</strong> {{selectedEvenement.description}}</p>
       <p *ngIf="selectedEvenement.date"><strong>Date:</strong> {{selectedEvenement.date | date:'mediumDate'}}</p>
-      <p *ngIf="selectedEvenement.typeEvenement"><strong>Type d'événement:</strong> {{selectedEvenement.typeEvenement}}</p>
+      <p *ngIf="selectedEvenement.typeEvenement"><strong>Event type:</strong> {{selectedEvenement.typeEvenement}}</p>
       <p *ngIf="selectedEvenement.discipline"><strong>Discipline:</strong> {{selectedEvenement.discipline.nom}}</p>
     </div>
   </p-dialog>

@@ -60,7 +60,7 @@ export class FrontOfficeComponent implements OnInit {
           routerLink: ['/front-office/pool-reservations']
         },
         {
-          label: 'Événements',
+          label: 'Events',
           icon: 'pi pi-calendar',
           routerLink: ['/front-office/evenements']
         },

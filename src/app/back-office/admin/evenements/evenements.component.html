@@ -1,122 +1,132 @@
-<div class="card">
-    <button class="add-button" (click)="showAddDialog()">
+<div class="events-admin-gradient-bg">
+  <div class="events-admin-header-card">
+    <div class="header-content">
+      <div>
+        <h1>Events</h1>
+        <p class="subtitle">Manage and view all events with an interactive modern interface</p>
+      </div>
+      <button class="add-button" (click)="showAddDialog()">
         <i class="pi pi-plus"></i>
-        Add Event
-    </button>
+        New Event
+      </button>
+    </div>
+  </div>
 
-    <p-table [value]="evenements" 
+  <div class="events-admin-stats-row">
+    <div class="stat-card">
+      <div class="stat-icon stat-calendar">
+        <i class="pi pi-calendar"></i>
+      </div>
+      <div class="stat-content">
+        <div class="stat-number">{{ evenements.length }}</div>
+        <div class="stat-label">Total Events</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="events-admin-table-card">
+    <div class="table-header-row">
+      <h2>Events List</h2>
+      <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input pInputText type="text" placeholder="Quick search..." [(ngModel)]="searchTitle" (ngModelChange)="applyFilters()" />
+      </span>
+    </div>
+    <p-table [value]="filteredEvenements || evenements" 
              [tableStyle]="{ 'min-width': '50rem' }" 
              [paginator]="true" 
              [rows]="5"
              [loading]="loading"
              [(first)]="first"
              [totalRecords]="totalRecords">
-        <ng-template pTemplate="header">
-            <tr>
-                <th>Titre</th>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Discipline</th>
-                <th>Actions</th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-evenement>
-            <tr>
-                <td>{{evenement.titre}}</td>
-                <td>{{evenement.date | date:'dd/MM/yyyy'}}</td>
-                <td>{{evenement.typeEvenement}}</td>
-                <td>{{evenement.discipline?.nom}}</td>
-                <td>
-                    <div class="action-buttons">
-                        <button class="action-button edit-button" (click)="showEditDialog(evenement)">
-                            <i class="pi pi-pencil"></i>
-                        </button>
-                        <button class="action-button delete-button" (click)="deleteEvenement(evenement)">
-                            <i class="pi pi-trash"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-        </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Title</th>
+          <th>Date</th>
+          <th>Type</th>
+          <th>Discipline</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-evenement>
+        <tr>
+          <td>{{evenement.titre}}</td>
+          <td>{{evenement.date | date:'dd/MM/yyyy'}}</td>
+          <td>{{evenement.typeEvenement}}</td>
+          <td>{{evenement.discipline?.nom}}</td>
+          <td>
+            <div class="action-buttons">
+              <button class="action-icon-btn edit-btn" (click)="showEditDialog(evenement)" title="Edit">
+                <i class="pi pi-pencil"></i>
+              </button>
+              <button class="action-icon-btn delete-btn" (click)="deleteEvenement(evenement)" title="Delete">
+                <i class="pi pi-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
     </p-table>
+  </div>
+
+  <!-- Dialogs for add/edit -->
+  <p-dialog [header]="editMode ? 'Edit Event' : 'New Event'" [(visible)]="displayDialog" [modal]="true" [closable]="true" (onHide)="hideDialog()" [style]="{ width: '650px' }" class="p-fluid event-dialog">
+    <ng-template pTemplate="content">
+      <div class="event-dialog-header">
+        <h2>{{ editMode ? 'Edit Event' : 'New Event' }}</h2>
+      </div>
+      <form [formGroup]="evenementForm">
+        <div class="event-section">
+          <div class="section-title">
+            <i class="pi pi-info-circle"></i>
+            Basic Information
+          </div>
+          <div class="section-subtitle">Enter the title, type and discipline</div>
+          <div class="event-form-row">
+            <div class="field">
+              <label for="titre">Title</label>
+              <input type="text" pInputText id="titre" formControlName="titre" required />
+            </div>
+            <div class="field">
+              <label for="typeEvenement">Type</label>
+              <p-dropdown id="typeEvenement" [options]="typeEvenements" formControlName="typeEvenement" placeholder="Select a type"></p-dropdown>
+            </div>
+            <div class="field">
+              <label for="discipline">Discipline</label>
+              <p-dropdown id="discipline" [options]="disciplines" formControlName="discipline" optionLabel="nom" placeholder="Select a discipline"></p-dropdown>
+            </div>
+          </div>
+        </div>
+        <div class="event-section">
+          <div class="section-title">
+            <i class="pi pi-align-left"></i>
+            Description
+          </div>
+          <div class="section-subtitle">Add a description for the event</div>
+          <div class="field">
+            <textarea id="description" pInputTextarea formControlName="description" rows="3"></textarea>
+          </div>
+        </div>
+        <div class="event-section">
+          <div class="section-title">
+            <i class="pi pi-calendar"></i>
+            Date & Time
+          </div>
+          <div class="section-subtitle">Choose the event date</div>
+          <div class="field">
+            <p-calendar id="date" formControlName="date" [showIcon]="true" dateFormat="dd/mm/yy"></p-calendar>
+          </div>
+        </div>
+      </form>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <div class="event-dialog-actions">
+        <button pButton type="button" class="cancel-btn" (click)="hideDialog()" label="Cancel"></button>
+        <button pButton type="button" class="create-btn" (click)="saveEvenement()" [disabled]="evenementForm.invalid" label="{{ editMode ? 'Save' : 'Create Event' }}"></button>
+      </div>
+    </ng-template>
+  </p-dialog>
+
+  <p-toast></p-toast>
+  <p-confirmDialog></p-confirmDialog>
 </div>
-
-<p-dialog [(visible)]="displayAddDialog" [style]="{width: '450px'}" header="Nouvel événement" [modal]="true" class="p-fluid">
-    <form [formGroup]="evenementForm" (ngSubmit)="saveEvenement()">
-        <div class="field">
-            <label for="titre">Titre</label>
-            <input type="text" pInputText id="titre" formControlName="titre" required />
-        </div>
-
-        <div class="field">
-            <label for="date">Date</label>
-            <p-calendar id="date" formControlName="date" [showIcon]="true" dateFormat="dd/mm/yy"></p-calendar>
-        </div>
-
-        <div class="field">
-            <label for="typeEvenement">Type d'événement</label>
-            <p-dropdown id="typeEvenement" [options]="typeEvenements" formControlName="typeEvenement" placeholder="Sélectionnez un type"></p-dropdown>
-        </div>
-
-        <div class="field">
-            <label for="description">Description</label>
-            <textarea id="description" pInputTextarea formControlName="description" rows="3"></textarea>
-        </div>
-
-        <div class="field">
-            <label for="discipline">Discipline</label>
-            <p-dropdown id="discipline" 
-                       [options]="disciplines" 
-                       formControlName="discipline" 
-                       optionLabel="nom"
-                       placeholder="Sélectionnez une discipline">
-            </p-dropdown>
-        </div>
-
-        <div class="flex justify-content-end mt-4">
-            <app-button label="Annuler" icon="pi pi-times" (click)="hideDialog()" severity="secondary" class="mr-2"></app-button>
-            <app-button label="Enregistrer" icon="pi pi-check" type="submit" [disabled]="!evenementForm.valid"></app-button>
-        </div>
-    </form>
-</p-dialog>
-
-<p-dialog [(visible)]="displayEditDialog" [style]="{width: '450px'}" header="Modifier l'événement" [modal]="true" class="p-fluid">
-    <form [formGroup]="evenementForm" (ngSubmit)="saveEvenement()">
-        <div class="field">
-            <label for="titre">Titre</label>
-            <input type="text" pInputText id="titre" formControlName="titre" required />
-        </div>
-
-        <div class="field">
-            <label for="date">Date</label>
-            <p-calendar id="date" formControlName="date" [showIcon]="true" dateFormat="dd/mm/yy"></p-calendar>
-        </div>
-
-        <div class="field">
-            <label for="typeEvenement">Type d'événement</label>
-            <p-dropdown id="typeEvenement" [options]="typeEvenements" formControlName="typeEvenement" placeholder="Sélectionnez un type"></p-dropdown>
-        </div>
-
-        <div class="field">
-            <label for="description">Description</label>
-            <textarea id="description" pInputTextarea formControlName="description" rows="3"></textarea>
-        </div>
-
-        <div class="field">
-            <label for="discipline">Discipline</label>
-            <p-dropdown id="discipline" 
-                       [options]="disciplines" 
-                       formControlName="discipline" 
-                       optionLabel="nom"
-                       placeholder="Sélectionnez une discipline">
-            </p-dropdown>
-        </div>
-
-        <div class="flex justify-content-end mt-4">
-            <app-button label="Annuler" icon="pi pi-times" (click)="hideDialog()" severity="secondary" class="mr-2"></app-button>
-            <app-button label="Enregistrer" icon="pi pi-check" type="submit" [disabled]="!evenementForm.valid"></app-button>
-        </div>
-    </form>
-</p-dialog>
-
-<p-toast></p-toast>

@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { catchError, Observable, throwError } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -20,7 +21,8 @@ export class AuthInterceptor implements HttpInterceptor {
 
   constructor(
     private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private authService: AuthService
   ) {}
 
   intercept(
@@ -35,32 +37,17 @@ export class AuthInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-    let token: string | null = null;
+    let token: string | null = this.authService.getToken();
 
-    if (isPlatformBrowser(this.platformId)) {
-      const userString = localStorage.getItem('user');
-      
-      if (userString) {
-        try {
-          const user = JSON.parse(userString);
-          token = user?.token;
-          
-          if (token) {
-            req = req.clone({
-              setHeaders: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json'
-              },
-            });
-          } else {
-            console.warn('No token found in user object');
-          }
-        } catch (e) {
-          console.error('Error parsing user from localStorage:', e);
-        }
-      } else {
-        console.warn('No user found in localStorage');
-      }
+    if (token) {
+      req = req.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+      });
+    } else {
+      console.warn('No token found in AuthService');
     }
 
     return next.handle(req).pipe(

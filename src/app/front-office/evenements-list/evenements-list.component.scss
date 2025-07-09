@@ -1,93 +1,185 @@
-.container {
+// Fond général
+.evenements-reservations-container {
   margin: 2rem auto;
   max-width: 1200px;
+  background: #f7f7f7;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  padding: 2.5rem 2rem 2rem 2rem;
 }
 
-.search-container {
+.header {
+  text-align: center;
   margin-bottom: 2rem;
-  display: flex;
-  justify-content: center;
+  h2 {
+    color: #1976d2;
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  p {
+    color: #888;
+    font-size: 1.1rem;
+    margin: 0;
+  }
 }
 
-.evenements-grid {
+.filter-section {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  padding: 1.5rem 1rem 1rem 1rem;
+  margin-bottom: 2rem;
+}
+.filter-grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 2rem 1.5rem;
+  gap: 1.5rem 2rem;
+  justify-content: space-between;
 }
-
-.evenement-header {
-  background: #f7f7f7;
-  padding: 1.5rem 1rem 1rem 1rem;
-  text-align: center;
-  border-bottom: 1px solid #eee;
-}
-
-.evenement-header h2 {
-  margin: 0;
-  font-size: 1.4rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #535b61;
-  letter-spacing: 1px;
-  line-height: 1.1;
-}
-
-.evenement-details {
-  padding: 1.2rem 1rem 1.2rem 1rem;
-  min-height: 60px;
+.filter-item {
+  flex: 1 1 180px;
+  min-width: 180px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #444;
+  }
+}
+.filter-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  justify-content: center;
 }
 
-.evenement-details p {
-  margin: 0 0 0.8rem 0;
-  font-size: 1rem;
-  color: #444;
+// Statistiques
+.stats-section {
+  margin-bottom: 2rem;
+}
+.stats-grid {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+}
+.stat-card {
+  background: linear-gradient(135deg, #6a82fb 0%, #fc5c7d 100%);
+  color: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(106,130,251,0.10);
+  padding: 1.2rem 2.2rem;
+  display: flex;
+  align-items: center;
+  min-width: 180px;
+}
+.stat-icon {
+  font-size: 2.2rem;
+  margin-right: 1.2rem;
+  display: flex;
+  align-items: center;
+}
+.stat-content h3 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+.stat-content p {
+  margin: 0;
+  font-size: 1.1rem;
   font-weight: 400;
 }
 
-.evenement-details strong {
-  color: #535b61;
-  font-size: 1rem;
+// Section tableau avec fond dégradé
+.content {
+  background: linear-gradient(135deg, #6a82fb 0%, #fc5c7d 100%);
+  border-radius: 18px;
+  padding: 2rem 1.5rem 2.5rem 1.5rem;
+  box-shadow: 0 2px 16px rgba(106,130,251,0.10);
+}
+.table-section {
+  background: #fff;
+  border-radius: 14px;
+  padding: 1.5rem 1rem 1.5rem 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.2rem;
+  h2 {
+    color: #1976d2;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0;
+  }
+}
+.p-input-icon-left {
+  margin-left: 1rem;
 }
 
-.evenement-dialog-content {
-  padding: 1rem;
-}
-
-p-card {
-  border-radius: 10px !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+// Tableau PrimeNG
+:host ::ng-deep .p-table {
+  border-radius: 10px;
   overflow: hidden;
-}
-
-.p-card-footer {
-  padding: 1.2rem 1rem 1.2rem 1rem !important;
-  border-top: 1px solid #eee;
-  background: transparent;
-}
-
-button.w-full {
-  width: 100%;
   font-size: 1rem;
-  font-weight: 700;
-  border-radius: 8px;
-  background: #3887f6;
-  border: none;
-  color: #fff;
-  padding: 0.7rem 0;
-  transition: background 0.2s;
 }
-button.w-full:hover {
-  background: #2563c9;
+:host ::ng-deep .p-paginator {
+  border-radius: 0 0 10px 10px;
+  background: #f7f7f7;
+}
+:host ::ng-deep .p-table-thead > tr > th {
+  background: #f7f7f7;
+  color: #1976d2;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+:host ::ng-deep .p-table-tbody > tr > td {
+  background: #fff;
+  color: #444;
 }
 
-// Séparateur fin
-.evenement-details:after {
-  content: '';
-  display: block;
-  margin: 1rem 0 0 0;
-  border-bottom: 1px solid #eee;
+// Boutons
+.p-button-primary {
+  background: #1976d2;
+  border: none;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0.7rem 2.2rem;
+}
+.p-button-primary:hover {
+  background: #1256a3;
+}
+.p-button-secondary {
+  background: #e0e0e0;
+  color: #444;
+  border: none;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0.7rem 2.2rem;
+}
+.p-button-secondary:hover {
+  background: #bdbdbd;
+}
+
+// Empty state
+.empty-state {
+  text-align: center;
+  color: #aaa;
+  font-size: 1.1rem;
+  margin: 2rem 0;
+}
+
+// Responsive
+@media (max-width: 900px) {
+  .filter-grid, .stats-grid {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .stat-card {
+    min-width: 0;
+    justify-content: center;
+  }
 } 

@@ -1,39 +1,92 @@
-<div class="container">
-  <div class="search-container">
-    <span class="p-input-icon-left">
-      <i class="pi pi-search"></i>
-      <input pInputText type="text" (input)="onSearch($event)" placeholder="Rechercher un événement..." />
-    </span>
+<div class="evenements-reservations-container">
+  <div class="header">
+    <h2>Événements</h2>
+    <p>Consultez et filtrez tous les événements à venir ou passés</p>
   </div>
 
-  <div class="evenements-grid">
-    <p-card *ngFor="let evenement of filteredEvenements; let i = index" [style]="{'width': '320px', 'margin': '1.5rem 1rem'}">
-      <ng-template pTemplate="header">
-        <div class="evenement-header">
-          <h2 class="text-center"><strong>{{i + 1}}/ {{evenement.titre || evenement.nom}}</strong></h2>
-        </div>
-      </ng-template>
-      <div class="evenement-details">
-        <p *ngIf="evenement.description"><strong>Description:</strong> {{evenement.description}}</p>
+  <!-- Section Filtres -->
+  <div class="filter-section">
+    <div class="filter-grid">
+      <div class="filter-item">
+        <label for="titre-filter">Titre</label>
+        <input pInputText id="titre-filter" [(ngModel)]="searchTitle" placeholder="Titre de l'événement" [style]="{'width': '100%'}" />
       </div>
-      <ng-template pTemplate="footer">
-        <button pButton label="Voir détails" icon="pi pi-info-circle" (click)="showDetails(evenement)" class="w-full"></button>
-      </ng-template>
-    </p-card>
+      <div class="filter-item">
+        <label for="type-filter">Type d'événement</label>
+        <p-dropdown id="type-filter" [options]="typesEvenement" [(ngModel)]="selectedType" placeholder="Type d'événement" [showClear]="true" [style]="{'width': '100%'}"></p-dropdown>
+      </div>
+      <div class="filter-item">
+        <label for="discipline-filter">Discipline</label>
+        <p-dropdown id="discipline-filter" [options]="disciplines" [(ngModel)]="selectedDiscipline" optionLabel="nom" placeholder="Discipline" [showClear]="true" [style]="{'width': '100%'}"></p-dropdown>
+      </div>
+      <div class="filter-item">
+        <label for="date-filter">Date</label>
+        <p-calendar id="date-filter" [(ngModel)]="selectedDate" placeholder="Date" [showIcon]="true" dateFormat="yy-mm-dd" [showClear]="true" [style]="{'width': '100%'}"></p-calendar>
+      </div>
+    </div>
+    <div class="filter-actions">
+      <button pButton type="button" label="Appliquer les filtres" icon="pi pi-filter" (click)="applyFilters()" class="p-button-primary"></button>
+      <button pButton type="button" label="Réinitialiser" icon="pi pi-times" (click)="clearFilters()" class="p-button-secondary"></button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="table-section">
+      <div class="section-header">
+        <h2>Liste des événements</h2>
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" placeholder="Recherche rapide..." [(ngModel)]="searchTitle" (ngModelChange)="applyFilters()" />
+        </span>
+      </div>
+      <p-table [value]="filteredEvenements" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'"
+               [loading]="loading"
+               [showCurrentPageReport]="true" currentPageReportTemplate="Affichage {first} à {last} sur {totalRecords} événements"
+               [rowsPerPageOptions]="[5,10,15,25]">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Titre</th>
+            <th>Type</th>
+            <th>Discipline</th>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Détails</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-evenement>
+          <tr>
+            <td>{{ evenement.titre }}</td>
+            <td>{{ evenement.typeEvenement }}</td>
+            <td>{{ evenement.discipline?.nom }}</td>
+            <td>{{ evenement.date | date:'mediumDate' }}</td>
+            <td>{{ evenement.description }}</td>
+            <td>
+              <button pButton icon="pi pi-info-circle" (click)="showDetails(evenement)" class="p-button-text"></button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="6" class="text-center">
+              <div class="empty-state">
+                <i class="pi pi-calendar-times" style="font-size: 3rem; color: #ccc;"></i>
+                <p>Aucun événement trouvé</p>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
   </div>
 
   <p-dialog [(visible)]="displayDialog" [style]="{width: '450px'}" header="Détails de l'événement" [modal]="true">
     <div *ngIf="selectedEvenement" class="evenement-dialog-content">
-      <h3 class="text-center">{{selectedEvenement.titre || selectedEvenement.nom}}</h3>
+      <h3 class="text-center">{{selectedEvenement.titre}}</h3>
       <p><strong>ID:</strong> {{selectedEvenement.id}}</p>
       <p *ngIf="selectedEvenement.description"><strong>Description:</strong> {{selectedEvenement.description}}</p>
       <p *ngIf="selectedEvenement.date"><strong>Date:</strong> {{selectedEvenement.date | date:'mediumDate'}}</p>
-      <p *ngIf="selectedEvenement.dateDebut"><strong>Date de début:</strong> {{selectedEvenement.dateDebut | date:'mediumDate'}}</p>
-      <p *ngIf="selectedEvenement.dateFin"><strong>Date de fin:</strong> {{selectedEvenement.dateFin | date:'mediumDate'}}</p>
       <p *ngIf="selectedEvenement.typeEvenement"><strong>Type d'événement:</strong> {{selectedEvenement.typeEvenement}}</p>
-      <p *ngIf="selectedEvenement.discipline"><strong>Discipline:</strong> {{selectedEvenement.discipline.nom || selectedEvenement.discipline}}</p>
-      <p *ngIf="selectedEvenement.lieu"><strong>Lieu:</strong> {{selectedEvenement.lieu}}</p>
-      <p *ngIf="selectedEvenement.statut"><strong>Statut:</strong> {{selectedEvenement.statut}}</p>
+      <p *ngIf="selectedEvenement.discipline"><strong>Discipline:</strong> {{selectedEvenement.discipline.nom}}</p>
     </div>
   </p-dialog>
 </div> 

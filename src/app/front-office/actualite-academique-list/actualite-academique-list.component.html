@@ -1,5 +1,7 @@
+<p-toast></p-toast>
+
 <div class="container">
-  <!-- Barre de recherche -->
+  <!-- Search Bar -->
   <div class="search-container">
     <span class="p-input-icon-left">
       <i class="pi pi-search"></i>
@@ -7,49 +9,105 @@
         pInputText
         type="text"
         (input)="onSearch($event)"
-        placeholder="Rechercher une actualité..."
+        placeholder="Search for a news article..."
       />
     </span>
   </div>
 
-  <!-- Grille des actualités -->
-  <div class="actualites-grid">
-    <p-card
-      *ngFor="let actualite of filteredActualites"
-      [style]="{ width: '300px', margin: '1rem' }"
-    >
-      <ng-template pTemplate="header">
-        <h2 class="text-center">{{ actualite.titre }}</h2>
-      </ng-template>
-
-      <div class="actualite-details">
-        <p><strong>Date :</strong> {{ actualite.datePublication | date }}</p>
-        <p>{{ actualite.contenu || 'Pas de contenu disponible.' }}</p>
+  <!-- Filter Section (modern, compact) -->
+  <div class="filter-section">
+    <div class="filter-grid">
+      <div class="filter-item">
+        <label for="dateFilter">Filter by date</label>
+        <p-calendar
+          id="dateFilter"
+          [(ngModel)]="dateFilter"
+          placeholder="Choose a date"
+          [showIcon]="true"
+          dateFormat="yy-mm-dd"
+          [showClear]="true"
+          (onSelect)="onDateFilterChange()"
+          (onClear)="clearFilters()"
+          styleClass="small-calendar"
+        ></p-calendar>
       </div>
-
-      <ng-template pTemplate="footer">
-        <button
-          pButton
-          label="Voir plus"
-          icon="pi pi-info-circle"
-          (click)="showDetails(actualite)"
-          class="w-full"
-        ></button>
-      </ng-template>
-    </p-card>
+    </div>
+    <div class="filter-actions">
+      <button
+        pButton
+        type="button"
+        label="Clear filters"
+        icon="pi pi-times"
+        class="p-button-secondary"
+        (click)="clearFilters()"
+      ></button>
+    </div>
   </div>
 
-  <!-- Dialog pour afficher les détails -->
+  <!-- News grid -->
+  <div class="actualites-grid">
+    <div
+      class="actualite-card-wrapper"
+      *ngFor="let actualite of filteredActualites"
+    >
+      <div class="actualite-card">
+        <div class="actualite-background">
+          <img
+            class="background-image"
+            src="https://hips.hearstapps.com/hmg-prod/images/gettyimages-82726781-1644942021.jpg?crop=0.6433534043538676xw:1xh;center,top&resize=640:*"
+            alt="News Background"
+          />
+          <div class="background-overlay"></div>
+        </div>
+
+        <div class="actualite-content">
+          <div class="actualite-header">
+            <h2 class="actualite-title">{{ actualite.titre }}</h2>
+          </div>
+
+          <div class="actualite-details">
+            <p>
+              <i class="pi pi-calendar"></i>
+              <strong>Date:</strong> {{ actualite.datePublication | date }}
+            </p>
+            <p>
+              <i class="pi pi-align-left"></i>
+              {{ actualite.contenu || 'No content available.' }}
+            </p>
+          </div>
+
+          <div class="actualite-footer">
+            <button
+              pButton
+              label="View more"
+              icon="pi pi-eye"
+              (click)="showDetails(actualite)"
+              class="w-full p-button-rounded p-button-info"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail Dialog -->
   <p-dialog
     [(visible)]="displayDialog"
     [style]="{ width: '450px' }"
-    header="Détail de l'actualité"
+    header="News Details"
     [modal]="true"
+    [contentStyle]="{ padding: '2rem' }"
   >
     <div *ngIf="selectedActualite" class="actualite-dialog-content">
       <h3 class="text-center">{{ selectedActualite.titre }}</h3>
-      <p><strong>Date :</strong> {{ selectedActualite.datePublication | date }}</p>
-      <p>{{ selectedActualite.contenu || 'Pas de contenu.' }}</p>
+      <p>
+        <i class="pi pi-calendar"></i>
+        <strong>Date:</strong> {{ selectedActualite.datePublication | date }}
+      </p>
+      <p>
+        <i class="pi pi-align-left"></i>
+        {{ selectedActualite.contenu || 'No content available.' }}
+      </p>
     </div>
   </p-dialog>
 </div>

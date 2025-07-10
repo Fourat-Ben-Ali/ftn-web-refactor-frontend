@@ -6,6 +6,7 @@ import { environment } from '../../environments/environment';
 
 export interface ActualiteAcademie {
 
+
    id?: number;
   titre: string;
   contenu: string;

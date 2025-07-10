@@ -4,12 +4,17 @@ import { ProgrammeFormationService, ProgrammeFormation } from 'app/services/prog
 @Component({
   selector: 'app-progamme-formation-list',
   templateUrl: './progamme-formation-list.component.html',
-  styleUrls: ['./progamme-formation-list.component.scss'] // ← assure-toi que c’est bien .scss
+  styleUrls: ['./progamme-formation-list.component.scss']
 })
 export class ProgammeFormationListComponent implements OnInit {
+triggerDatePicker(arg0: string) {
+throw new Error('Method not implemented.');
+}
   programmes: ProgrammeFormation[] = [];
   filteredProgrammes: ProgrammeFormation[] = [];
   searchText: string = '';
+  dateDebutFilter: string = '';
+  dateFinFilter: string = '';
   displayDialog: boolean = false;
   selectedProgramme: ProgrammeFormation | null = null;
 
@@ -38,14 +43,46 @@ export class ProgammeFormationListComponent implements OnInit {
   }
 
   filterProgrammes(): void {
-    this.filteredProgrammes = this.programmes.filter(p =>
-      p.titre.toLowerCase().includes(this.searchText) ||
-      p.description.toLowerCase().includes(this.searchText)
-    );
+    this.filteredProgrammes = this.programmes.filter(p => {
+      const titreMatch = p.titre.toLowerCase().includes(this.searchText);
+      const descMatch = p.description.toLowerCase().includes(this.searchText);
+
+      const dateDebut = new Date(p.dateDebut);
+      const dateFin = new Date(p.dateFin);
+
+      const filterDebut = this.dateDebutFilter ? new Date(this.dateDebutFilter) : null;
+      const filterFin = this.dateFinFilter ? new Date(this.dateFinFilter) : null;
+
+      const dateInRange =
+        (!filterDebut || dateDebut >= filterDebut) &&
+        (!filterFin || dateFin <= filterFin);
+
+      return (titreMatch || descMatch) && dateInRange;
+    });
   }
 
+ 
   showDetails(p: ProgrammeFormation): void {
     this.selectedProgramme = p;
     this.displayDialog = true;
   }
+  onDateFilterChange() {
+  this.filteredProgrammes = this.programmes.filter((p) => {
+    const dateDebut = new Date(p.dateDebut);
+    const dateFin = new Date(p.dateFin);
+    const start = this.dateDebutFilter ? new Date(this.dateDebutFilter) : null;
+    const end = this.dateFinFilter ? new Date(this.dateFinFilter) : null;
+
+    if (!start && !end) return true;
+    if (start && dateDebut < start) return false;
+    if (end && dateFin > end) return false;
+    return true;
+  });
+}
+
+clearFilters() {
+ 
+  this.filteredProgrammes = [...this.programmes];
+}
+
 }

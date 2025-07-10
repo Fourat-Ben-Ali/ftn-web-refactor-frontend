@@ -11,7 +11,7 @@ import { AuthenticationService } from 'shared/services/authentication.service';
 @Component({
   selector: 'app-actualite-academie',
   templateUrl: './actualite-academie.component.html',
-  styleUrls: ['./actualite-academie.component.scss']
+  styleUrls: ['./actualite-academie.component.css']
 })
 export class ActualiteAcademieComponent implements OnInit {
   actualites: ActualiteAcademie[] = [];

@@ -5,6 +5,7 @@ import { StatutPublication } from 'app/shared/models/statut-publication.enum';
 import { environment } from '../../environments/environment';
 
 export interface ProgrammeFormation {
+[x: string]: any;
   id?: number;
   titre: string;
   description: string;

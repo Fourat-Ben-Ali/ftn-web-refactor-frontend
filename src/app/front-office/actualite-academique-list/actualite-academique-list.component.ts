@@ -49,4 +49,30 @@ export class ActualiteAcademiqueListComponent implements OnInit {
     this.selectedActualite = actualite;
     this.displayDialog = true;
   }
+
+dateFilter: Date | null = null;
+
+onDateFilterChange() {
+  this.applyFilters(); // si tu centralises les filtres
+}
+
+applyFilters() {
+  this.filteredActualites = this.actualites.filter((a) => {
+    const matchesSearch =
+      !this.searchText || a.titre.toLowerCase().includes(this.searchText.toLowerCase());
+
+    const matchesDate =
+      !this.dateFilter ||
+      new Date(a.datePublication).toDateString() === new Date(this.dateFilter).toDateString();
+
+    return matchesSearch && matchesDate;
+  });
+}
+
+clearFilters() {
+  this.dateFilter = null;
+
+  this.filteredActualites = [...this.actualites];
+}
+
 }

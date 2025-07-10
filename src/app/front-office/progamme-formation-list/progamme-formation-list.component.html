@@ -1,5 +1,7 @@
+<p-toast></p-toast>
+
 <div class="container">
-  <!-- Barre de recherche en haut à droite -->
+  <!-- Search bar -->
   <div class="search-container">
     <span class="p-input-icon-left">
       <i class="pi pi-search"></i>
@@ -7,39 +9,114 @@
         pInputText
         type="text"
         (input)="onSearch($event)"
-        placeholder="Rechercher un programme..."
+        placeholder="Search a program..."
       />
     </span>
   </div>
 
-  <!-- Grille des programmes -->
-  <div class="programmes-grid">
-    <p-card *ngFor="let p of filteredProgrammes" [style]="{ width: '300px', margin: '1rem' }">
-      <ng-template pTemplate="header">
-        <h2 class="text-center">{{ p.titre }}</h2>
-      </ng-template>
-      <div class="programme-details">
-        <p><strong>Date :</strong> {{ p.dateDebut | date }} – {{ p.dateFin | date }}</p>
-        <p>{{ p.description || 'Pas de description disponible.' }}</p>
+  <!-- Filter Section (styled like pool reservation) -->
+  <div class="filter-section">
+    <div class="filter-grid">
+      <div class="filter-item">
+        <label for="dateDebut">Start Date</label>
+        <p-calendar
+          id="dateDebut"
+          [(ngModel)]="dateDebutFilter"
+          placeholder="Start Date"
+          [showIcon]="true"
+          dateFormat="yy-mm-dd"
+          [showClear]="true"
+          (onSelect)="onDateFilterChange()"
+          (onClear)="onDateFilterChange()"
+          [style]="{ width: '100%' }"
+        ></p-calendar>
       </div>
-      <ng-template pTemplate="footer">
-        <button
-          pButton
-          label="Voir plus"
-          icon="pi pi-info-circle"
-          (click)="showDetails(p)"
-          class="w-full"
-        ></button>
-      </ng-template>
-    </p-card>
+      <div class="filter-item">
+        <label for="dateFin">End Date</label>
+        <p-calendar
+          id="dateFin"
+          [(ngModel)]="dateFinFilter"
+          placeholder="End Date"
+          [showIcon]="true"
+          dateFormat="yy-mm-dd"
+          [showClear]="true"
+          (onSelect)="onDateFilterChange()"
+          (onClear)="onDateFilterChange()"
+          [style]="{ width: '100%' }"
+        ></p-calendar>
+      </div>
+    </div>
+    <div class="filter-actions">
+      <button
+        pButton
+        label="Clear filters"
+        icon="pi pi-times"
+        class="p-button-secondary"
+        (click)="clearFilters()"
+      ></button>
+    </div>
   </div>
 
-  <!-- Dialog de détail -->
-  <p-dialog [(visible)]="displayDialog" [style]="{ width: '450px' }" header="Détail du programme" [modal]="true">
+  <!-- Programs grid -->
+  <div class="programmes-grid">
+    <div class="programme-card-wrapper" *ngFor="let p of filteredProgrammes">
+      <div class="programme-card">
+        <div class="programme-background">
+          <img
+            class="background-image"
+            [src]="p['backgroundImage'] || 'https://hips.hearstapps.com/hmg-prod/images/gettyimages-82726781-1644942021.jpg?crop=0.6433534043538676xw:1xh;center,top&resize=640:*'"
+            alt=""
+          />
+          <div class="background-overlay"></div>
+        </div>
+        <div class="programme-content">
+          <div class="programme-header">
+            <h2 class="programme-title">{{ p.titre }}</h2>
+          </div>
+          <div class="programme-details">
+            <p>
+              <i class="pi pi-calendar"></i>
+              <strong>Date:</strong>
+              {{ p.dateDebut | date }} – {{ p.dateFin | date }}
+            </p>
+            <p>
+              <i class="pi pi-info-circle"></i>
+              {{ p.description || 'No description available.' }}
+            </p>
+          </div>
+          <div class="programme-footer">
+            <button
+              pButton
+              label="View More"
+              icon="pi pi-eye"
+              (click)="showDetails(p)"
+              class="w-full p-button-rounded p-button-info"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail dialog -->
+  <p-dialog
+    [(visible)]="displayDialog"
+    [style]="{ width: '450px' }"
+    header="Program Details"
+    [modal]="true"
+    [contentStyle]="{ padding: '2rem' }"
+  >
     <div *ngIf="selectedProgramme">
       <h3 class="text-center">{{ selectedProgramme.titre }}</h3>
-      <p><strong>Date :</strong> {{ selectedProgramme.dateDebut | date }} – {{ selectedProgramme.dateFin | date }}</p>
-      <p>{{ selectedProgramme.description }}</p>
+      <p>
+        <i class="pi pi-calendar"></i>
+        <strong>Date:</strong>
+        {{ selectedProgramme.dateDebut | date }} – {{ selectedProgramme.dateFin | date }}
+      </p>
+      <p>
+        <i class="pi pi-info-circle"></i>
+        {{ selectedProgramme.description || 'No description available.' }}
+      </p>
     </div>
   </p-dialog>
 </div>

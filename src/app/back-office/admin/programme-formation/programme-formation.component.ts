@@ -9,10 +9,11 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 @Component({
   selector: 'app-programme-formation',
   templateUrl: './programme-formation.component.html',
-  styleUrls: ['./programme-formation.component.scss']
+  styleUrls: ['./programme-formation.component.css']
 })
 export class ProgrammeFormationComponent implements OnInit {
   programmes: ProgrammeFormation[] = [];
+  filteredProgrammes: ProgrammeFormation[] = [];
   first: number = 0;
   totalRecords: number = 0;
   loading: boolean = false;
@@ -20,6 +21,7 @@ export class ProgrammeFormationComponent implements OnInit {
   displayEditDialog: boolean = false;
   programmeForm!: FormGroup;
   selectedProgramme: ProgrammeFormation | null = null;
+  itemsPerPage: number = 6;
   
   publicationStatuses: { label: string; value: StatutPublication }[] = [
   { label: 'Published', value: StatutPublication.PUBLIE },
@@ -52,6 +54,7 @@ export class ProgrammeFormationComponent implements OnInit {
   ngOnInit() {
     this.loadProgrammes();
     this.loadStatuses();
+    this.filteredProgrammes = this.programmes;
   }
 
   loadProgrammes() {
@@ -59,6 +62,7 @@ export class ProgrammeFormationComponent implements OnInit {
     this.programmeService.getAllProgrammeFormations().subscribe({
       next: (data) => {
         this.programmes = data;
+        this.filteredProgrammes = data;
         this.totalRecords = data.length;
         this.loading = false;
       },
@@ -256,12 +260,36 @@ getStatusLabel(status: StatutPublication): string {
   }
 
   onSearch(event: any) {
-    const searchTerm = event.target.value;
+    const searchTerm = event.target.value.toLowerCase();
     if (searchTerm.trim()) {
-      this.searchSubject.next(searchTerm);
+      this.filteredProgrammes = this.programmes.filter(p =>
+        p.titre.toLowerCase().includes(searchTerm) ||
+        p.description.toLowerCase().includes(searchTerm)
+      );
+      this.totalRecords = this.filteredProgrammes.length;
+      this.first = 0;
     } else {
-      this.loadProgrammes();
+      this.filteredProgrammes = this.programmes;
+      this.totalRecords = this.filteredProgrammes.length;
+      this.first = 0;
     }
+  }
+
+  onPageChange(event: any) {
+    this.first = event.first;
+    this.itemsPerPage = event.rows;
+  }
+
+  getPublishedCount(): number {
+    return this.programmes.filter(p => p.statutPublication === StatutPublication.PUBLIE).length;
+  }
+
+  getDraftCount(): number {
+    return this.programmes.filter(p => p.statutPublication === StatutPublication.EN_ATTENTE).length;
+  }
+
+  trackByProgrammeId(index: number, programme: ProgrammeFormation): number | undefined {
+    return programme.id;
   }
 
   searchProgrammes(query: string) {

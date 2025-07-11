@@ -10,6 +10,9 @@ import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { FrontOfficeRoutingModule } from './front-office-routing.module';
 import { EvenementsListComponent } from './evenements-list/evenements-list.component';
+import { ActualiteAcademiqueListComponent } from './actualite-academique-list/actualite-academique-list.component';
+import { ProgammeFormationListComponent } from './progamme-formation-list/progamme-formation-list.component';
+import { PresseListComponent } from './presse-list/presse-list.component';
 
 // PrimeNG imports
 import { CardModule } from 'primeng/card';
@@ -22,8 +25,6 @@ import { PasswordModule } from 'primeng/password';
 import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { CalendarModule } from 'primeng/calendar';
-import { ActualiteAcademiqueListComponent } from './actualite-academique-list/actualite-academique-list.component';
-import { ProgammeFormationListComponent } from './progamme-formation-list/progamme-formation-list.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { ProgammeFormationListComponent } from './progamme-formation-list/progam
     LoginComponent,
     EvenementsListComponent,
     ActualiteAcademiqueListComponent,
-    ProgammeFormationListComponent
+    ProgammeFormationListComponent,
+    PresseListComponent
   ],
   imports: [
     CommonModule,

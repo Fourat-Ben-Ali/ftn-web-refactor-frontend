@@ -36,7 +36,12 @@ export class PresseComponent implements OnInit {
 
   ajouterContenu() {
     if (!this.nouveauContenu.titre || !this.nouveauContenu.type || !this.nouveauContenu.contenu || !this.nouveauContenu.datePublication) return;
-    this.presseService.add(this.nouveauContenu).subscribe(() => {
+    // Correction : s'assurer que la date est bien au format 'YYYY-MM-DD'
+    const contenuToSend = {
+      ...this.nouveauContenu,
+      datePublication: this.nouveauContenu.datePublication.substring(0, 10)
+    };
+    this.presseService.add(contenuToSend).subscribe(() => {
       this.chargerContenus();
       this.nouveauContenu = { titre: '', type: 'COMMUNIQUE', contenu: '', datePublication: '' };
     });
@@ -59,7 +64,12 @@ export class PresseComponent implements OnInit {
 
   validerEdition() {
     if (!this.contenuEnEdition || !this.contenuEnEdition.id) return;
-    this.presseService.update(this.contenuEnEdition.id, this.contenuEnEdition).subscribe(() => {
+    // Correction : s'assurer que la date est bien au format 'YYYY-MM-DD' lors de l'édition
+    const contenuToSend = {
+      ...this.contenuEnEdition,
+      datePublication: this.contenuEnEdition.datePublication.substring(0, 10)
+    };
+    this.presseService.update(this.contenuEnEdition.id, contenuToSend).subscribe(() => {
       this.chargerContenus();
       this.annulerEdition();
     });

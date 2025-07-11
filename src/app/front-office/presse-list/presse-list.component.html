@@ -1,0 +1,86 @@
+<div class="presse-container">
+  <div class="header">
+    <h2>Press Content</h2>
+    <p>View and filter all press releases and documents</p>
+  </div>
+
+  <!-- Filter Section -->
+  <div class="filter-section">
+    <div class="filter-grid">
+      <div class="filter-item">
+        <label for="titre-filter">Title</label>
+        <input pInputText id="titre-filter" [(ngModel)]="searchTitle" placeholder="Content title" [style]="{'width': '100%'}" />
+      </div>
+      <div class="filter-item">
+        <label for="type-filter">Content type</label>
+        <p-dropdown id="type-filter" [options]="typesPresseOptions" [(ngModel)]="selectedType" placeholder="Content type" [showClear]="true" [style]="{'width': '100%'}"></p-dropdown>
+      </div>
+      <div class="filter-item">
+        <label for="date-filter">Publication date</label>
+        <p-calendar id="date-filter" [(ngModel)]="selectedDate" placeholder="Date" [showIcon]="true" dateFormat="yy-mm-dd" [showClear]="true" [style]="{'width': '100%'}"></p-calendar>
+      </div>
+    </div>
+    <div class="filter-actions">
+      <button pButton type="button" label="Apply filters" icon="pi pi-filter" (click)="applyFilters()" class="p-button-primary"></button>
+      <button pButton type="button" label="Reset" icon="pi pi-times" (click)="clearFilters()" class="p-button-secondary"></button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="table-section">
+      <div class="section-header">
+        <h2>Press content list</h2>
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" placeholder="Quick search..." [(ngModel)]="searchText" (ngModelChange)="onSearchChange()" />
+        </span>
+      </div>
+      <p-table [value]="filteredContenus" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'"
+               [loading]="loading"
+               [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} contents"
+               [rowsPerPageOptions]="[5,10,15,25]">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Title</th>
+            <th>Type</th>
+            <th>Publication Date</th>
+            <th>Content</th>
+            <th>Details</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-contenu>
+          <tr>
+            <td>{{ contenu.titre }}</td>
+            <td>{{ getTypeLabel(contenu.type) }}</td>
+            <td>{{ contenu.datePublication | date:'mediumDate' }}</td>
+            <td>{{ getFormattedContent(contenu.contenu) }}</td>
+            <td>
+              <button pButton icon="pi pi-info-circle" (click)="showDetails(contenu)" class="p-button-text"></button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="5" class="text-center">
+              <div class="empty-state">
+                <i class="pi pi-file-text" style="font-size: 3rem; color: #ccc;"></i>
+                <p>No press content found</p>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+
+  <p-dialog [(visible)]="displayDialog" [style]="{width: '600px'}" header="Press content details" [modal]="true">
+    <div *ngIf="selectedContenu" class="contenu-dialog-content">
+      <h3 class="text-center">{{selectedContenu.titre}}</h3>
+      <p><strong>ID:</strong> {{selectedContenu.id}}</p>
+      <p><strong>Type:</strong> {{getTypeLabel(selectedContenu.type)}}</p>
+      <p><strong>Publication Date:</strong> {{selectedContenu.datePublication | date:'mediumDate'}}</p>
+      <p><strong>Content:</strong></p>
+      <div class="content-text">{{selectedContenu.contenu}}</div>
+    </div>
+  </p-dialog>
+</div> 

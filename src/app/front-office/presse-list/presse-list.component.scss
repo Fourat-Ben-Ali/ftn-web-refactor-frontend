@@ -1,0 +1,158 @@
+// Fond général
+.presse-container {
+  margin: 2rem auto;
+  max-width: 1200px;
+  background: #f7f7f7;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  padding: 2.5rem 2rem 2rem 2rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+  h2 {
+    color: #1976d2;
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  p {
+    color: #888;
+    font-size: 1.1rem;
+    margin: 0;
+  }
+}
+
+.filter-section {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  padding: 1.5rem 1rem 1rem 1rem;
+  margin-bottom: 2rem;
+}
+.filter-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem 2rem;
+  justify-content: space-between;
+}
+.filter-item {
+  flex: 1 1 180px;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #444;
+  }
+}
+.filter-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  justify-content: center;
+}
+
+// Section tableau avec fond dégradé
+.content {
+  background: linear-gradient(135deg, #6a82fb 0%, #fc5c7d 100%);
+  border-radius: 18px;
+  padding: 2rem 1.5rem 2.5rem 1.5rem;
+  box-shadow: 0 2px 16px rgba(106,130,251,0.10);
+}
+.table-section {
+  background: #fff;
+  border-radius: 14px;
+  padding: 1.5rem 1rem 1.5rem 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.2rem;
+  h2 {
+    color: #1976d2;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0;
+  }
+}
+.p-input-icon-left {
+  margin-left: 1rem;
+}
+
+// Tableau PrimeNG
+:host ::ng-deep .p-table {
+  border-radius: 10px;
+  overflow: hidden;
+  font-size: 1rem;
+}
+:host ::ng-deep .p-paginator {
+  border-radius: 0 0 10px 10px;
+  background: #f7f7f7;
+}
+:host ::ng-deep .p-table-thead > tr > th {
+  background: #f7f7f7;
+  color: #1976d2;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+:host ::ng-deep .p-table-tbody > tr > td {
+  background: #fff;
+  color: #444;
+}
+
+// Boutons
+.p-button-primary {
+  background: #1976d2;
+  border: none;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0.7rem 2.2rem;
+}
+.p-button-primary:hover {
+  background: #1256a3;
+}
+.p-button-secondary {
+  background: #e0e0e0;
+  color: #444;
+  border: none;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0.7rem 2.2rem;
+}
+.p-button-secondary:hover {
+  background: #bdbdbd;
+}
+
+// Empty state
+.empty-state {
+  text-align: center;
+  color: #aaa;
+  font-size: 1.1rem;
+  margin: 2rem 0;
+}
+
+// Dialog content
+.contenu-dialog-content {
+  .content-text {
+    background: #f5f5f5;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+    white-space: pre-wrap;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+}
+
+// Responsive
+@media (max-width: 900px) {
+  .filter-grid {
+    flex-direction: column;
+    gap: 1rem;
+  }
+} 

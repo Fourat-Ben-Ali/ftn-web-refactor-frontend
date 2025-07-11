@@ -65,6 +65,11 @@ export class FrontOfficeComponent implements OnInit {
           routerLink: ['/front-office/evenements']
         },
         {
+          label: 'Presse',
+          icon: 'pi pi-id-card',
+          routerLink: ['/front-office/presse']
+        },
+        {
           label: 'Account',
           icon: 'pi pi-user',
           items: [

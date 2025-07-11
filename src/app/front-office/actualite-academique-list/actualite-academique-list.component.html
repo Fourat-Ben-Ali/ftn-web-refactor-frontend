@@ -73,17 +73,13 @@
               <i class="pi pi-calendar"></i>
               <strong>Date:</strong> {{ actualite.datePublication | date }}
             </p>
-            <p>
-              <i class="pi pi-align-left"></i>
-              {{ actualite.contenu || 'No content available.' }}
-            </p>
           </div>
 
           <div class="actualite-footer">
             <button
               pButton
-              label="View more"
-              icon="pi pi-eye"
+              label="View Details"
+              icon="pi pi-info-circle"
               (click)="showDetails(actualite)"
               class="w-full p-button-rounded p-button-info"
             ></button>

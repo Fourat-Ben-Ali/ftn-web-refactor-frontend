@@ -82,16 +82,12 @@
               <strong>Date:</strong>
               {{ p.dateDebut | date }} – {{ p.dateFin | date }}
             </p>
-            <p>
-              <i class="pi pi-info-circle"></i>
-              {{ p.description || 'No description available.' }}
-            </p>
           </div>
           <div class="programme-footer">
             <button
               pButton
-              label="View More"
-              icon="pi pi-eye"
+              label="View Details"
+              icon="pi pi-info-circle"
               (click)="showDetails(p)"
               class="w-full p-button-rounded p-button-info"
             ></button>

@@ -1,5 +1,5 @@
 <div class="front-office-container" [ngClass]="{'auth-page': isAuthPage}">
-  <p-menubar *ngIf="isLoggedIn" [model]="menuItems" [style]="{'width': '100%'}">
+  <p-menubar *ngIf="isLoggedIn && !isAuthPage" [model]="menuItems" [style]="{'width': '100%'}">
     <ng-template pTemplate="start">
       <div class="logo-container">
         <img src="assets/logos/main-logo.png" alt="Swim Nation Logo" class="logo">

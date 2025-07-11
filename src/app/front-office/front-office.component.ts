@@ -44,13 +44,13 @@ export class FrontOfficeComponent implements OnInit {
           icon: 'pi pi-building',
           routerLink: ['/front-office/clubs']
         },
-         {
-         label: 'Actualité Académique',
-         icon: 'pi pi-book',
-        routerLink: ['/front-office/actualite-academique']
-         },
         {
-          label: 'Programme Formation',
+          label: 'Academic News',
+          icon: 'pi pi-book',
+          routerLink: ['/front-office/actualite-academique']
+        },
+        {
+          label: 'Training Program',
           icon: 'pi pi-calendar',
           routerLink: ['/front-office/programme-formation']
         },

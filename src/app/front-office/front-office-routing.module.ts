@@ -10,6 +10,7 @@ import { AuthGuard } from '../guards/auth.guard';
 import { EvenementsListComponent } from './evenements-list/evenements-list.component';
 import { ProgammeFormationListComponent } from './progamme-formation-list/progamme-formation-list.component';
 import { ActualiteAcademiqueListComponent } from './actualite-academique-list/actualite-academique-list.component';
+import { PresseListComponent } from './presse-list/presse-list.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,7 @@ const routes: Routes = [
       { path: 'login', component: LoginComponent },
       { path: 'programme-formation', component: ProgammeFormationListComponent, canActivate: [AuthGuard] },
       { path: 'actualite-academique', component: ActualiteAcademiqueListComponent, canActivate: [AuthGuard] },
+      { path: 'presse', component: PresseListComponent, canActivate: [AuthGuard] },
      
       { path: '', redirectTo: 'login', pathMatch: 'full' }
     ]
